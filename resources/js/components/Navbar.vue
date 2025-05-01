@@ -20,7 +20,7 @@
     </nav>
 </header>
 </template>
-  
+
 <script>
 import { theme } from '../config/theme';
 
@@ -114,7 +114,8 @@ methods: {
 
 .nav-links a:hover {
     color: var(--accentGreen1);
-    font-weight: var(--fontWeightBold);
+    transition-duration: 0.3s;
+    /* font-weight: var(--fontWeightBold); */
 }
 
 .login-button {
@@ -128,7 +129,10 @@ methods: {
 }
 
 .login-button:hover {
-    border: 2px solid black;
+    border: 2px solid var(--primaryGreen);
+    background-color: var(--accentGreen2);
+    color: var(--primaryGreen);
+    transition-duration: 0.3s;
 }
 
 .dropdown-menu {
