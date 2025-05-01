@@ -4,6 +4,7 @@ import { createApp } from 'vue';
 import PenukaranStep2 from './pages/PenukaranStep2.vue';
 import PenukaranStep3_2 from './pages/PenukaranStep3_2.vue';
 import PenukaranKoin from './pages/PenukaranKoin.vue';
+import Jelajah from './pages/Jelajah.vue';
 
 const el = document.getElementById('app');
 
@@ -30,9 +31,9 @@ if (el) {
     case 'penukaran-koin':
         component = PenukaranKoin;
         break;
-    // case 'jelajah':
-
-    //   break;
+    case 'jelajah':
+        component = Jelajah;
+        break;
     // case 'tentang':
 
     //   break;
@@ -43,8 +44,8 @@ if (el) {
 
     //   break;
     default:
-      console.error('Unknown page component:', page);
-      break;
+        console.error('Unknown page component:', page);
+        break;
   }
 
   if (component) {

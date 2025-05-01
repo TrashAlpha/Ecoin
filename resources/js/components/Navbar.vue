@@ -13,7 +13,7 @@
             <li><a href="#">Koin</a></li>
         </ul>
         </li>
-        <li><a href="#">Jelajah</a></li>
+        <li><a href="/jelajah">Jelajah</a></li>
         <li><a href="#">Tentang</a></li>
     </ul>
     <button class="login-button">Masuk</button>
