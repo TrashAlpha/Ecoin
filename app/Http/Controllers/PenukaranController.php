@@ -28,6 +28,6 @@ class PenukaranController extends Controller
 
     public function penukaran3_2()
     {
-        return view('penukarans3_2'); 
+        return view('penukarans3_2');
     }
 }
