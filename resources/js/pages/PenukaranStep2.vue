@@ -1,7 +1,7 @@
 <template>
     <div class="penukaran-step2">
       <Navbar />
-  
+
       <section class="hero">
         <img src="/public/images/heroPenukaran.png" alt="Penukaran Sampah" class="hero-image" />
         <div class="kategori-tabs">
@@ -10,7 +10,7 @@
             <div class="tab"><img src="/public/images/ic_mask.png" alt=""> Limbah Medis</div>
         </div>
       </section>
-  
+
       <section class="step-indikator">
         <div class="step-heading">
             <div class="heading-line"></div>
@@ -22,7 +22,7 @@
             <div class="step inactive"><span>3</span> Konfirmasi Penukaran</div>
         </div>
       </section>
-  
+
       <section class="konten">
         <div class="map-container">
           <iframe
@@ -45,7 +45,7 @@
           </div>
         </div>
       </section>
-  
+
       <section class="langganan">
         <h2>Berlangganan ECOIN</h2>
         <h3>Untuk Mendapatkan Informasi Terbaru</h3>
@@ -55,11 +55,11 @@
           <button class="btn send"><img src="/public/images/ic_send.png" alt="Send" /></button>
         </div>
       </section>
-  
+
       <Footer />
     </div>
 </template>
-  
+
 <script>
 import Navbar from '../components/Navbar.vue'
 import Footer from '../components/Footer.vue'
@@ -122,7 +122,7 @@ methods: {
     color: var(--backgroundWhite);
     font-weight: var(--fontWeightBold);
     cursor: pointer;
-    text-align: center; 
+    text-align: center;
 }
 
 .tab img {
