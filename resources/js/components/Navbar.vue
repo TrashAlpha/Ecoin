@@ -114,7 +114,6 @@ methods: {
         background-color: var(--primaryGreen);
         color: var(--backgroundWhite);
         border: none;
-        border-radius: 2px;
         font-weight: 600;
         cursor: pointer;
     }
@@ -128,6 +127,7 @@ methods: {
         padding: 8px 0;
         min-width: 120px;
         border-radius: 4px;
+        z-index: 1000; /* diatas elemen lain */
     }
 
     .dropdown-menu li {
