@@ -2,6 +2,9 @@
 import Footer from '../components/Footer.vue';
 import Navbar from '../components/Navbar.vue';
 
+function redirectToStep2(){
+    window.location.href = '/penukarans2';
+}
 </script>
 
 <template>
@@ -11,10 +14,10 @@ import Navbar from '../components/Navbar.vue';
         <section class="hero">
             <img src="/public/images/heroPenukaran.png" alt="Penukaran Sampah" class="hero-image" />
             <div class="kategori-tabs">
-            <div class="tab"><img src="/public/images/ic_plastic.png" alt=""> Non Organik</div>
-            <div class="tab"><img src="/public/images/ic_leaf.png" alt=""> Organik</div>
-            <div class="tab"><img src="/public/images/ic_mask.png" alt=""> Limbah Medis</div>
-        </div>
+                <div class="tab"><img src="/public/images/ic_plastic.png" alt=""> Non Organik</div>
+                <div class="tab"><img src="/public/images/ic_leaf.png" alt=""> Organik</div>
+                <div class="tab"><img src="/public/images/ic_mask.png" alt=""> Limbah Medis</div>
+            </div>
         </section>
 
         <section class="step-indikator">
@@ -41,7 +44,7 @@ import Navbar from '../components/Navbar.vue';
                     <input type="text" name="" id="konversi_rupiah" readonly>
                     <br>
 
-                    <button type="button">Kembali</button>
+                    <button type="button" @click="redirectToStep2">Kembali</button>
                     <button type="submit">Tukarkan</button>
                 </form>
             </div>
@@ -289,7 +292,7 @@ import Navbar from '../components/Navbar.vue';
         padding: 12px;
         margin-top: 20px;
         margin-bottom: 20px;
-        width: 600px;
+        width: 500px;
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
     }
@@ -304,7 +307,7 @@ import Navbar from '../components/Navbar.vue';
         font-weight: bold;
     }
 
-    .form button:active {
+    .form button:hover {
         background-color: var(--primaryGreen);
     }
 
