@@ -80,34 +80,48 @@ components: {
     }
 
     /* Hero */
+    .hero {
+        position: relative;
+        display: flex;
+        justify-content: center;
+    }
+
     .hero-image {
         width: 100%;
         max-height: 100%;
         object-fit: cover;
+        padding:0 32px;
     }
 
     /* Tabs */
     .kategori-tabs {
+        position: absolute;
+        bottom: +60px; /* membuat setengah bagian menutupi gambar */
+        left: 50%;
+        transform: translateX(-50%);
         display: flex;
         justify-content: center;
-        margin-top: -40px;
-        margin-bottom: 40px;
         background-color: var(--primaryGreen);
+        padding: 10px 20px;
+        z-index: 2;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
+
     .tab {
         padding: 10px 20px;
         margin: 0 5px;
-        border-radius: 4px;
         color: var(--backgroundWhite);
         font-weight: 600;
         cursor: pointer;
         display: flex;
         align-items: center;
     }
+
     .tab img {
         height: 20px;
         margin-right: 8px;
     }
+
     .tab.active {
         background-color: var(--accentGreen1);
         color: var(--textBlack);

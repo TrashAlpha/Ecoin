@@ -72,7 +72,6 @@ methods: {
         align-items: center;
         padding: 16px 32px;
         background-color: var(--backgroundWhite);
-        border-bottom: 1px solid var(--accentGreen1);
     }
 
     .navbar-left {
