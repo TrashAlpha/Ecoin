@@ -66,80 +66,97 @@ methods: {
 
 <style scoped>
     .navbar {
-        font-family: var(--fontFamily);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 32px;
-        background-color: var(--backgroundWhite);
-    }
+    font-family: var(--fontFamily);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    background-color: var(--backgroundWhite);
+}
 
-    .navbar-left {
-        display: flex;
-        align-items: center;
-    }
+.navbar-left {
+    display: flex;
+    align-items: center;
+    cursor: pointer; /* logo juga bisa diklik */
+}
 
-    .logo {
-        height: 40px;
-        margin-right: 10px;
-    }
+.logo {
+    height: 40px;
+    margin-right: 10px;
+    cursor: pointer; /* kursor jadi pointer di logo */
+}
 
-    .navbar-right {
-        display: flex;
-        align-items: center;
-    }
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
 
-    .nav-links {
-        list-style: none;
-        display: flex;
-        gap: 24px;
-        margin: 0;
-        padding: 0;
-    }
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+}
 
-    .nav-links li {
-        position: relative;
-    }
+.nav-links li {
+    position: relative;
+    cursor: pointer;
+}
 
-    .nav-links a {
-        text-decoration: none;
-        color: var(--textBlack);
-        font-size: var(--fontSizeNormal);
-        font-weight: 500;
-    }
+.nav-links a {
+    text-decoration: none;
+    color: var(--textBlack);
+    font-size: var(--fontSizeNormal);
+    font-weight: 500;
+    cursor: pointer;
+}
 
-    .login-button {
-        margin-left: 24px;
-        padding: 8px 20px;
-        background-color: var(--primaryGreen);
-        color: var(--backgroundWhite);
-        border: none;
-        border-radius: 2px;
-        font-weight: 600;
-        cursor: pointer;
-    }
+.nav-links a:hover {
+    color: var(--accentGreen1);
+    font-weight: var(--fontWeightBold);
+}
 
-    .dropdown-menu {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: var(--backgroundWhite);
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        padding: 8px 0;
-        min-width: 120px;
-        border-radius: 4px;
-    }
+.login-button {
+    margin-left: 24px;
+    padding: 8px 20px;
+    background-color: var(--primaryGreen);
+    color: var(--backgroundWhite);
+    border: 2px solid transparent;
+    font-weight: 600;
+    cursor: pointer;
+}
 
-    .dropdown-menu li {
-        padding: 6px 16px;
-    }
+.login-button:hover {
+    border: 2px solid black;
+}
 
-    .dropdown-menu li a {
-        color: var(--textGrey);
-        text-decoration: none;
-    }
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--backgroundWhite);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 8px 0;
+    min-width: 120px;
+    border-radius: 4px;
+    z-index: 1000;
+}
 
-    .dropdown-menu li:hover {
-        background-color: var(--accentGreen2);
-    }
+.dropdown-menu li {
+    padding: 6px 16px;
+    cursor: pointer;
+}
+
+.dropdown-menu li a {
+    color: var(--textGrey);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+    background-color: var(--accentGreen2);
+    font-weight: var(--fontWeightBold);
+    color: var(--accentGreen1);
+}
 </style>
