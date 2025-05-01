@@ -41,7 +41,7 @@
           </div>
           <div class="action-buttons">
             <button class="btn">Kembali</button>
-            <button class="btn">Konfirmasi</button>
+            <button class="btn" @click="redirectToStep3">Konfirmasi</button>
           </div>
         </div>
       </section>
@@ -68,7 +68,12 @@ export default {
 components: {
     Navbar,
     Footer
-}
+},
+methods: {
+    redirectToStep3() {
+      window.location.href = '/penukarans3';
+    }
+  }
 }
 </script>
 
