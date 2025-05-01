@@ -15,12 +15,5 @@ Route::get('/penukarans1', [PenukaranController::class, 'penukaran1']);
 Route::get('/penukarans2', [PenukaranController::class, 'penukaran2']);
 Route::get('/penukarans3', [PenukaranController::class, 'penukaran3']);
 Route::get('/penukarans3_2', [PenukaranController::class, 'penukaran3_2']);
+Route::get('/penukaran_koin', [PenukaranController::class, 'penukaran_koin']);
 
-<<<<<<< HEAD
-=======
-
-//return view penukarans2
-Route::get('/penukarans2', function () {
-    return view('penukarans2');
-});
->>>>>>> 3e0ec7683ef21db627be30392183518c4667f699
