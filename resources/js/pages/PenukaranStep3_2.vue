@@ -22,6 +22,7 @@ function redirectToStep2(){
 
         <section class="step-indikator">
             <div class="step-heading">
+                <div class="heading-line"></div>
                 <p>Detail Sampah <br /> Yang Ditukarkan</p>
             </div>
             <div class="steps">
@@ -189,38 +190,71 @@ function redirectToStep2(){
 
     /* Step Indicator */
     .step-indikator {
-        text-align: center;
-        margin-top: 60px;
+    text-align: start;
+    margin-top: 60px;
     }
+
     .step-heading {
-        font-weight: 600;
-        color: var(--textBlack);
-        font-size: 18px;
+        display: flex;
+        align-items: center; /* tengah secara vertikal */
+        padding-left: 32px;
+        gap: 12px;
+        font-weight: var(--fontWeightBold);
+        color: var(--primaryGreen);
+        font-size: var(--fontSizeMedium);
+        margin-bottom: 8px;
     }
+
+    .heading-line {
+        width: 100px;            /* Panjang garis */
+        height: 5px;            /* Tebal garis */
+        background-color: var(--primaryGreen);
+        border-radius: 2px;
+    }
+
     .steps {
         display: flex;
-        justify-content: center;
-        gap: 40px;
-        margin-top: 16px;
+        justify-content: space-between;  /* Center seluruh steps */
+        width: 100%;
+        margin-top: 32px;
+        padding: 0 32px;
+        gap: 40px; /* Jarak antar step */
+        flex-wrap: wrap;
     }
+
     .step {
         display: flex;
         align-items: center;
         gap: 8px;
-        color: var(--textGrey);
-        font-weight: 600;
+        color: var(--primaryGreen);
+        font-weight: var(--fontWeightSemiBold);
+        font-size: var(--fontSizeNormal);
+        min-width: 120px; /* Menjaga ukuran proporsional */
+        justify-content: center; /* Center isi step */
+        text-align: center;
     }
+
     .step span {
-        background-color: var(--accentGreen2);
-        padding: 6px 12px;
-        font-weight: bold;
-        color: var(--backgroundWhite);
-    }
-    .step.active {
-        color: var(--textBlack);
-    }
-    .step.active span {
         background-color: var(--primaryGreen);
+        color: white;
+        padding: 6px 12px;
+        font-weight: var(--fontWeightBold);
+        box-shadow: -5px 5px 0 rgba(0, 0, 0, 0.25);
+        opacity: 0.5; /* default non-aktif */
+    }
+
+    .step-active,
+    .step.active {
+        color: var(--primaryGreen);
+    }
+
+    .step-active span,
+    .step.active span {
+        opacity: 1;
+    }
+
+    .step.inactive {
+        opacity: 0.5;
     }
 
     /* Langganan */
@@ -275,9 +309,19 @@ function redirectToStep2(){
     .konten {
         display: flex;
         justify-content: space-between;
+        align-items: center; /* Center vertical */
         gap: 24px;
-        padding: 40px 5%;
-        flex-wrap: wrap;
+        margin-top: 30px;
+        padding: 60px 32px;
+        flex-wrap: nowrap; /* Hindari wrap agar vertical alignment bisa bekerja */
+    }
+
+    @media (max-width: 768px) {
+        .konten {
+            flex-direction: column;
+            align-items: stretch; /* Agar responsif di mobile */
+            flex-wrap: wrap;
+        }
     }
 
     .konten label {
