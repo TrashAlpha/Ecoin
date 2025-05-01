@@ -3,6 +3,7 @@ import { createApp } from 'vue';
 
 import PenukaranStep2 from './pages/PenukaranStep2.vue';
 import PenukaranStep3_2 from './pages/PenukaranStep3_2.vue';
+import PenukaranStep1 from './pages/PenukaranStep1.vue';
 
 const el = document.getElementById('app');
 
@@ -13,8 +14,9 @@ if (el) {
   switch (page) {
     // case 'beranda':
 
-    //   break;
-    // case 'penukaran-step-1':
+    case 'penukaran-step-1':
+      component = PenukaranStep1;
+      break;
 
     //   break;
     case 'penukaran-step-2':
