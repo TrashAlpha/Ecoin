@@ -4,18 +4,17 @@
   
       <section class="hero">
         <img src="/public/images/heroPenukaran.png" alt="Penukaran Sampah" class="hero-image" />
-      </section>
-  
-      <section class="kategori">
         <div class="kategori-tabs">
-          <div class="tab active"><img src="/public/images/ic_plastic.png" alt=""> Non Organik</div>
-          <div class="tab">Organik</div>
-          <div class="tab">Limbah Medis</div>
+            <div class="tab"><img src="/public/images/ic_plastic.png" alt=""> Non Organik</div>
+            <div class="tab"><img src="/public/images/ic_leaf.png" alt=""> Organik</div>
+            <div class="tab"><img src="/public/images/ic_mask.png" alt=""> Limbah Medis</div>
         </div>
       </section>
   
       <section class="step-indikator">
-        <p>Detail Sampah <br /> Yang Ditukarkan</p>
+        <div class="step-heading">
+            <p>Detail Sampah <br /> Yang Ditukarkan</p>
+        </div>
         <div class="steps">
           <div class="step active"><span>1</span> Detail Sampah</div>
           <div class="step active"><span>2</span> Lokasi Penukaran</div>
@@ -74,187 +73,196 @@ components: {
 
 <style scoped>
     .penukaran-step2 {
-        font-family: var(--fontFamily);
-        background-color: var(--backgroundWhite);
-        color: var(--textBlack);
-    }
+    font-family: var(--fontFamily);
+    background-color: var(--backgroundWhite);
+    color: var(--textBlack);
+}
 
-    /* Hero */
-    .hero {
-        position: relative;
-        display: flex;
-        justify-content: center;
-    }
+/* Hero */
+.hero {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 0 32px;
+}
+.hero-image {
+    width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
 
-    .hero-image {
-        width: 100%;
-        max-height: 100%;
-        object-fit: cover;
-        padding:0 32px;
-    }
+/* Tabs di atas gambar */
+.kategori-tabs {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    background-color: var(--primaryGreen);
+    padding: 10px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+.tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;     /* Pusatkan horizontal */
+    justify-content: center;
+    padding: 10px 20px;
+    margin: 0 5px;
+    color: var(--backgroundWhite);
+    font-weight: var(--fontWeightBold);
+    cursor: pointer;
+    text-align: center; 
+}
+.tab img {
+    height: 20px;
+    margin: 0 0 6px 0; 
+}
+.tab:hover {
+    background-color: var(--accentGreen1);
+    color: var(--textBlack);
+}
 
-    /* Tabs */
-    .kategori-tabs {
-        position: absolute;
-        bottom: +60px; /* membuat setengah bagian menutupi gambar */
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        justify-content: center;
-        background-color: var(--primaryGreen);
-        padding: 10px 20px;
-        z-index: 2;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
+/* Step Indicator */
+.step-indikator {
+    text-align: center;
+    margin-top: 60px;
+}
+.step-heading {
+    font-weight: 600;
+    color: var(--textBlack);
+    font-size: 18px;
+}
+.steps {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 16px;
+}
+.step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--textGrey);
+    font-weight: 600;
+}
+.step span {
+    background-color: var(--accentGreen2);
+    padding: 6px 12px;
+    font-weight: bold;
+    color: var(--backgroundWhite);
+}
+.step.active {
+    color: var(--textBlack);
+}
+.step.active span {
+    background-color: var(--primaryGreen);
+}
 
-    .tab {
-        padding: 10px 20px;
-        margin: 0 5px;
-        color: var(--backgroundWhite);
-        font-weight: 600;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-    }
+/* Konten */
+.konten {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 60px 5%;
+    flex-wrap: wrap;
+}
+.map-container {
+    flex: 1;
+    min-width: 300px;
+}
+.form-lokasi {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.form-lokasi label {
+    font-weight: 600;
+}
+.form-lokasi input {
+    padding: 10px;
+    background-color: var(--textField);
+    border: none;
+}
+.rekomendasi {
+    display: flex;
+    gap: 12px;
+}
+.action-buttons {
+    display: flex;
+    gap: 12px;
+}
+.btn {
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+.btn.primary {
+    background-color: var(--primaryGreen);
+    color: white;
+}
+.btn.secondary {
+    background-color: var(--textField);
+    color: var(--textBlack);
+}
+.btn.grey {
+    background-color: var(--textField);
+    color: var(--textBlack);
+}
+.btn.confirm {
+    background-color: var(--accentGreen2);
+    color: white;
+}
 
-    .tab img {
-        height: 20px;
-        margin-right: 8px;
-    }
+/* Langganan */
+.langganan {
+    text-align: center;
+    padding: 80px 20px 100px;
+    background-color: #f9fdfb;
+}
+.langganan h2 {
+    color: var(--primaryGreen);
+    font-size: 24px;
+    font-weight: 700;
+}
+.langganan h3 {
+    color: var(--textBlack);
+    font-size: 20px;
+    margin-top: 8px;
+}
+.langganan p {
+    color: var(--textGrey);
+    font-size: 14px;
+    margin: 12px 0;
+}
+.email-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.email-box input {
+    padding: 12px;
+    width: 400px;
+    border: none;
+    background-color: var(--textField);
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+.btn.send {
+    background-color: var(--primaryGreen);
+    padding: 12px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.btn.send img {
+    height: 20px;
+}
 
-    .tab.active {
-        background-color: var(--accentGreen1);
-        color: var(--textBlack);
-    }
-
-    /* Step Indicator */
-    .step-indikator {
-        text-align: center;
-    }
-    .steps {
-        display: flex;
-        justify-content: center;
-        gap: 40px;
-        margin-top: 10px;
-    }
-    .step {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: var(--textGrey);
-    }
-    .step span {
-        background-color: var(--accentGreen2);
-        padding: 6px 12px;
-        border-radius: 4px;
-        font-weight: bold;
-        color: var(--backgroundWhite);
-    }
-    .step.active {
-        color: var(--textBlack);
-    }
-    .step.active span {
-        background-color: var(--primaryGreen);
-    }
-
-    /* Konten */
-    .konten {
-        display: flex;
-        justify-content: space-between;
-        gap: 24px;
-        padding: 40px 5%;
-        flex-wrap: wrap;
-    }
-    .map-container {
-        flex: 1;
-        min-width: 300px;
-    }
-    .form-lokasi {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-    .form-lokasi label {
-        font-weight: 600;
-    }
-    .form-lokasi input {
-        padding: 10px;
-        background-color: var(--textField);
-        border: none;
-        border-radius: 4px;
-    }
-    .rekomendasi {
-        display: flex;
-        gap: 12px;
-    }
-    .action-buttons {
-        display: flex;
-        gap: 12px;
-    }
-    .btn {
-        padding: 10px 20px;
-        border-radius: 4px;
-        font-weight: 600;
-        cursor: pointer;
-        border: none;
-    }
-    .btn.primary {
-        background-color: var(--primaryGreen);
-        color: white;
-    }
-    .btn.secondary {
-        background-color: var(--textField);
-        color: var(--textBlack);
-    }
-    .btn.grey {
-        background-color: var(--textField);
-        color: var(--textBlack);
-    }
-    .btn.confirm {
-        background-color: var(--accentGreen2);
-        color: white;
-    }
-
-    /* Langganan */
-    .langganan {
-        text-align: center;
-        padding: 60px 20px;
-        background-color: #f9fdfb;
-    }
-    .langganan h2 {
-        color: var(--primaryGreen);
-    }
-    .langganan h3 {
-        color: var(--textBlack);
-        font-size: 20px;
-        margin-top: 8px;
-    }
-    .langganan p {
-        color: var(--textGrey);
-        font-size: 14px;
-        margin: 12px 0;
-    }
-    .email-box {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-    }
-    .email-box input {
-        padding: 12px;
-        width: 400px;
-        border: none;
-        background-color: var(--textField);
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
-    }
-    .btn.send {
-        background-color: var(--primaryGreen);
-        padding: 12px;
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
-    }
-    .btn.send img {
-        height: 20px;
-    }
+.btn.send:hover {
+    background-color: var(--primaryGreen);
+}
 </style>
