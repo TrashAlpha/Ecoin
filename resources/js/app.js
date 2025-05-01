@@ -27,7 +27,6 @@ if (el) {
         component = PenukaranStep3_2;
         break;
 
-    //   break;
     // case 'jelajah':
 
     //   break;

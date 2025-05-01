@@ -10,29 +10,121 @@ import Navbar from '../components/Navbar.vue';
 
         <section class="hero">
             <img src="/public/images/heroPenukaran.png" alt="Penukaran Sampah" class="hero-image" />
+            <div class="kategori-tabs">
+            <div class="tab"><img src="/public/images/ic_plastic.png" alt=""> Non Organik</div>
+            <div class="tab"><img src="/public/images/ic_leaf.png" alt=""> Organik</div>
+            <div class="tab"><img src="/public/images/ic_mask.png" alt=""> Limbah Medis</div>
+        </div>
         </section>
 
-        <!-- Nunggu dari alhtaf -->
-        <!-- <section class="kategori">
-            <div class="kategori-tabs">
-            <div class="tab active"><img src="/public/images/ic_plastic.png" alt=""> Non Organik</div>
-            <div class="tab">Organik</div>
-            <div class="tab">Limbah Medis</div>
-            </div>
-        </section> -->
-
         <section class="step-indikator">
-            <p>Detail Sampah <br /> Yang Ditukarkan</p>
+            <div class="step-heading">
+                <p>Detail Sampah <br /> Yang Ditukarkan</p>
+            </div>
             <div class="steps">
-            <div class="step "><span>1</span> Detail Sampah</div>
-            <div class="step "><span>2</span> Lokasi Penukaran</div>
-            <div class="step active"><span>3</span> Konfirmasi Penukaran</div>
+                <div class="step active"><span>1</span> Detail Sampah</div>
+                <div class="step active"><span>2</span> Lokasi Penukaran</div>
+                <div class="step active"><span>3</span> Konfirmasi Penukaran</div>
             </div>
         </section>
 
         <section class="konten">
-            <h3>Saldo Koin</h3>
+            <div class="form">
+                <form action="">
+                    <label for="saldo-koin">Saldo Koin</label><br>
+                    <input type="text" name="" id="saldo_koin" readonly>
+                    <br>
+                    <label for="koin-yang-ditukar">Koin yang ditukarkan</label><br>
+                    <input type="text" name="" id="koin_yang_ditukar" readonly>
+                    <br>
+                    <label for="konversi-rupiah">Konversi ke Rupiah</label><br>
+                    <input type="text" name="" id="konversi_rupiah" readonly>
+                    <br>
+
+                    <button type="button">Kembali</button>
+                    <button type="submit">Tukarkan</button>
+                </form>
+            </div>
+            <div class="opsi-transfer">
+                <label>Opsi Transfer</label>
+                <div class="opsi-grid">
+                    <div class="bank-card">
+                        <img src="/public/images/ic_bni.png" alt="">
+                        <div class="info">
+                            <span class="nama-bank">BNI</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                        </div>
+                    </div>
+                    <div class="bank-card">
+                        <img src="/public/images/ic_bca.png" alt="">
+                        <div class="info">
+                            <span class="nama-bank">BCA</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                        </div>
+                    </div>
+                    <div class="bank-card">
+                        <img src="/public/images/ic_bri.png" alt="">
+                        <div class="info">
+                            <span class="nama-bank">BRI</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                        </div>
+                    </div>
+                    <div class="bank-card">
+                        <img src="/public/images/ic_mandiri.png" alt="">
+                        <div class="info">
+                            <span class="nama-bank">Mandiri</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                        </div>
+                    </div>
+                    <div class="bank-card">
+                        <img src="/public/images/ic_bsi.png" alt="">
+                        <div class="info">
+                            <span class="nama-bank">BSI</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                        </div>
+                    </div>
+                    <div class="bank-card">
+                        <img src="/public/images/ic_btn.png" alt="">
+                        <div class="info">
+                            <span class="nama-bank">BTN</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                        </div>
+                    </div>
+                    <div class="bank-card">
+                        <img src="/public/images/ic_gopay.png" alt="">
+                        <div class="info">
+                            <span class="nama-bank">Gopay</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                        </div>
+                    </div>
+                    <div class="bank-card">
+                        <img src="/public/images/ic_dana.png" alt="">
+                        <div class="info">
+                            <span class="nama-bank">Dana</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
+
+        <section class="langganan">
+            <h2>Berlangganan ECOIN</h2>
+            <h3>Untuk Mendapatkan Informasi Terbaru</h3>
+            <p>Masukkan emailmu dan dapatkan notifikasi informasi terbaru<br />dan terupdate tentang aplikasi</p>
+            <div class="email-box">
+                <input type="email" placeholder="Tulis Emailmu Disini ..." />
+                <button class="btn send"><img src="/public/images/ic_send.png" alt="Send" /></button>
+            </div>
+      </section>
 
         <Footer/>
     </div>
@@ -58,36 +150,36 @@ import Navbar from '../components/Navbar.vue';
         padding:0 32px;
     }
 
-    /* Tabs */
+    /* Tabs di atas gambar */
     .kategori-tabs {
         position: absolute;
-        bottom: +60px; /* membuat setengah bagian menutupi gambar */
+        bottom: -40px;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
         justify-content: center;
         background-color: var(--primaryGreen);
         padding: 10px 20px;
-        z-index: 2;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 2;
     }
-
     .tab {
+        display: flex;
+        flex-direction: column;
+        align-items: center;     /* Pusatkan horizontal */
+        justify-content: center;
         padding: 10px 20px;
         margin: 0 5px;
         color: var(--backgroundWhite);
-        font-weight: 600;
+        font-weight: var(--fontWeightBold);
         cursor: pointer;
-        display: flex;
-        align-items: center;
+        text-align: center;
     }
-
     .tab img {
         height: 20px;
-        margin-right: 8px;
+        margin: 0 0 6px 0;
     }
-
-    .tab.active {
+    .tab:hover {
         background-color: var(--accentGreen1);
         color: var(--textBlack);
     }
@@ -95,23 +187,29 @@ import Navbar from '../components/Navbar.vue';
     /* Step Indicator */
     .step-indikator {
         text-align: center;
+        margin-top: 60px;
+    }
+    .step-heading {
+        font-weight: 600;
+        color: var(--textBlack);
+        font-size: 18px;
     }
     .steps {
         display: flex;
         justify-content: center;
         gap: 40px;
-        margin-top: 10px;
+        margin-top: 16px;
     }
     .step {
         display: flex;
         align-items: center;
         gap: 8px;
         color: var(--textGrey);
+        font-weight: 600;
     }
     .step span {
         background-color: var(--accentGreen2);
         padding: 6px 12px;
-        border-radius: 4px;
         font-weight: bold;
         color: var(--backgroundWhite);
     }
@@ -122,6 +220,54 @@ import Navbar from '../components/Navbar.vue';
         background-color: var(--primaryGreen);
     }
 
+    /* Langganan */
+    .langganan {
+        text-align: center;
+        padding: 80px 20px 100px;
+        background-color: #f9fdfb;
+    }
+    .langganan h2 {
+        color: var(--primaryGreen);
+        font-size: 24px;
+        font-weight: 700;
+    }
+    .langganan h3 {
+        color: var(--textBlack);
+        font-size: 20px;
+        margin-top: 8px;
+    }
+    .langganan p {
+        color: var(--textGrey);
+        font-size: 14px;
+        margin: 12px 0;
+    }
+    .email-box {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .email-box input {
+        padding: 12px;
+        width: 400px;
+        border: none;
+        background-color: var(--textField);
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+    .btn.send {
+        background-color: var(--primaryGreen);
+        padding: 12px;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+    .btn.send img {
+        height: 20px;
+    }
+
+    .btn.send:hover {
+        background-color: var(--primaryGreen);
+    }
+
     /* Konten */
     .konten {
         display: flex;
@@ -129,6 +275,92 @@ import Navbar from '../components/Navbar.vue';
         gap: 24px;
         padding: 40px 5%;
         flex-wrap: wrap;
+    }
+
+    .konten label {
+        color: var(--primaryGreen);
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    /* Form */
+    .form input {
+        background-color: var(--accentGreen1);
+        padding: 12px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 600px;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+
+    .form button {
+        background-color: var(--accentGreen1);
+        margin-right: 10px;
+        padding: 10px;
+        width: 150px;
+        color: var(--textField);
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .form button:active {
+        background-color: var(--primaryGreen);
+    }
+
+    /* Opsi Transfer */
+    .opsi-transfer {
+        flex: 1;
+        min-width: 400px;
+        margin-left: 200px;
+    }
+
+    .opsi-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-top: 16px;
+    }
+
+    .bank-card {
+        background-color: var(--accentGreen1);
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        gap: 12px;
+    }
+
+    .bank-card img {
+        width: 75px;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .bank-card .info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .nama-bank {
+        background-color: var(--primaryGreen);
+        width: 60px;
+        padding: 2px 8px;
+        color: var(--textField);
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .total-judul {
+        margin-top: 4px;
+        font-size: 16px;
+        font-weight: bold;
+        color: var(--textBlack);
+    }
+
+    .total-nominal {
+        color: var(--textGrey);
+        font-size: 14px;
     }
 
 </style>
