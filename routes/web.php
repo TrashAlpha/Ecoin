@@ -9,7 +9,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', [HomeController::class, 'index']);
+Route::get('/beranda', [HomeController::class, 'index']);
 Route::get('/jelajah', [JelajahController::class, 'index']);
 
 //gunakan controller untuk memanggil view penukaran
