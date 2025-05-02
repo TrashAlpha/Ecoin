@@ -19,12 +19,9 @@ if (el) {
     case 'beranda':
         component = Beranda;
         break;
-
     case 'penukaran-step-1':
       component = PenukaranStep1;
       break;
-
-    //   break;
     case 'penukaran-step-2':
       component = PenukaranStep2;
       break;
