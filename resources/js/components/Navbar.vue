@@ -5,22 +5,22 @@
     </div>
     <nav class="navbar-right">
     <ul class="nav-links">
-        <li><a href="#">Beranda</a></li>
+        <li><a href="/beranda">Beranda</a></li>
         <li class="dropdown" @mouseenter="openDropdown" @mouseleave="closeDropdown">
         <a href="#">Penukaran</a>
         <ul v-if="isDropdownOpen" class="dropdown-menu">
-            <li><a href="#">Sampah</a></li>
-            <li><a href="#">Koin</a></li>
+            <li><a href="/penukarans1">Sampah</a></li>
+            <li><a href="/penukaran_koin">Koin</a></li>
         </ul>
         </li>
-        <li><a href="#">Jelajah</a></li>
-        <li><a href="#">Tentang</a></li>
+        <li><a href="/jelajah">Jelajah</a></li>
+        <li><a href="/tentang">Tentang</a></li>
     </ul>
     <button class="login-button">Masuk</button>
     </nav>
 </header>
 </template>
-  
+
 <script>
 import { theme } from '../config/theme';
 
@@ -114,7 +114,8 @@ methods: {
 
 .nav-links a:hover {
     color: var(--accentGreen1);
-    font-weight: var(--fontWeightBold);
+    transition-duration: 0.3s;
+    /* font-weight: var(--fontWeightBold); */
 }
 
 .login-button {
@@ -128,7 +129,10 @@ methods: {
 }
 
 .login-button:hover {
-    border: 2px solid black;
+    border: 2px solid var(--primaryGreen);
+    background-color: var(--accentGreen2);
+    color: var(--primaryGreen);
+    transition-duration: 0.3s;
 }
 
 .dropdown-menu {

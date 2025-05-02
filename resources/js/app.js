@@ -3,7 +3,11 @@ import { createApp } from 'vue';
 
 import PenukaranStep2 from './pages/PenukaranStep2.vue';
 import PenukaranStep3_2 from './pages/PenukaranStep3_2.vue';
+import PenukaranKoin from './pages/PenukaranKoin.vue';
+import Jelajah from './pages/Jelajah.vue';
 import PenukaranStep1 from './pages/PenukaranStep1.vue';
+import Beranda from './pages/Beranda.vue';
+import PenukaranStep3 from './pages/PenukaranStep3.vue';
 
 const el = document.getElementById('app');
 
@@ -12,26 +16,27 @@ if (el) {
   let component = null;
 
   switch (page) {
-    // case 'beranda':
-
+    case 'beranda':
+        component = Beranda;
+        break;
     case 'penukaran-step-1':
       component = PenukaranStep1;
       break;
-
-    //   break;
     case 'penukaran-step-2':
       component = PenukaranStep2;
       break;
-    // case 'penukaran-step-3':
-
-    //   break;
+    case 'penukaran-step-3':
+        component = PenukaranStep3;
+        break;
     case 'penukaran-step-3-2':
         component = PenukaranStep3_2;
         break;
-
-    // case 'jelajah':
-
-    //   break;
+    case 'penukaran-koin':
+        component = PenukaranKoin;
+        break;
+    case 'jelajah':
+        component = Jelajah;
+        break;
     // case 'tentang':
 
     //   break;
@@ -42,8 +47,8 @@ if (el) {
 
     //   break;
     default:
-      console.error('Unknown page component:', page);
-      break;
+        console.error('Unknown page component:', page);
+        break;
   }
 
   if (component) {

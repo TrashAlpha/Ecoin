@@ -30,4 +30,8 @@ class PenukaranController extends Controller
     {
         return view('penukarans3_2');
     }
+
+    public function penukaran_koin() {
+        return view('penukarankoin');
+    }
 }

@@ -38,11 +38,8 @@ function redirectToStep2(){
                     <label for="saldo-koin">Saldo Koin</label><br>
                     <input type="text" name="" id="saldo_koin" readonly>
                     <br>
-                    <label for="koin-yang-ditukar">Koin yang ditukarkan</label><br>
+                    <label for="koin-yang-didapat">Koin yang Didapat</label><br>
                     <input type="text" name="" id="koin_yang_ditukar" readonly>
-                    <br>
-                    <label for="konversi-rupiah">Konversi ke Rupiah</label><br>
-                    <input type="text" name="" id="konversi_rupiah" readonly>
                     <br>
 
                     <button type="button" @click="redirectToStep2">Kembali</button>
@@ -50,74 +47,74 @@ function redirectToStep2(){
                 </form>
             </div>
             <div class="opsi-transfer">
-                <label>Opsi Transfer</label>
+                <label>Opsi Transfer</label><br>
                 <div class="opsi-grid">
-                    <div class="bank-card">
-                        <img src="/public/images/ic_bni.png" alt="">
+                    <div class="voucher-card">
+                        <img src="" alt="">
                         <div class="info">
-                            <span class="nama-bank">BNI</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                            <span class="voucher-name"> Koin</span><br>
+                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_bca.png" alt="">
+                    <div class="voucher-card">
+                        <img src="" alt="">
                         <div class="info">
-                            <span class="nama-bank">BCA</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                            <span class="voucher-name"> Koin</span><br>
+                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_bri.png" alt="">
+                    <div class="voucher-card">
+                        <img src="" alt="">
                         <div class="info">
-                            <span class="nama-bank">BRI</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                            <span class="voucher-name"> Koin</span><br>
+                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_mandiri.png" alt="">
+                    <div class="voucher-card">
+                        <img src="" alt="">
                         <div class="info">
-                            <span class="nama-bank">Mandiri</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                            <span class="voucher-name"> Koin</span><br>
+                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_bsi.png" alt="">
+                    <div class="voucher-card">
+                        <img src="" alt="">
                         <div class="info">
-                            <span class="nama-bank">BSI</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                            <span class="voucher-name"> Koin</span><br>
+                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_btn.png" alt="">
+                    <div class="voucher-card">
+                        <img src="" alt="">
                         <div class="info">
-                            <span class="nama-bank">BTN</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                            <span class="voucher-name"> Koin</span><br>
+                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_gopay.png" alt="">
+                    <div class="voucher-card">
+                        <img src="" alt="">
                         <div class="info">
-                            <span class="nama-bank">Gopay</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                            <span class="voucher-name"> Koin</span><br>
+                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_dana.png" alt="">
+                    <div class="voucher-card">
+                        <img src="" alt="">
                         <div class="info">
-                            <span class="nama-bank">Dana</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                            <span class="voucher-name"> Koin</span><br>
+                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="total-nominal">detail</span>
                         </div>
                     </div>
                 </div>
-                <a href="/penukarans3" style="color: blue;">Atau tukar ke voucher</a>
+                <a href="/penukarans3_2" style="color: blue;">Atau tukar ke rupiah</a>
             </div>
         </section>
 
@@ -141,7 +138,7 @@ function redirectToStep2(){
         background-color: var(--backgroundWhite);
         color: var(--textBlack);
     }
-    /* Hero */
+
     .hero {
         position: relative;
         display: flex;
@@ -155,7 +152,6 @@ function redirectToStep2(){
         padding:0 32px;
     }
 
-    /* Tabs di atas gambar */
     .kategori-tabs {
         position: absolute;
         bottom: -40px;
@@ -171,7 +167,7 @@ function redirectToStep2(){
     .tab {
         display: flex;
         flex-direction: column;
-        align-items: center;     /* Pusatkan horizontal */
+        align-items: center;
         justify-content: center;
         padding: 10px 20px;
         margin: 0 5px;
@@ -189,7 +185,6 @@ function redirectToStep2(){
         color: var(--textBlack);
     }
 
-    /* Step Indicator */
     .step-indikator {
     text-align: start;
     margin-top: 60px;
@@ -197,7 +192,7 @@ function redirectToStep2(){
 
     .step-heading {
         display: flex;
-        align-items: center; /* tengah secara vertikal */
+        align-items: center;
         padding-left: 32px;
         gap: 12px;
         font-weight: var(--fontWeightBold);
@@ -207,19 +202,19 @@ function redirectToStep2(){
     }
 
     .heading-line {
-        width: 100px;            /* Panjang garis */
-        height: 5px;            /* Tebal garis */
+        width: 100px;
+        height: 5px;
         background-color: var(--primaryGreen);
         border-radius: 2px;
     }
 
     .steps {
         display: flex;
-        justify-content: space-between;  /* Center seluruh steps */
+        justify-content: space-between;
         width: 100%;
         margin-top: 32px;
         padding: 0 32px;
-        gap: 40px; /* Jarak antar step */
+        gap: 40px;
         flex-wrap: wrap;
     }
 
@@ -230,8 +225,8 @@ function redirectToStep2(){
         color: var(--primaryGreen);
         font-weight: var(--fontWeightSemiBold);
         font-size: var(--fontSizeNormal);
-        min-width: 120px; /* Menjaga ukuran proporsional */
-        justify-content: center; /* Center isi step */
+        min-width: 120px;
+        justify-content: center;
         text-align: center;
     }
 
@@ -241,7 +236,7 @@ function redirectToStep2(){
         padding: 6px 12px;
         font-weight: var(--fontWeightBold);
         box-shadow: -5px 5px 0 rgba(0, 0, 0, 0.25);
-        opacity: 0.5; /* default non-aktif */
+        opacity: 0.5;
     }
 
     .step-active,
@@ -258,7 +253,6 @@ function redirectToStep2(){
         opacity: 0.5;
     }
 
-    /* Langganan */
     .langganan {
         text-align: center;
         padding: 80px 20px 100px;
@@ -306,21 +300,20 @@ function redirectToStep2(){
         background-color: var(--primaryGreen);
     }
 
-    /* Konten */
     .konten {
         display: flex;
         justify-content: space-between;
-        align-items: center; /* Center vertical */
+        align-items: center;
         gap: 24px;
         margin-top: 30px;
         padding: 60px 32px;
-        flex-wrap: nowrap; /* Hindari wrap agar vertical alignment bisa bekerja */
+        flex-wrap: nowrap;
     }
 
     @media (max-width: 768px) {
         .konten {
             flex-direction: column;
-            align-items: stretch; /* Agar responsif di mobile */
+            align-items: stretch;
             flex-wrap: wrap;
         }
     }
@@ -331,7 +324,6 @@ function redirectToStep2(){
         font-weight: bold;
     }
 
-    /* Form */
     .form input {
         background-color: var(--accentGreen1);
         padding: 12px;
@@ -356,7 +348,6 @@ function redirectToStep2(){
         background-color: var(--primaryGreen);
     }
 
-    /* Opsi Transfer */
     .opsi-transfer {
         flex: 1;
         min-width: 400px;
@@ -370,7 +361,7 @@ function redirectToStep2(){
         margin-top: 16px;
     }
 
-    .bank-card {
+    .voucher-card {
         background-color: var(--accentGreen1);
         display: flex;
         align-items: center;
@@ -378,19 +369,19 @@ function redirectToStep2(){
         gap: 12px;
     }
 
-    .bank-card img {
+    .voucher-card img {
         width: 75px;
         height: auto;
         object-fit: contain;
     }
 
-    .bank-card .info {
+    .voucher-card .info {
         display: flex;
         flex-direction: column;
         justify-content: center;
     }
 
-    .nama-bank {
+    .voucher-name {
         background-color: var(--primaryGreen);
         width: 60px;
         padding: 2px 8px;

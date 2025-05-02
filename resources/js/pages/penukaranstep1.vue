@@ -166,7 +166,7 @@
                 <div class="koin">50 Koin</div>
                 <div class="actions">
                     <button class="btn-icon">+ Barang</button>
-                    <button class="btn-icon">
+                    <button @click="redirectToStep2" class="btn-icon">
                         <img src="..images/save-icon.png" alt="save" />
                         Simpan Penukaran
                     </button>
@@ -215,7 +215,7 @@ export default {
     },
     methods: {
         redirectToStep2() {
-            window.location.href = "/penukaran-step2";
+            window.location.href = "/penukarans2";
         },
         onMainImageChange(e) {
             const file = e.target.files[0];
