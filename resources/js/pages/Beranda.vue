@@ -96,7 +96,7 @@ defineOptions({
         <div class="mb-16 flex items-center gap-4">
             <hr class="h-1 w-24 bg-[#006662]" />
             <h1 class="text-3xl font-semibold text-[#006662]">
-                Fitur Unggulan Yang<br />
+                Fitur Unggulan Yang di<br />
                 Tawarkan
             </h1>
         </div>

@@ -52,7 +52,7 @@ function redirectToStep2(){
                     <div class="voucher-card">
                         <img src="" alt="">
                         <div class="info">
-                            <span class="voucher-name">Koin</span><br>
+                            <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
                             <span class="total-nominal">detail</span>
                         </div>
@@ -60,7 +60,7 @@ function redirectToStep2(){
                     <div class="voucher-card">
                         <img src="" alt="">
                         <div class="info">
-                            <span class="voucher-name">Koin</span><br>
+                            <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
                             <span class="total-nominal">detail</span>
                         </div>
@@ -68,7 +68,7 @@ function redirectToStep2(){
                     <div class="voucher-card">
                         <img src="" alt="">
                         <div class="info">
-                            <span class="voucher-name">Koin</span><br>
+                            <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
                             <span class="total-nominal">detail</span>
                         </div>
@@ -76,7 +76,7 @@ function redirectToStep2(){
                     <div class="voucher-card">
                         <img src="" alt="">
                         <div class="info">
-                            <span class="voucher-name">Koin</span><br>
+                            <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
                             <span class="total-nominal">detail</span>
                         </div>
@@ -84,7 +84,7 @@ function redirectToStep2(){
                     <div class="voucher-card">
                         <img src="" alt="">
                         <div class="info">
-                            <span class="voucher-name">Koin</span><br>
+                            <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
                             <span class="total-nominal">detail</span>
                         </div>
@@ -92,7 +92,7 @@ function redirectToStep2(){
                     <div class="voucher-card">
                         <img src="" alt="">
                         <div class="info">
-                            <span class="voucher-name">Koin</span><br>
+                            <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
                             <span class="total-nominal">detail</span>
                         </div>
@@ -100,7 +100,7 @@ function redirectToStep2(){
                     <div class="voucher-card">
                         <img src="" alt="">
                         <div class="info">
-                            <span class="voucher-name">Koin</span><br>
+                            <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
                             <span class="total-nominal">detail</span>
                         </div>
@@ -108,7 +108,7 @@ function redirectToStep2(){
                     <div class="voucher-card">
                         <img src="" alt="">
                         <div class="info">
-                            <span class="voucher-name">Koin</span><br>
+                            <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
                             <span class="total-nominal">detail</span>
                         </div>
