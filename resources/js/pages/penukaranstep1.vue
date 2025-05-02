@@ -91,22 +91,52 @@
             </div>
 
             <div class="form-detail">
-                <div class="jenis-sampah">
-                    <label>Jenis Sampah</label>
-                    <div class="tabs">
-                        <button class="active">Botol</button>
-                        <button>Kertas</button>
-                        <button>Baju</button>
-                    </div>
-                </div>
+              <div class="jenis-sampah">
+  <label>Jenis Sampah</label>
+  <div class="tabs">
+    <button
+      :class="{ active: jenis === 'Botol' }"
+      @click="jenis = 'Botol'"
+    >
+      <img src="..images/botol-icon.png" class="tab-icon" /> Botol
+    </button>
+    <button
+      :class="{ active: jenis === 'Kertas' }"
+      @click="jenis = 'Kertas'"
+    >
+      <img src="..images/kertas-icon.png" class="tab-icon" /> Kertas
+    </button>
+    <button
+      :class="{ active: jenis === 'Baju' }"
+      @click="jenis = 'Baju'"
+    >
+      <img src="..images/baju-icon.png" class="tab-icon" /> Baju
+    </button>
+  </div>
+</div>
+
                 <div class="berat">
                     <label>Berat Sampah</label>
                     <div class="range-wrapper">
-                        <span>1 Kg</span>
+                        <span>1</span>
                         <input type="range" min="1" max="50" v-model="berat" />
-                        <span>50 Kg</span>
+                        <span>50</span>
                     </div>
-                    <div class="berat-display">{{ berat }} Kg</div>
+
+                    <div class="berat-indikator-wrapper">
+                        <div
+                            class="berat-display"
+                            :style="{ left: `calc(${sliderPos}% - 20px)` }"
+                        >
+                            {{ berat }}
+                        </div>
+                        <div
+                            class="berat-display-label"
+                            :style="{ left: `calc(${sliderPos}% - 16px)` }"
+                        >
+                            Kg
+                        </div>
+                    </div>
                 </div>
 
                 <label>Tanggal Penukaran</label>
@@ -135,8 +165,11 @@
                 <label>Koin yang Didapat</label>
                 <div class="koin">50 Koin</div>
                 <div class="actions">
-                    <button>+ Barang</button>
-                    <button>Simpan Penukaran</button>
+                    <button class="btn-icon">+ Barang</button>
+                    <button class="btn-icon">
+                        <img src="..images/save-icon.png" alt="save" />
+                        Simpan Penukaran
+                    </button>
                 </div>
             </div>
         </section>
@@ -171,11 +204,13 @@ export default {
     },
     data() {
         return {
-            berat: 7,
+            berat: 1,
             tanggal: "",
             waktu: "",
             mainImage: null,
             imageList: [null, null, null],
+            jenis: "Botol",
+
         };
     },
     methods: {
@@ -203,6 +238,11 @@ export default {
             const newList = [...this.imageList];
             newList[index] = null;
             this.imageList = newList;
+        },
+    },
+    computed: {
+        sliderPos() {
+            return ((this.berat - 1) / 49) * 100;
         },
     },
 };
@@ -496,13 +536,16 @@ input[type="date"] {
     flex: 1;
 }
 
-/* Konten Detail (FORM) */
+/* style tengah*/
+/* Kontainer utama */
 .konten-detail {
     display: flex;
     flex-wrap: wrap;
     padding: 40px 32px;
     gap: 32px;
 }
+
+/* Upload gambar */
 .upload-box {
     background-color: #f5f5f5;
     padding: 60px;
@@ -566,6 +609,7 @@ input[type="date"] {
     z-index: 10;
 }
 
+/* Form */
 .form-detail {
     flex: 1;
     min-width: 300px;
@@ -573,57 +617,186 @@ input[type="date"] {
     flex-direction: column;
     gap: 16px;
 }
+
 .form-detail label {
-    font-family: 'Poppins', sans-serif; 
-    font-weight: 600; 
-    color: #006662; 
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    color: #006662;
 }
 
+/* Tabs Sampah */
 .tabs button {
     margin-right: 8px;
     padding: 8px 16px;
     border: none;
     background-color: #ccc;
     cursor: pointer;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 16px;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    color: white;
+    transition: background-color 0.2s; 
 }
-.jam .active {
-    background-color: #F5FFFF; 
+.tabs .active {
+    background-color: var(--primaryGreen);
     color: white;
 }
-.berat input[type="range"] {
-    width: 100%;
+
+
+
+/* Input Tanggal */
+input[type="date"] {
+    background-color: #98b0b0;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
 }
-.berat-display {
-    font-weight: bold;
-    margin-top: -8px;
-}
+
+/* Jam Penukaran */
 .jam button {
     margin-right: 8px;
     padding: 8px 16px;
     border: none;
-    background-color: #ccc;
-    cursor: pointer;
-}
-.jam .active {
-    background-color: var(--primaryGreen);
+    background-color: #98b0b0;
     color: white;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
 }
+.jam button.active {
+    background-color: #006662 !important;
+}
+
+/* Berat Sampah */
+.range-wrapper span {
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #006662;
+}
+
+/* Slider hijau dan kotak */
+input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    background: transparent;
+    height: 8px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 8px;
+    background: #006662;
+    border-radius: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #006662;
+    cursor: pointer;
+    margin-top: -4px;
+    border-radius: 0;
+}
+
+/* Koin */
 .koin {
     background-color: var(--primaryGreen);
-    color: #FFFFFF;
+    color: white;
     padding: 8px 16px;
     width: fit-content;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 16px;
 }
+
+/* +Barang & Simpan */
 .actions button {
     padding: 10px 20px;
     margin-right: 8px;
     border: none;
-    background-color: #ccc;
+    background-color: #98b0b0;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #98b0b0;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-icon img {
+    width: 20px;
+    height: 20px;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.berat-indikator-wrapper {
+    position: relative;
+    height: 40px;
+    margin-top: 12px;
+}
+
+.berat-display {
+    position: absolute;
+    top: 0;
+    background-color: var(--primaryGreen);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: white;
+    white-space: nowrap;
+    transition: left 0.15s ease-in-out;
+}
+
+.range-wrapper {
+    position: relative;
+    margin-top: 32px;
+}
+
+.berat-display-label {
+    position: absolute;
+    top: -24px; /* naik ke atas */
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    color: #006662;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    transition: left 0.2s ease-in-out;
+    pointer-events: none;
 }
 
 /* Langganan */
