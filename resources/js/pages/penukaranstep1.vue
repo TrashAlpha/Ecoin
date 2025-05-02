@@ -91,29 +91,36 @@
             </div>
 
             <div class="form-detail">
-              <div class="jenis-sampah">
-  <label>Jenis Sampah</label>
-  <div class="tabs">
-    <button
-      :class="{ active: jenis === 'Botol' }"
-      @click="jenis = 'Botol'"
-    >
-      <img src="..images/botol-icon.png" class="tab-icon" /> Botol
-    </button>
-    <button
-      :class="{ active: jenis === 'Kertas' }"
-      @click="jenis = 'Kertas'"
-    >
-      <img src="..images/kertas-icon.png" class="tab-icon" /> Kertas
-    </button>
-    <button
-      :class="{ active: jenis === 'Baju' }"
-      @click="jenis = 'Baju'"
-    >
-      <img src="..images/baju-icon.png" class="tab-icon" /> Baju
-    </button>
-  </div>
+                <div class="jenis-sampah">
+                    <label>Jenis Sampah</label>
+                    <div class="tabs">
+  <button
+    class="tab-button"
+    :class="{ active: jenis === 'Botol' }"
+    @click="jenis = 'Botol'"
+  >
+    <img src="../public/images/botol-icon.png" class="tab-icon" />
+    <span>Botol</span>
+  </button>
+  <button
+    class="tab-button"
+    :class="{ active: jenis === 'Kertas' }"
+    @click="jenis = 'Kertas'"
+  >
+    <img src="../public/images/kertas-icon.png" class="tab-icon" />
+    <span>Kertas</span>
+  </button>
+  <button
+    class="tab-button"
+    :class="{ active: jenis === 'Baju' }"
+    @click="jenis = 'Baju'"
+  >
+    <img src="../public/images/baju-icon.png" class="tab-icon" />
+    <span>Baju</span>
+  </button>
 </div>
+
+                </div>
 
                 <div class="berat">
                     <label>Berat Sampah</label>
@@ -165,12 +172,25 @@
                 <label>Koin yang Didapat</label>
                 <div class="koin">50 Koin</div>
                 <div class="actions">
-                    <button class="btn-icon">+ Barang</button>
-                    <button @click="redirectToStep2" class="btn-icon">
-                        <img src="..images/save-icon.png" alt="save" />
-                        Simpan Penukaran
-                    </button>
-                </div>
+                  <button
+  class="btn-icon"
+  :class="{ active: tambahClicked }"
+  @click="tambahBarang"
+>
+  + Barang
+</button>
+
+<button
+  class="btn-icon"
+  :class="{ active: simpanClicked }"
+  @click="handleSimpan"
+>
+  <img src="../public/images/save-icon.png" alt="save" />
+  Simpan Penukaran
+</button>
+
+</div>
+
             </div>
         </section>
         <section class="langganan">
@@ -209,37 +229,46 @@ export default {
             waktu: "",
             mainImage: null,
             imageList: [null, null, null],
-            jenis: "Botol",
-
+            jenis: "",
+            tambahClicked: false,
+    simpanClicked: false,
         };
     },
     methods: {
-        redirectToStep2() {
-            window.location.href = "/penukarans2";
-        },
-        onMainImageChange(e) {
-            const file = e.target.files[0];
-            if (file) {
-                this.mainImage = URL.createObjectURL(file);
-            }
-        },
-        onListImageChange(e, index) {
-            const file = e.target.files[0];
-            if (file) {
-                const newList = [...this.imageList];
-                newList[index] = URL.createObjectURL(file);
-                this.imageList = newList;
-            }
-        },
-        removeMainImage() {
-            this.mainImage = null;
-        },
-        removeListImage(index) {
-            const newList = [...this.imageList];
-            newList[index] = null;
-            this.imageList = newList;
-        },
-    },
+  redirectToStep2() {
+    window.location.href = "/penukarans2";
+  },
+  onMainImageChange(e) {
+    const file = e.target.files[0];
+    if (file) {
+      this.mainImage = URL.createObjectURL(file);
+    }
+  },
+  onListImageChange(e, index) {
+    const file = e.target.files[0];
+    if (file) {
+      const newList = [...this.imageList];
+      newList[index] = URL.createObjectURL(file);
+      this.imageList = newList;
+    }
+  },
+  removeMainImage() {
+    this.mainImage = null;
+  },
+  removeListImage(index) {
+    const newList = [...this.imageList];
+    newList[index] = null;
+    this.imageList = newList;
+  },
+  tambahBarang() {
+    this.tambahClicked = true;
+    console.log("+ Barang diklik");
+  },
+  handleSimpan() {
+    this.simpanClicked = true;
+    this.redirectToStep2();
+  },
+},
     computed: {
         sliderPos() {
             return ((this.berat - 1) / 49) * 100;
@@ -308,7 +337,6 @@ export default {
 .kategori-tabs.inline .tab {
     background-color: var(--textField);
     color: var(--textBlack);
-    border-radius: 4px;
 }
 
 .tab img {
@@ -342,7 +370,6 @@ export default {
     width: 100px;
     height: 5px;
     background-color: var(--primaryGreen);
-    border-radius: 2px;
 }
 
 .steps {
@@ -423,7 +450,6 @@ export default {
 
 .upload-box {
     border: 2px dashed var(--textGrey);
-    border-radius: 8px;
     padding: 40px 20px;
     display: flex;
     justify-content: center;
@@ -436,7 +462,6 @@ export default {
     background-color: var(--primaryGreen);
     color: white;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
     font-weight: var(--fontWeightSemiBold);
 }
@@ -458,7 +483,6 @@ input[type="date"] {
     width: 100%;
     padding: 10px;
     border: 1px solid var(--textGrey);
-    border-radius: 4px;
     background-color: var(--textField);
 }
 
@@ -471,7 +495,6 @@ input[type="date"] {
 .time-option {
     padding: 12px;
     background-color: var(--textField);
-    border-radius: 4px;
     cursor: pointer;
 }
 
@@ -484,7 +507,6 @@ input[type="date"] {
     background-color: var(--primaryGreen);
     color: white;
     padding: 30px;
-    border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -518,7 +540,6 @@ input[type="date"] {
     font-weight: var(--fontWeightSemiBold);
     cursor: pointer;
     border: none;
-    border-radius: 4px;
 }
 
 .btn:first-child {
@@ -541,6 +562,7 @@ input[type="date"] {
     align-items: center;
     gap: 8px;
 }
+
 .range-wrapper input[type="range"] {
     flex: 1;
 }
@@ -609,7 +631,6 @@ input[type="date"] {
     background-color: rgba(255, 0, 0, 0.8);
     color: white;
     border: none;
-    border-radius: 50%;
     width: 24px;
     height: 24px;
     font-size: 16px;
@@ -634,27 +655,44 @@ input[type="date"] {
 }
 
 /* Tabs Sampah */
+.tabs {
+  display: flex;
+  gap: 12px;
+}
+
+
 .tabs button {
-    margin-right: 8px;
-    padding: 8px 16px;
+  margin-right: 8px;
+    padding: 12px;
     border: none;
-    background-color: #ccc;
+    background-color: #98b0b0;
     cursor: pointer;
     font-family: "Poppins", sans-serif;
     font-size: 16px;
     align-items: center;
     gap: 8px;
-    border-radius: 4px;
     font-weight: 600;
     color: white;
     transition: background-color 0.2s;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
+.tabs button:not(.active):hover {
+  background-color: #006662;
+  transition: background-color 0.2s ease-in-out;
+}
+
 .tabs .active {
-    background-color: var(--primaryGreen);
-    color: white;
+    background-color: #006662 !important;
 }
 
-
+.tab-icon {
+  width: 32px;
+  height: 32px;
+}
 
 /* Input Tanggal */
 input[type="date"] {
@@ -665,7 +703,7 @@ input[type="date"] {
     font-size: 16px;
     border: none;
     padding: 8px;
-    border-radius: 4px;
+    cursor: pointer;
 }
 
 /* Jam Penukaran */
@@ -679,11 +717,16 @@ input[type="date"] {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    border-radius: 4px;
 }
+
 .jam button.active {
     background-color: #006662 !important;
 }
+
+.jam button:not(.active):hover {
+  background-color: #006662;
+}
+
 
 /* Berat Sampah */
 .range-wrapper span {
@@ -704,7 +747,6 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-runnable-track {
     height: 8px;
     background: #006662;
-    border-radius: 4px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -738,7 +780,6 @@ input[type="range"]::-webkit-slider-thumb {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    border-radius: 4px;
 }
 
 .btn-icon {
@@ -752,7 +793,6 @@ input[type="range"]::-webkit-slider-thumb {
     font-size: 16px;
     font-weight: 600;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
 }
 
@@ -760,6 +800,18 @@ input[type="range"]::-webkit-slider-thumb {
     width: 20px;
     height: 20px;
 }
+.btn-icon.active {
+  background-color: #006662 !important;
+}
+.btn-icon:not(.active):hover {
+  background-color: #006662;
+}
+
+.btn-icon,
+.jam button {
+  transition: background-color 0.2s ease-in-out;
+}
+
 
 .actions {
     display: flex;
@@ -778,7 +830,6 @@ input[type="range"]::-webkit-slider-thumb {
     top: 0;
     background-color: var(--primaryGreen);
     padding: 6px 12px;
-    border-radius: 4px;
     font-family: "Poppins", sans-serif;
     font-weight: 600;
     font-size: 16px;
@@ -794,11 +845,11 @@ input[type="range"]::-webkit-slider-thumb {
 
 .berat-display-label {
     position: absolute;
-    top: -24px; /* naik ke atas */
+    top: -24px;
+    /* naik ke atas */
     transform: translateX(-50%);
     background-color: white;
     padding: 2px 6px;
-    border-radius: 4px;
     border: 1px solid #ccc;
     color: #006662;
     font-family: "Poppins", sans-serif;
@@ -844,15 +895,11 @@ input[type="range"]::-webkit-slider-thumb {
     width: 400px;
     border: none;
     background-color: var(--textField);
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
 }
 
 .btn.send {
     background-color: var(--primaryGreen);
     padding: 12px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
 }
 
 .btn.send img {
