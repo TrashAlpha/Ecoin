@@ -66,7 +66,7 @@ function redirectToStep2(){
                         </div>
                     </div>
                     <div class="voucher-card">
-                        <img src="/public/images/steam.png" alt="">
+                        <img src="/public/images/steam.jpg" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
