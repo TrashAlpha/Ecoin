@@ -165,11 +165,9 @@
                 <label>Koin yang Didapat</label>
                 <div class="koin">50 Koin</div>
                 <div class="actions">
-                    <button>+ Barang</button>
-                    <button @click="redirectToStep2">Simpan Penukaran</button>
                     <button class="btn-icon">+ Barang</button>
-                    <button class="btn-icon">
-                        <img src="..images/save-icon.png" alt="save" />
+                    <button @click="redirectToStep2" class="btn-icon">
+                        <img src="/public/images/save-icon.png" alt="" />
                         Simpan Penukaran
                     </button>
                 </div>
@@ -350,10 +348,11 @@ export default {
 .steps {
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    margin-top: 32px;
     padding: 0 32px;
     gap: 40px;
     flex-wrap: wrap;
-    margin-top: 32px;
 }
 
 .step {
@@ -365,6 +364,7 @@ export default {
     font-size: var(--fontSizeNormal);
     min-width: 120px;
     justify-content: center;
+    text-align: center;
 }
 
 .step span {
@@ -372,9 +372,16 @@ export default {
     color: white;
     padding: 6px 12px;
     font-weight: var(--fontWeightBold);
+    box-shadow: -5px 5px 0 rgba(0, 0, 0, 0.25);
     opacity: 0.5;
 }
 
+.step-active,
+.step.active {
+    color: var(--primaryGreen);
+}
+
+.step-active span,
 .step.active span {
     opacity: 1;
 }
