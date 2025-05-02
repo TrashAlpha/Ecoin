@@ -167,7 +167,7 @@
                 <div class="actions">
                     <button class="btn-icon">+ Barang</button>
                     <button @click="redirectToStep2" class="btn-icon">
-                        <img src="/public/images/save-icon.png" alt="" />
+                        <img src="/public/images/save-icon.png" alt="save" />
                         Simpan Penukaran
                     </button>
                 </div>
