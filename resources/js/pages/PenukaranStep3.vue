@@ -50,7 +50,7 @@ function redirectToStep2(){
                 <label>Opsi Transfer</label><br>
                 <div class="opsi-grid">
                     <div class="voucher-card">
-                        <img src="" alt="">
+                        <img src="/public/images/pluxxe.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
@@ -58,7 +58,7 @@ function redirectToStep2(){
                         </div>
                     </div>
                     <div class="voucher-card">
-                        <img src="" alt="">
+                        <img src="/public/images/shell.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
@@ -66,7 +66,7 @@ function redirectToStep2(){
                         </div>
                     </div>
                     <div class="voucher-card">
-                        <img src="" alt="">
+                        <img src="/public/images/steam.jpg" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
@@ -74,7 +74,7 @@ function redirectToStep2(){
                         </div>
                     </div>
                     <div class="voucher-card">
-                        <img src="" alt="">
+                        <img src="/public/images/indomaret.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
@@ -82,7 +82,7 @@ function redirectToStep2(){
                         </div>
                     </div>
                     <div class="voucher-card">
-                        <img src="" alt="">
+                        <img src="/public/images/familymart.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
@@ -90,7 +90,7 @@ function redirectToStep2(){
                         </div>
                     </div>
                     <div class="voucher-card">
-                        <img src="" alt="">
+                        <img src="/public/images/amazon.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
@@ -98,7 +98,7 @@ function redirectToStep2(){
                         </div>
                     </div>
                     <div class="voucher-card">
-                        <img src="" alt="">
+                        <img src="/public/images/alfamidi.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>
@@ -106,7 +106,7 @@ function redirectToStep2(){
                         </div>
                     </div>
                     <div class="voucher-card">
-                        <img src="" alt="">
+                        <img src="/public/images/alfamart.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
                             <span class="total-judul">Detail Voucher</span><br>

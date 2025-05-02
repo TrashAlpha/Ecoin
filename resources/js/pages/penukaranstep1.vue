@@ -348,10 +348,11 @@ export default {
 .steps {
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    margin-top: 32px;
     padding: 0 32px;
     gap: 40px;
     flex-wrap: wrap;
-    margin-top: 32px;
 }
 
 .step {
@@ -363,6 +364,7 @@ export default {
     font-size: var(--fontSizeNormal);
     min-width: 120px;
     justify-content: center;
+    text-align: center;
 }
 
 .step span {
@@ -370,9 +372,16 @@ export default {
     color: white;
     padding: 6px 12px;
     font-weight: var(--fontWeightBold);
+    box-shadow: -5px 5px 0 rgba(0, 0, 0, 0.25);
     opacity: 0.5;
 }
 
+.step-active,
+.step.active {
+    color: var(--primaryGreen);
+}
+
+.step-active span,
 .step.active span {
     opacity: 1;
 }
@@ -638,7 +647,7 @@ input[type="date"] {
     border-radius: 4px;
     font-weight: 600;
     color: white;
-    transition: background-color 0.2s; 
+    transition: background-color 0.2s;
 }
 .tabs .active {
     background-color: var(--primaryGreen);
