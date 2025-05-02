@@ -47,7 +47,7 @@ function redirectToStep2(){
                 </form>
             </div>
             <div class="opsi-transfer">
-                <label>Opsi Transfer</label>
+                <label>Opsi Transfer</label><br>
                 <div class="opsi-grid">
                     <div class="voucher-card">
                         <img src="" alt="">
@@ -114,6 +114,7 @@ function redirectToStep2(){
                         </div>
                     </div>
                 </div>
+                <a href="/penukarans3_2" style="color: blue;">Atau tukar ke rupiah</a>
             </div>
         </section>
 
@@ -166,7 +167,7 @@ function redirectToStep2(){
     .tab {
         display: flex;
         flex-direction: column;
-        align-items: center;    
+        align-items: center;
         justify-content: center;
         padding: 10px 20px;
         margin: 0 5px;
@@ -191,7 +192,7 @@ function redirectToStep2(){
 
     .step-heading {
         display: flex;
-        align-items: center; 
+        align-items: center;
         padding-left: 32px;
         gap: 12px;
         font-weight: var(--fontWeightBold);
@@ -201,8 +202,8 @@ function redirectToStep2(){
     }
 
     .heading-line {
-        width: 100px;          
-        height: 5px;            
+        width: 100px;
+        height: 5px;
         background-color: var(--primaryGreen);
         border-radius: 2px;
     }
@@ -213,7 +214,7 @@ function redirectToStep2(){
         width: 100%;
         margin-top: 32px;
         padding: 0 32px;
-        gap: 40px; 
+        gap: 40px;
         flex-wrap: wrap;
     }
 
@@ -302,17 +303,17 @@ function redirectToStep2(){
     .konten {
         display: flex;
         justify-content: space-between;
-        align-items: center; 
+        align-items: center;
         gap: 24px;
         margin-top: 30px;
         padding: 60px 32px;
-        flex-wrap: nowrap; 
+        flex-wrap: nowrap;
     }
 
     @media (max-width: 768px) {
         .konten {
             flex-direction: column;
-            align-items: stretch; 
+            align-items: stretch;
             flex-wrap: wrap;
         }
     }

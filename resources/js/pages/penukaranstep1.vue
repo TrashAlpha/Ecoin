@@ -136,7 +136,7 @@
                 <div class="koin">50 Koin</div>
                 <div class="actions">
                     <button>+ Barang</button>
-                    <button>Simpan Penukaran</button>
+                    <button @click="redirectToStep2">Simpan Penukaran</button>
                 </div>
             </div>
         </section>
@@ -180,7 +180,7 @@ export default {
     },
     methods: {
         redirectToStep2() {
-            window.location.href = "/penukaran-step2";
+            window.location.href = "/penukarans2";
         },
         onMainImageChange(e) {
             const file = e.target.files[0];
@@ -574,9 +574,9 @@ input[type="date"] {
     gap: 16px;
 }
 .form-detail label {
-    font-family: 'Poppins', sans-serif; 
-    font-weight: 600; 
-    color: #006662; 
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #006662;
 }
 
 .tabs button {
@@ -589,7 +589,7 @@ input[type="date"] {
     font-size: 16px;
 }
 .jam .active {
-    background-color: #F5FFFF; 
+    background-color: #F5FFFF;
     color: white;
 }
 .berat input[type="range"] {

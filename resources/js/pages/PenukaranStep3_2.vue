@@ -117,6 +117,7 @@ function redirectToStep2(){
                         </div>
                     </div>
                 </div>
+                <a href="/penukarans3" style="color: blue;">Atau tukar ke voucher</a>
             </div>
         </section>
 

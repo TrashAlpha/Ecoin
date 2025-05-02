@@ -40,7 +40,7 @@
             <button class="btn">Semarang <span>✈</span></button>
           </div>
           <div class="action-buttons">
-            <button class="btn">Kembali</button>
+            <button class="btn" @click="redirectToStep1()">Kembali</button>
             <button class="btn" @click="redirectToStep3">Konfirmasi</button>
           </div>
         </div>
@@ -72,6 +72,9 @@ components: {
 methods: {
     redirectToStep3() {
       window.location.href = '/penukarans3';
+    },
+    redirectToStep1() {
+      window.location.href = '/penukarans1';
     }
   }
 }
