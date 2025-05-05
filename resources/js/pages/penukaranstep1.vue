@@ -94,32 +94,28 @@
                 <div class="jenis-sampah">
                     <label>Jenis Sampah</label>
                     <div class="tabs">
-  <button
-    class="tab-button"
-    :class="{ active: jenis === 'Botol' }"
-    @click="jenis = 'Botol'"
-  >
-    <img src="../public/images/botol-icon.png" class="tab-icon" />
-    <span>Botol</span>
-  </button>
-  <button
-    class="tab-button"
-    :class="{ active: jenis === 'Kertas' }"
-    @click="jenis = 'Kertas'"
-  >
-    <img src="../public/images/kertas-icon.png" class="tab-icon" />
-    <span>Kertas</span>
-  </button>
-  <button
-    class="tab-button"
-    :class="{ active: jenis === 'Baju' }"
-    @click="jenis = 'Baju'"
-  >
-    <img src="../public/images/baju-icon.png" class="tab-icon" />
-    <span>Baju</span>
-  </button>
-</div>
-
+                        <button
+                            class="tab-button"
+                            :class="{ active: jenis === 'Botol' }"
+                            @click="jenis = 'Botol'">
+                            <img src="/public/images/botol-icon.png" class="tab-icon" />
+                            <span>Botol</span>
+                        </button>
+                        <button
+                            class="tab-button"
+                            :class="{ active: jenis === 'Kertas' }"
+                            @click="jenis = 'Kertas'">
+                            <img src="/public/images/kertas-icon.png" class="tab-icon" />
+                            <span>Kertas</span>
+                        </button>
+                        <button
+                            class="tab-button"
+                            :class="{ active: jenis === 'Baju' }"
+                            @click="jenis = 'Baju'">
+                            <img src="/public/images/baju-icon.png" class="tab-icon" />
+                            <span>Baju</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="berat">
@@ -172,24 +168,21 @@
                 <label>Koin yang Didapat</label>
                 <div class="koin">50 Koin</div>
                 <div class="actions">
-                  <button
-  class="btn-icon"
-  :class="{ active: tambahClicked }"
-  @click="tambahBarang"
->
-  + Barang
-</button>
+                    <button
+                        class="btn-icon"
+                        :class="{ active: tambahClicked }"
+                        @click="tambahBarang">
+                        + Barang
+                    </button>
 
-<button
-  class="btn-icon"
-  :class="{ active: simpanClicked }"
-  @click="handleSimpan"
->
-  <img src="../public/images/save-icon.png" alt="save" />
-  Simpan Penukaran
-</button>
-
-</div>
+                    <button
+                        class="btn-icon"
+                        :class="{ active: simpanClicked }"
+                        @click="handleSimpan">
+                        <img src="/public/images/save-icon.png" alt="save" />
+                        Simpan Penukaran
+                    </button>
+                </div>
 
             </div>
         </section>
