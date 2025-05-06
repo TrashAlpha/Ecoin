@@ -8,6 +8,7 @@ import Jelajah from './pages/Jelajah.vue';
 import PenukaranStep1 from './pages/PenukaranStep1.vue';
 import Beranda from './pages/Beranda.vue';
 import PenukaranStep3 from './pages/PenukaranStep3.vue';
+import ManajemenUser from './pages/ManajemenUser.vue';
 
 const el = document.getElementById('app');
 
@@ -46,6 +47,9 @@ if (el) {
     // case 'riwayat-recycle':
 
     //   break;
+    case 'manajemen-user':
+        component = ManajemenUser;
+        break;
     default:
         console.error('Unknown page component:', page);
         break;
