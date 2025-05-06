@@ -13,7 +13,7 @@ defineProps({
         <div class="flex items-center">
             <div class="flex flex-col gap-2">
                 <div class="relative inline-block">
-                    <img src="/images/step.png" alt="" class="size-fit" />
+                    <img src="/public/images/step.png" alt="" class="size-fit" />
                     <p class="absolute top-2 left-3.5 text-3xl font-semibold text-white">
                         {{ step }}
                     </p>
@@ -25,7 +25,7 @@ defineProps({
                     {{ linkText }}
                 </a>
             </div>
-            <img src="/images/arrow.png" alt="" class="size-fit" />
+            <img src="/public/images/arrow.png" alt="" class="size-fit" />
         </div>
     </div>
 </template>
