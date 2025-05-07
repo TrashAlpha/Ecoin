@@ -94,32 +94,40 @@
                 <div class="jenis-sampah">
                     <label>Jenis Sampah</label>
                     <div class="tabs">
-  <button
-    class="tab-button"
-    :class="{ active: jenis === 'Botol' }"
-    @click="jenis = 'Botol'"
-  >
-    <img src="../public/images/botol-icon.png" class="tab-icon" />
-    <span>Botol</span>
-  </button>
-  <button
-    class="tab-button"
-    :class="{ active: jenis === 'Kertas' }"
-    @click="jenis = 'Kertas'"
-  >
-    <img src="../public/images/kertas-icon.png" class="tab-icon" />
-    <span>Kertas</span>
-  </button>
-  <button
-    class="tab-button"
-    :class="{ active: jenis === 'Baju' }"
-    @click="jenis = 'Baju'"
-  >
-    <img src="../public/images/baju-icon.png" class="tab-icon" />
-    <span>Baju</span>
-  </button>
-</div>
-
+                        <button
+                            class="tab-button"
+                            :class="{ active: jenis === 'Botol' }"
+                            @click="jenis = 'Botol'"
+                        >
+                            <img
+                                src="/public/images/botol-icon.png"
+                                class="tab-icon"
+                            />
+                            <span>Botol</span>
+                        </button>
+                        <button
+                            class="tab-button"
+                            :class="{ active: jenis === 'Kertas' }"
+                            @click="jenis = 'Kertas'"
+                        >
+                            <img
+                                src="/public/images/kertas-icon.png"
+                                class="tab-icon"
+                            />
+                            <span>Kertas</span>
+                        </button>
+                        <button
+                            class="tab-button"
+                            :class="{ active: jenis === 'Baju' }"
+                            @click="jenis = 'Baju'"
+                        >
+                            <img
+                                src="/public/images/baju-icon.png"
+                                class="tab-icon"
+                            />
+                            <span>Baju</span>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="berat">
@@ -172,25 +180,23 @@
                 <label>Koin yang Didapat</label>
                 <div class="koin">50 Koin</div>
                 <div class="actions">
-                  <button
-  class="btn-icon"
-  :class="{ active: tambahClicked }"
-  @click="tambahBarang"
->
-  + Barang
-</button>
+                    <button
+                        class="btn-icon"
+                        :class="{ active: tambahClicked }"
+                        @click="tambahBarang"
+                    >
+                        + Barang
+                    </button>
 
-<button
-  class="btn-icon"
-  :class="{ active: simpanClicked }"
-  @click="handleSimpan"
->
-  <img src="../public/images/save-icon.png" alt="save" />
-  Simpan Penukaran
-</button>
-
-</div>
-
+                    <button
+                        class="btn-icon"
+                        :class="{ active: simpanClicked }"
+                        @click="handleSimpan"
+                    >
+                        <img src="/public/images/save-icon.png" alt="save" />
+                        Simpan Penukaran
+                    </button>
+                </div>
             </div>
         </section>
         <section class="langganan">
@@ -231,44 +237,44 @@ export default {
             imageList: [null, null, null],
             jenis: "",
             tambahClicked: false,
-    simpanClicked: false,
+            simpanClicked: false,
         };
     },
     methods: {
-  redirectToStep2() {
-    window.location.href = "/penukarans2";
-  },
-  onMainImageChange(e) {
-    const file = e.target.files[0];
-    if (file) {
-      this.mainImage = URL.createObjectURL(file);
-    }
-  },
-  onListImageChange(e, index) {
-    const file = e.target.files[0];
-    if (file) {
-      const newList = [...this.imageList];
-      newList[index] = URL.createObjectURL(file);
-      this.imageList = newList;
-    }
-  },
-  removeMainImage() {
-    this.mainImage = null;
-  },
-  removeListImage(index) {
-    const newList = [...this.imageList];
-    newList[index] = null;
-    this.imageList = newList;
-  },
-  tambahBarang() {
-    this.tambahClicked = true;
-    console.log("+ Barang diklik");
-  },
-  handleSimpan() {
-    this.simpanClicked = true;
-    this.redirectToStep2();
-  },
-},
+        redirectToStep2() {
+            window.location.href = "/penukarans2";
+        },
+        onMainImageChange(e) {
+            const file = e.target.files[0];
+            if (file) {
+                this.mainImage = URL.createObjectURL(file);
+            }
+        },
+        onListImageChange(e, index) {
+            const file = e.target.files[0];
+            if (file) {
+                const newList = [...this.imageList];
+                newList[index] = URL.createObjectURL(file);
+                this.imageList = newList;
+            }
+        },
+        removeMainImage() {
+            this.mainImage = null;
+        },
+        removeListImage(index) {
+            const newList = [...this.imageList];
+            newList[index] = null;
+            this.imageList = newList;
+        },
+        tambahBarang() {
+            this.tambahClicked = true;
+            console.log("+ Barang diklik");
+        },
+        handleSimpan() {
+            this.simpanClicked = true;
+            this.redirectToStep2();
+        },
+    },
     computed: {
         sliderPos() {
             return ((this.berat - 1) / 49) * 100;
@@ -656,13 +662,12 @@ input[type="date"] {
 
 /* Tabs Sampah */
 .tabs {
-  display: flex;
-  gap: 12px;
+    display: flex;
+    gap: 12px;
 }
 
-
 .tabs button {
-  margin-right: 8px;
+    margin-right: 8px;
     padding: 12px;
     border: none;
     background-color: #98b0b0;
@@ -681,8 +686,8 @@ input[type="date"] {
 }
 
 .tabs button:not(.active):hover {
-  background-color: #006662;
-  transition: background-color 0.2s ease-in-out;
+    background-color: #006662;
+    transition: background-color 0.2s ease-in-out;
 }
 
 .tabs .active {
@@ -690,8 +695,8 @@ input[type="date"] {
 }
 
 .tab-icon {
-  width: 32px;
-  height: 32px;
+    width: 32px;
+    height: 32px;
 }
 
 /* Input Tanggal */
@@ -724,9 +729,8 @@ input[type="date"] {
 }
 
 .jam button:not(.active):hover {
-  background-color: #006662;
+    background-color: #006662;
 }
-
 
 /* Berat Sampah */
 .range-wrapper span {
@@ -801,17 +805,16 @@ input[type="range"]::-webkit-slider-thumb {
     height: 20px;
 }
 .btn-icon.active {
-  background-color: #006662 !important;
+    background-color: #006662 !important;
 }
 .btn-icon:not(.active):hover {
-  background-color: #006662;
+    background-color: #006662;
 }
 
 .btn-icon,
 .jam button {
-  transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
 }
-
 
 .actions {
     display: flex;
