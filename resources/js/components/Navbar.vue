@@ -1,7 +1,9 @@
 <template>
 <header class="navbar">
     <div class="navbar-left">
-    <img src="/public/images/logoheader.png" alt="Ecoin Logo" class="logo" />
+        <a href="/beranda">
+            <img src="/public/images/logoheader.png" alt="Ecoin Logo" class="logo" />
+        </a>
     </div>
     <nav class="navbar-right">
     <ul class="nav-links">
