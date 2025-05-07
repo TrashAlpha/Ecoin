@@ -4,6 +4,7 @@ use App\Http\Controllers\JelajahController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PenukaranController;
+use App\Http\Controllers\TentangController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -11,6 +12,7 @@ Route::get('/', function () {
 
 Route::get('/beranda', [HomeController::class, 'index']);
 Route::get('/jelajah', [JelajahController::class, 'index']);
+Route::get('/tentang', [TentangController::class, 'index']);
 
 //gunakan controller untuk memanggil view penukaran
 Route::get('/penukarans1', [PenukaranController::class, 'penukaran1']);
