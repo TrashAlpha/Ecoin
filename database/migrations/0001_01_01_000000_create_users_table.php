@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('akun_twitter')->nullable();
             $table->enum('role', ['admin', 'user'])->default('user');
             $table->string('status')->default('active');
+            $table->string('photo_profile_url')->nullable();
             $table->timestamps();
         });
 
