@@ -4,6 +4,7 @@ use App\Http\Controllers\JelajahController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PenukaranController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,3 +21,4 @@ Route::get('/penukarans3_2', [PenukaranController::class, 'penukaran3_2']);
 Route::get('/penukaran_koin', [PenukaranController::class, 'penukaran_koin']);
 
 Route::get('/manajemen_user');
+Route::get('/profil', [ProfileController::class, 'index']);
