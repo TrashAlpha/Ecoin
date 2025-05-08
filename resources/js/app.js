@@ -10,6 +10,7 @@ import PenukaranStep2 from './pages/PenukaranStep2.vue';
 import PenukaranStep3 from './pages/PenukaranStep3.vue';
 import PenukaranStep3_2 from './pages/PenukaranStep3_2.vue';
 import PenukaranKoin from './pages/PenukaranKoin.vue';
+import VerifikasiPenukaran from './pages/VerifikasiPenukaran.vue';
 
 const el = document.getElementById('app'); 
 
@@ -55,7 +56,15 @@ if (el) {
     // case 'riwayat-recycle':
     //   component = RiwayatRecycle;
     //   break;
-
+    case 'verifikasi-penukaran':
+      component = VerifikasiPenukaran;
+      break;
+    
+    // case 'kelola-voucher':
+    //   component = KelolaVoucher;
+    //   break;
+    // case 'kelola-user':
+    //   component = KelolaUser;
     //   break;
     default:
         console.error('Unknown page component:', page);
