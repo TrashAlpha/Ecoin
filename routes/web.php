@@ -15,6 +15,7 @@ Route::get('/tentang', [PageController::class, 'tentang'])->name('tentang');
 Route::get('/jelajah', [PageController::class, 'jelajah'])->name('jelajah');
 Route::get('/register', [PageController::class, 'register'])->name('register');
 Route::get('/profil', [PageController::class, 'profil']);
+Route::get('/daftartransaksi', [PageController::class, 'daftartransaksi']);
 Route::get('/penukaran1', [PageController::class, 'penukaran1'])->name('penukaran1');
 Route::get('/penukaran2', [PageController::class, 'penukaran2'])->name('penukaran2');
 Route::get('/penukaran3', [PageController::class, 'penukaran3'])->name('penukaran3');

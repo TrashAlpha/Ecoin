@@ -60,4 +60,8 @@ class PageController extends Controller
     {
         return view('profil');
     }
+    public function daftartransaksi()
+    {
+        return view('daftartransaksi');
+    }
 }
