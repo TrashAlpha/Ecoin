@@ -5,6 +5,7 @@ import PenukaranStep2 from './pages/PenukaranStep2.vue';
 import PenukaranStep3_2 from './pages/PenukaranStep3_2.vue';
 import PenukaranKoin from './pages/PenukaranKoin.vue';
 import Jelajah from './pages/Jelajah.vue';
+import Tentang from './pages/Tentang.vue';
 import PenukaranStep1 from './pages/PenukaranStep1.vue';
 import Beranda from './pages/Beranda.vue';
 import PenukaranStep3 from './pages/PenukaranStep3.vue';
@@ -39,9 +40,9 @@ if (el) {
     case 'jelajah':
         component = Jelajah;
         break;
-    // case 'tentang':
-
-    //   break;
+    case 'tentang':
+      component = Tentang;
+      break;
     // case 'profile':
 
     //   break;
