@@ -67,7 +67,8 @@ export default {
         root.style.setProperty('--textField', theme.colors.textField);
         root.style.setProperty('--accentGreen2', theme.colors.accentGreen2);
         root.style.setProperty('--textBlack', theme.colors.textBlack);
-    root.style.setProperty('--accentRed', theme.colors.accentRed);
+        root.style.setProperty('--backgroundWhite', theme.colors.backgroundWhite);
+        root.style.setProperty('--accentRed', theme.colors.accentRed);
 
         root.style.setProperty('--fontFamily', theme.fonts.family);
         root.style.setProperty('--fontSizeSmall', theme.fonts.size.small);
@@ -94,11 +95,11 @@ export default {
             this.role = user.role;
             // If user has custom profile photo URL, override default icon
             if (user.profile_photo_url) {
-              this.profileImage = user.profile_photo_url;
+                this.profileImage = user.profile_photo_url;
             }
           }
         } catch (error) {
-          console.error('Auth check failed:', error);
+            console.error('Auth check failed:', error);
         }
     },
     methods: {
@@ -112,7 +113,7 @@ export default {
             return window.location.pathname === path;
         },
         goToProfile() {
-          window.location.href = '/profile';
+            window.location.href = '/profile';
         }
     }
 }
