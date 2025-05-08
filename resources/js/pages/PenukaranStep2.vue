@@ -238,6 +238,11 @@ methods: {
     height: 100%;
 }
 
+.map-container iframe {
+    border: none;
+    border-radius: 5px;
+}
+
 .form-lokasi {
     flex: 1;
     display: flex;
