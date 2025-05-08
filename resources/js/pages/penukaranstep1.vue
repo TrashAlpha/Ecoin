@@ -242,7 +242,7 @@ export default {
     },
     methods: {
         redirectToStep2() {
-            window.location.href = "/penukarans2";
+            window.location.href = "/penukaran2";
         },
         onMainImageChange(e) {
             const file = e.target.files[0];
