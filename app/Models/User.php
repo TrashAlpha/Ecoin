@@ -21,6 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'saldo_koin',
+        'akun_facebook',
+        'akun_twitter',
+        'role',
+        'status'
     ];
 
     /**

@@ -3,7 +3,7 @@ import Footer from '../components/Footer.vue';
 import Navbar from '../components/Navbar.vue';
 
 function redirectToStep2(){
-    window.location.href = '/penukarans2';
+    window.location.href = '/penukaran2';
 }
 </script>
 
@@ -114,7 +114,7 @@ function redirectToStep2(){
                         </div>
                     </div>
                 </div>
-                <a href="/penukarans3_2" style="color: blue;">Atau tukar ke rupiah</a>
+                <a href="/penukaran3_2" style="color: blue;">Atau tukar ke rupiah</a>
             </div>
         </section>
 

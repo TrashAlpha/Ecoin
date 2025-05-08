@@ -71,11 +71,14 @@ components: {
 },
 methods: {
     redirectToStep3() {
-      window.location.href = '/penukarans3';
+      window.location.href = '/penukaran3';
     },
     redirectToStep1() {
-      window.location.href = '/penukarans1';
+      window.location.href = '/penukaran1';
     }
+  },
+  created(){
+    // 
   }
 }
 </script>

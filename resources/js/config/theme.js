@@ -7,6 +7,7 @@ export const theme = {
       accentGreen2: '#F5FFFF',
       textBlack: '#000000',
       backgroundWhite: '#FFFFFF',
+      accentRed: "#FF5555",
     },
     fonts: {
       family: `'Poppins', sans-serif`,
@@ -26,4 +27,3 @@ export const theme = {
       },
     },
   };
-  
