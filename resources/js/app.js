@@ -5,18 +5,14 @@ import Login from './pages/Login.vue';
 import Register from './pages/Register.vue';
 import Beranda from './pages/Beranda.vue';
 import Jelajah from './pages/Jelajah.vue';
+import Tentang from './pages/Tentang.vue';
+import Profil from './pages/Profil.vue';
 import PenukaranStep1 from './pages/penukaranstep1.vue';
 import PenukaranStep2 from './pages/PenukaranStep2.vue';
 import PenukaranStep3 from './pages/PenukaranStep3.vue';
 import PenukaranStep3_2 from './pages/PenukaranStep3_2.vue';
 import PenukaranKoin from './pages/PenukaranKoin.vue';
-import Jelajah from './pages/Jelajah.vue';
-import Tentang from './pages/Tentang.vue';
-import PenukaranStep1 from './pages/PenukaranStep1.vue';
-import Beranda from './pages/Beranda.vue';
-import PenukaranStep3 from './pages/PenukaranStep3.vue';
 import ManajemenUser from './pages/ManajemenUser.vue';
-import Profil from './pages/Profil.vue';
 
 const el = document.getElementById('app');
 
@@ -54,15 +50,13 @@ if (el) {
         component = Jelajah;
         break;
     case 'tentang':
-      component = Tentang;
-      break;
-    // case 'profile':
-    //   component = Profile;
-    //   break;
+        component = Tentang;
+        break;
+    case 'profile':
+        component = Profile;
+        break;
     // case 'riwayat-recycle':
     //   component = RiwayatRecycle;
-    //   break;
-
     //   break;
     case 'manajemen-user':
         component = ManajemenUser;
