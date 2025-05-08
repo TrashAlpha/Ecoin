@@ -23,4 +23,6 @@ Route::get('/penukarans3_2', [PenukaranController::class, 'penukaran3_2']);
 Route::get('/penukaran_koin', [PenukaranController::class, 'penukaran_koin']);
 
 Route::get('/manajemen_user');
+
 Route::get('/profil', [ProfileController::class, 'index']);
+Route::get('/daftartransaksi', [ProfileController::class, 'daftartransaksi']);
