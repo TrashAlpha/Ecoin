@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\JelajahController;
+use App\Http\Controllers\ManajemenController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PenukaranController;
@@ -20,5 +21,5 @@ Route::get('/penukarans3', [PenukaranController::class, 'penukaran3']);
 Route::get('/penukarans3_2', [PenukaranController::class, 'penukaran3_2']);
 Route::get('/penukaran_koin', [PenukaranController::class, 'penukaran_koin']);
 
-Route::get('/manajemen_user');
+Route::get('/manajemen_user', [ManajemenController::class, 'user']);
 Route::get('/profil', [ProfileController::class, 'index']);
