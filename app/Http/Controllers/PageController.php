@@ -16,7 +16,7 @@ class PageController extends Controller
     }
 
     public function login(){
-        return view('login');
+        return view('login'); // to views/login.blade.php
     }
 
     public function register(){
@@ -49,5 +49,9 @@ class PageController extends Controller
 
     public function tentang(){
         return view('tentang');
+    }
+
+    public function verifikasi_penukaran(){
+        return view('verifikasipenukaran');
     }
 }
