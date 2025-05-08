@@ -43,6 +43,7 @@ mounted() {
     root.style.setProperty('--accentGreen2', theme.colors.accentGreen2);
     root.style.setProperty('--textBlack', theme.colors.textBlack);
     root.style.setProperty('--backgroundWhite', theme.colors.backgroundWhite);
+    root.style.setProperty('--accentRed', theme.colors.accentRed);
 
     root.style.setProperty('--fontFamily', theme.fonts.family);
     root.style.setProperty('--fontSizeSmall', theme.fonts.size.small);
