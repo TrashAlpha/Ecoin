@@ -22,10 +22,10 @@ Route::get('/penukaran3', [PageController::class, 'penukaran3'])->name('penukara
 Route::get('/penukaran3_2', [PageController::class, 'penukaran3_2'])->name('penukaran3_2');
 Route::get('/penukaran_koin', [PageController::class, 'penukaran_koin'])->name('penukaran_koin');
 
-//Halaman Admin
-Route::get('/admin/verifikasi-penukaran', [AdminPageController::class, 'verifikasiPenukaran'])->name('verifikasi-penukaran');
-Route::get('/admin/kelola-voucher', [AdminPageController::class, 'kelolaVoucher'])->name('kelola-voucher');
-Route::get('/admin/kelola-user', [AdminPageController::class, 'kelolaUser'])->name('kelola-user');
+// Halaman Admin
+Route::get('/admin/verifikasi_penukaran', [AdminPageController::class, 'verifikasi_penukaran'])->name('verifikasi_penukaran');
+Route::get('/admin/kelola_voucher', [AdminPageController::class, 'kelola_voucher'])->name('kelola_voucher');
+Route::get('/admin/kelola_user', [AdminPageController::class, 'kelola_user'])->name('kelola_user');
 
 // Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 // Route::post('/login', [AuthController::class, 'login'])->name('auth.login');

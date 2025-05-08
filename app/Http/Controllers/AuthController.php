@@ -15,8 +15,11 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate(); // penting untuk keamanan session
-            return redirect()->intended('/beranda');
+            $user = Auth::user();
+            return response()->json([
+                'message' => 'Login berhasil!',
+                'user'    => $user
+            ], 200);
         }
 
         if ($request->expectsJson()) {
@@ -63,5 +66,13 @@ class AuthController extends Controller
             'message' => 'User berhasil didaftarkan!',
             'user'    => $user
         ], 201);
+    }
+
+    public function getUser(Request $request)
+    {
+        $user = Auth::user();
+        return response()->json([
+            'user'    => $user
+        ]);
     }
 }

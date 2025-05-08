@@ -25,7 +25,8 @@ class User extends Authenticatable
         'akun_facebook',
         'akun_twitter',
         'role',
-        'status'
+        'status',
+        'photo_profile_url',
     ];
 
     /**
