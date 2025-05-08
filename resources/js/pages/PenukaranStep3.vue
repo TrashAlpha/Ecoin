@@ -1,10 +1,30 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import Footer from '../components/Footer.vue';
 import Navbar from '../components/Navbar.vue';
+import RedeemVoucherModal from "@/components/RedeemVoucherModal.vue";
 
 function redirectToStep2(){
     window.location.href = '/penukaran2';
 }
+
+const showModal = ref(false);
+const selectedVoucher = ref<any>(null);
+
+function openModal(voucher: any) {
+  selectedVoucher.value = voucher;
+  showModal.value = true;
+}
+
+function handleCancel() {
+  showModal.value = false;
+}
+
+function handleConfirm() {
+  showModal.value = false;
+  alert(`Voucher ${selectedVoucher.value.name} berhasil ditukar!`);
+}
+
 </script>
 
 <template>
@@ -49,7 +69,7 @@ function redirectToStep2(){
             <div class="opsi-transfer">
                 <label>Opsi Transfer</label><br>
                 <div class="opsi-grid">
-                    <div class="voucher-card">
+                    <div class="voucher-card" @click="openModal({ name: 'Pluxxe', image: '/public/images/pluxxe.png' })">
                         <img src="/public/images/pluxxe.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
@@ -57,7 +77,7 @@ function redirectToStep2(){
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="voucher-card">
+                    <div class="voucher-card" @click="openModal({ name: 'Shell', image: '/public/images/shell.png' })">
                         <img src="/public/images/shell.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
@@ -65,7 +85,7 @@ function redirectToStep2(){
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="voucher-card">
+                    <div class="voucher-card" @click="openModal({ name: 'Steam', image: '/public/images/steam.jpg' })">
                         <img src="/public/images/steam.jpg" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
@@ -73,7 +93,7 @@ function redirectToStep2(){
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="voucher-card">
+                    <div class="voucher-card" @click="openModal({ name: 'Indomaret', image: '/public/images/indomaret.png' })">
                         <img src="/public/images/indomaret.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
@@ -81,7 +101,7 @@ function redirectToStep2(){
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="voucher-card">
+                    <div class="voucher-card" @click="openModal({ name: 'Familymart', image: '/public/images/familymart.png' })">
                         <img src="/public/images/familymart.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
@@ -89,7 +109,7 @@ function redirectToStep2(){
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="voucher-card">
+                    <div class="voucher-card" @click="openModal({ name: 'Amazon', image: '/public/images/amazon.png' })">
                         <img src="/public/images/amazon.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
@@ -97,7 +117,7 @@ function redirectToStep2(){
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="voucher-card">
+                    <div class="voucher-card" @click="openModal({ name: 'Alfamidi', image: '/public/images/alfamidi.png' })">
                         <img src="/public/images/alfamidi.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
@@ -105,7 +125,7 @@ function redirectToStep2(){
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
-                    <div class="voucher-card">
+                    <div class="voucher-card" @click="openModal({ name: 'Alfamart', image: '/public/images/alfamaert.png' })">
                         <img src="/public/images/alfamart.png" alt="">
                         <div class="info">
                             <span class="voucher-name"> Koin</span><br>
@@ -127,6 +147,15 @@ function redirectToStep2(){
                 <button class="btn send"><img src="/public/images/ic_send.png" alt="Send" /></button>
             </div>
       </section>
+
+        <RedeemVoucherModal
+            v-if="showModal"
+            :visible="showModal"
+            :coins="150"
+            :voucherName="selectedVoucher?.name"
+            @cancel="handleCancel"
+            @confirm="handleConfirm"
+        />
 
         <Footer/>
     </div>
