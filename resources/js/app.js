@@ -63,6 +63,9 @@ if (el) {
     case 'daftartransaksi':
         component = DaftarTransaksi;
         break;
+    case 'verifikasi-penukaran':
+        component = VerifikasiPenukaran;
+        break;
     default:
         console.error('Unknown page component:', page);
         break;
