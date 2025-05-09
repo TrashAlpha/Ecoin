@@ -36,12 +36,12 @@
           <input type="text" placeholder="Masukkan lokasi awal..." />
           <label>Rekomendasi Penukaran</label>
           <div class="rekomendasi">
-            <button class="btn">Kudus <span>✈</span></button>
-            <button class="btn">Semarang <span>✈</span></button>
+            <button class="btn action">Kudus <span>✈</span></button>
+            <button class="btn action">Semarang <span>✈</span></button>
           </div>
           <div class="action-buttons">
-            <button class="btn" @click="redirectToStep1()">Kembali</button>
-            <button class="btn" @click="redirectToStep3">Konfirmasi</button>
+            <button class="btn action" @click="redirectToStep1()">Kembali</button>
+            <button class="btn action" @click="redirectToStep3">Konfirmasi</button>
           </div>
         </div>
       </section>
@@ -95,12 +95,12 @@ methods: {
     position: relative;
     display: flex;
     justify-content: center;
-    padding: 0 32px;
+    /* padding: 0 32px; */
 }
 
 .hero-image {
     width: 100%;
-    max-height: 100%;
+    max-height: 500px;
     object-fit: cover;
 }
 
@@ -115,10 +115,12 @@ methods: {
     background-color: var(--primaryGreen);
     padding: 10px 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
     z-index: 2;
 }
 
 .tab {
+    width: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;     /* Pusatkan horizontal */
@@ -128,6 +130,7 @@ methods: {
     color: var(--backgroundWhite);
     font-weight: var(--fontWeightBold);
     cursor: pointer;
+    border-radius: 5px;
     text-align: center;
 }
 
@@ -235,6 +238,11 @@ methods: {
     height: 100%;
 }
 
+.map-container iframe {
+    border: none;
+    border-radius: 5px;
+}
+
 .form-lokasi {
     flex: 1;
     display: flex;
@@ -251,6 +259,7 @@ methods: {
 .form-lokasi input {
     padding: 10px;
     background-color: var(--textField);
+    border-radius: 3px;
     border: none;
 }
 
@@ -262,6 +271,7 @@ methods: {
 .action-buttons {
     display: flex;
     gap: 12px;
+    border-radius: 3px;
 }
 
 .btn {
@@ -271,6 +281,10 @@ methods: {
     border: none;
     background-color: var(--accentGreen1);
     color: var(--backgroundWhite);
+}
+
+.btn.action {
+    border-radius: 3px;
 }
 
 .btn:hover {

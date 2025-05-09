@@ -64,4 +64,8 @@ class PageController extends Controller
     {
         return view('daftartransaksi');
     }
+
+    public function verifikasi_penukaran(){
+        return view('verifikasipenukaran');
+    }
 }

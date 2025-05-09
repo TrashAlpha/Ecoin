@@ -2,6 +2,7 @@
     <div class="login-container">
       <!-- Left Section - Login Form -->
       <div class="login-section">
+        <img src="/public/images/ic_back.png" alt="back" class="back-icon" @click="goToHome" />
         <div class="login-content">
           <div class="eco-title">
             <img src="/public/images/logo_ecoin.png" alt="Logo" class="logo-icon" />
@@ -92,33 +93,34 @@
         root.style.setProperty('--fontWeightSemiBold', theme.fonts.weight.semibold);
       },
       methods: {
-        handleLogin() {
-          fetch('/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-CSRF-TOKEN': this.csrfToken // CSRF harus benar-benar dikirimkan
-            },
-            body: JSON.stringify({
+        async handleLogin() {
+          try {
+            const response = await axios.post('http://localhost:8000/api/login', {
               email: this.email,
               password: this.password
-            })
-          })
-          .then(async response => {
-            if (response.redirected) {
-              window.location.href = response.url; // jika sukses, redirect ke beranda
-            } else {
-              const data = await response.json();
-              this.errorMessage = data.message || 'Terjadi kesalahan saat login';
+            },);
+
+            if(response.status === 200) {
+              localStorage.setItem('user', JSON.stringify(response.data.user));
+              console.log("User data:", response.data.user);
             }
-          })
-          .catch(error => {
-            console.error('Login error:', error);
-            this.errorMessage = 'Gagal terhubung ke server.';
-          });
+
+            // Login sukses, arahkan ke halaman beranda
+            this.errorMessage = '';
+            window.location.href = '/beranda';
+          } catch (error) {
+            if (error.response && error.response.data && error.response.data.message) {
+              this.errorMessage = error.response.data.message;
+            } else {
+              this.errorMessage = 'Terjadi kesalahan saat login.';
+            }
+          }
         },
         goToRegister() {
           window.location.href = '/register';
+        },
+        goToHome() {
+          window.location.href = '/beranda';
         }
       }
     }
@@ -129,6 +131,17 @@
     display: flex;
     min-height: 100vh;
     font-family: var(--fontFamily);
+  }
+
+  .back-icon {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: var(--primaryGreen);
   }
   
   .login-section {

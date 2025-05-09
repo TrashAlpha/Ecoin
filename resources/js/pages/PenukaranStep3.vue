@@ -147,9 +147,9 @@ function redirectToStep2(){
 
     .hero-image {
         width: 100%;
-        max-height: 100%;
+        max-height: 500px;
         object-fit: cover;
-        padding:0 32px;
+        /* padding:0 32px; */
     }
 
     .kategori-tabs {
@@ -162,18 +162,21 @@ function redirectToStep2(){
         background-color: var(--primaryGreen);
         padding: 10px 20px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
         z-index: 2;
     }
     .tab {
+        width: 150px;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: center;   
         justify-content: center;
         padding: 10px 20px;
         margin: 0 5px;
         color: var(--backgroundWhite);
         font-weight: var(--fontWeightBold);
         cursor: pointer;
+        border-radius: 5px;
         text-align: center;
     }
     .tab img {

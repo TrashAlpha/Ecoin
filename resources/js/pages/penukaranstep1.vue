@@ -295,12 +295,12 @@ export default {
     position: relative;
     display: flex;
     justify-content: center;
-    padding: 0 32px;
+    /* padding: 0 32px; */
 }
 
 .hero-image {
     width: 100%;
-    max-height: 100%;
+    max-height: 500px;
     object-fit: cover;
 }
 
@@ -313,6 +313,7 @@ export default {
     justify-content: center;
     background-color: var(--primaryGreen);
     padding: 10px 20px;
+    border-radius: 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     z-index: 2;
 }
@@ -327,17 +328,18 @@ export default {
 }
 
 .tab {
+    width: 150px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center;     /* Pusatkan horizontal */
     justify-content: center;
     padding: 10px 20px;
     margin: 0 5px;
     color: var(--backgroundWhite);
     font-weight: var(--fontWeightBold);
     cursor: pointer;
+    border-radius: 5px;
     text-align: center;
-    background-color: transparent;
 }
 
 .kategori-tabs.inline .tab {

@@ -25,9 +25,9 @@
           <li :class="{ active: isActive('/jelajah') }"><a href="/jelajah">Jelajah</a></li>
           <li :class="{ active: isActive('/tentang') }"><a href="/tentang">Tentang</a></li>
 
-          <li v-if="role === 'admin'" :class="{ active: isActive('/verifikasi') }"><a href="/verifikasi">Verifikasi Penukaran</a></li>
-          <li v-if="role === 'admin'" :class="{ active: isActive('/kelola-voucher') }"><a href="/kelola-voucher">Kelola Voucher</a></li>
-          <li v-if="role === 'admin'" :class="{ active: isActive('/kelola-user') }"><a href="/kelola-user">Kelola User</a></li>
+          <li v-if="role  === 'admin'" :class="{ active: isActive('/admin/verifikasi_penukaran') }"><a href="/admin/verifikasi_penukaran">Verifikasi Penukaran</a></li>
+          <li v-if="role === 'admin'" :class="{ active: isActive('/admin/kelola_voucher') }"><a href="/admin/kelola_voucher">Kelola Voucher</a></li>
+          <li v-if="role === 'admin'" :class="{ active: isActive('/admin/kelola_user') }"><a href="/admin/kelola_user">Kelola User</a></li>
         </ul>
         <!-- Toggle between login button and profile icon -->
         <template v-if="!isLoggedIn">
@@ -47,6 +47,10 @@
 
 <script>
 import { theme } from '../config/theme';
+import {ref} from "vue";
+import axios from 'axios';
+
+const user = ref<null>(null);
 
 export default {
     name: 'Navbar',
@@ -56,9 +60,24 @@ export default {
         isLoggedIn: false,
         profileImage: '/public/images/ic_profile.png',
         role: null,
+        user: null,
         };
     },
     async mounted() {
+        // Fetch user data from API
+        const saved = localStorage.getItem('user');
+        if (saved) {
+          this.user = JSON.parse(saved);
+          this.isLoggedIn = true;
+          this.role = this.user.role;
+          this.profileImage = '/images/ic_profile.png';
+          console.log("User data:", this.user);
+        } else {
+          this.isLoggedIn = false;
+          this.user = null;
+          this.role = null;
+        }
+
         // Set CSS variables from theme
         const root = document.documentElement;
         root.style.setProperty('--primaryGreen', theme.colors.primaryGreen);
@@ -81,26 +100,6 @@ export default {
         root.style.setProperty('--fontWeightMedium', theme.fonts.weight.medium);
         root.style.setProperty('--fontWeightRegular', theme.fonts.weight.regular);
 
-        // Check authentication status via API
-        try {
-          const response = await fetch('/api/user', {
-            headers: {
-              'X-Requested-With': 'XMLHttpRequest'
-            },
-            credentials: 'include'
-          });
-          if (response.ok) {
-            const user = await response.json();
-            this.isLoggedIn = true;
-            this.role = user.role;
-            // If user has custom profile photo URL, override default icon
-            if (user.profile_photo_url) {
-                this.profileImage = user.profile_photo_url;
-            }
-          }
-        } catch (error) {
-            console.error('Auth check failed:', error);
-        }
     },
     methods: {
         openDropdown() {
@@ -232,6 +231,7 @@ export default {
   width: 36px;
   height: 36px;
   border-radius: 50%;
+  margin-left: 24px;
   cursor: pointer;
 }
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ManajemenController;
+use App\Http\Controllers\AdminPageController;
 
 Route::get('/', [PageController::class, 'index'])->name('home');
 Route::get('/beranda', [PageController::class, 'home'])->name('home');
@@ -22,8 +23,13 @@ Route::get('/penukaran3', [PageController::class, 'penukaran3'])->name('penukara
 Route::get('/penukaran3_2', [PageController::class, 'penukaran3_2'])->name('penukaran3_2');
 Route::get('/penukaran_koin', [PageController::class, 'penukaran_koin'])->name('penukaran_koin');
 
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+// Halaman Admin
+Route::get('/admin/verifikasi_penukaran', [AdminPageController::class, 'verifikasi_penukaran'])->name('verifikasi_penukaran');
+Route::get('/admin/kelola_voucher', [AdminPageController::class, 'kelola_voucher'])->name('kelola_voucher');
+Route::get('/admin/kelola_user', [AdminPageController::class, 'kelola_user'])->name('kelola_user');
+
+// Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+// Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 // Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 
 Route::resource('tests', TestController::class); // test route resource

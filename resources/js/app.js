@@ -14,6 +14,7 @@ import PenukaranStep3_2 from './pages/PenukaranStep3_2.vue';
 import PenukaranKoin from './pages/PenukaranKoin.vue';
 import ManajemenUser from './pages/ManajemenUser.vue';
 import DaftarTransaksi from './pages/DaftarTransaksi.vue';
+import VerifikasiPenukaran from './pages/VerifikasiPenukaran.vue';
 
 const el = document.getElementById('app');
 

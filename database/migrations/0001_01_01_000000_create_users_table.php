@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('akun_facebook')->nullable();
             $table->string('akun_twitter')->nullable();
             $table->enum('role', ['admin', 'user'])->default('user');
-            $table->string('status')->default('active');
+            $table->enum('status', ['active', 'inactive', 'banned'])->default('active');
             $table->string('photo_profile_url')->nullable();
             $table->timestamps();
         });
