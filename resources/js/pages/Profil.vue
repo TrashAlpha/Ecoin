@@ -1,7 +1,15 @@
+<script setup>
+function daftarTransaksi(){
+    window.location.href = '/daftartransaksi'
+}
+function beranda(){
+    window.location.href = '/beranda'
+}
+</script>
 <template>
     <div class="profil">
         <!-- Tombol close -->
-        <button class="tutup">✕</button>
+        <button class="tutup" @click="beranda">✕</button>
 
         <section class="profil-isi">
             <!-- Kiri -->
@@ -47,7 +55,7 @@
                     <input type="text" placeholder="https://twitter.com/..." />
 
                     <div class="aksi">
-                        <button class="transaksi">Daftar Transaksi</button>
+                        <button class="transaksi" @click="daftarTransaksi">Daftar Transaksi</button>
                         <button class="edit">Edit Profil</button>
                     </div>
                 </div>
