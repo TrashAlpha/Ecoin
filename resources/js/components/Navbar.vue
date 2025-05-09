@@ -112,7 +112,7 @@ export default {
             return window.location.pathname === path;
         },
         goToProfile() {
-            window.location.href = '/profil';
+            window.location.href = '/profile';
         }
     }
 }
