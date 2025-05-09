@@ -5,6 +5,18 @@ function daftarTransaksi(){
 function beranda(){
     window.location.href = '/beranda'
 }
+function logout(){
+    // Implement logout logic here
+    axios.get('/api/logout')
+        .then(response => {
+            // Handle successful logout
+            localStorage.removeItem('user'); // Remove user data from local storage
+            window.location.href = '/beranda'; // Redirect to login page
+        })
+        .catch(error => {
+            console.error('Logout failed:', error);
+        });
+}
 </script>
 <template>
     <div class="profil">
@@ -21,7 +33,7 @@ function beranda(){
                 />
                 <h2>Pengguna</h2>
                 <p>pengguna@contoh.com</p>
-                <button class="keluar">Keluar</button>
+                <button class="keluar" @click="logout">Keluar</button>
             </div>
 
             <!-- KANAN -->
