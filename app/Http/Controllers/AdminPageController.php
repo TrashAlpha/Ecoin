@@ -13,11 +13,11 @@ class AdminPageController extends Controller
 
     public function kelola_voucher()
     {
-        return view('keloka_voucher');
+        return view('manajemen_voucher');
     }
 
     public function kelola_user()
     {
-        return view('keloka_user');
+        return view('manajemen_user');
     }
 }
