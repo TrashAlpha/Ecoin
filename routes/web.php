@@ -32,9 +32,6 @@ Route::get('/admin/kelola_user', [AdminPageController::class, 'kelola_user'])->n
 // Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 // Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 
-Route::resource('tests', TestController::class); // test route resource
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::resource('tests', TestController::class); // test route resource
 
 Route::get('/manajemen_user', [ManajemenController::class, 'user']);

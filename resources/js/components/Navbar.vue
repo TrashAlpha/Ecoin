@@ -13,7 +13,7 @@
             class="dropdown"
             @mouseenter="openDropdown"
             @mouseleave="closeDropdown"
-            :class="{ active: isActive('/penukaran1') || isActive('/penukaran_koin') }"
+            :class="{ active: isActive('/penukaran1') || isActive('/penukaran_koin') || isActive('/penukaran2') || isActive('/penukaran3') || isActive('/penukaran3_2') }"
           >
             <a href="#">Penukaran</a>
             <ul v-if="isDropdownOpen" class="dropdown-menu">
@@ -25,7 +25,7 @@
           <li :class="{ active: isActive('/jelajah') }"><a href="/jelajah">Jelajah</a></li>
           <li :class="{ active: isActive('/tentang') }"><a href="/tentang">Tentang</a></li>
 
-          <li v-if="role  === 'admin'" :class="{ active: isActive('/admin/verifikasi_penukaran') }"><a href="/admin/verifikasi_penukaran">Verifikasi Penukaran</a></li>
+          <li v-if="role === 'admin'" :class="{ active: isActive('/admin/verifikasi_penukaran') }"><a href="/admin/verifikasi_penukaran">Verifikasi Penukaran</a></li>
           <li v-if="role === 'admin'" :class="{ active: isActive('/admin/kelola_voucher') }"><a href="/admin/kelola_voucher">Kelola Voucher</a></li>
           <li v-if="role === 'admin'" :class="{ active: isActive('/admin/kelola_user') }"><a href="/admin/kelola_user">Kelola User</a></li>
         </ul>
@@ -112,7 +112,7 @@ export default {
             return window.location.pathname === path;
         },
         goToProfile() {
-            window.location.href = '/profile';
+            window.location.href = '/profil';
         }
     }
 }
