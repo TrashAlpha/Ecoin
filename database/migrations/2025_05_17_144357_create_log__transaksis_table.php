@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penukaran__koins', function (Blueprint $table) {
+        Schema::create('log__transaksis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->enum('tipe_penukaran', ['tukar_voucher', 'tukar_rupiah']);
-            $table->integer('nilai_koin');
-            $table->decimal('nilai_rupiah', 15, 2)->nullable();
+            $table->enum('jenis_transaksi', ['tukar_sampah', 'tukar_voucher', 'tukar_rupiah']);
             $table->date('tanggal_transaksi');
-            $table->foreignId('voucher_id')->nullable()->constrained('vouchers')->onDelete('set null');
+            $table->integer('jumlah_koin');
+            $table->unsignedBigInteger('reference_id');
+            $table->string('reference_type'); // PenukaranSampah atau PenukaranKoin
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('penukaran__koins');
+        Schema::dropIfExists('log__transaksis');
     }
 };

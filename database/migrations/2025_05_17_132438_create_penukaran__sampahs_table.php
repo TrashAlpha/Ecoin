@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('penukaran__sampahs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('jenis_sampah');
+            $table->decimal('berat_sampah', 8, 2);
+            $table->date('tanggal_penukaran');
+            $table->time('waktu_penukaran');
+            $table->string('bukti_transaksi')->nullable(); // Path gambar
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });
     }
