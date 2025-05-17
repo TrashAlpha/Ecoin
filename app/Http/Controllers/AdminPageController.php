@@ -11,13 +11,13 @@ class AdminPageController extends Controller
         return view('verifikasi_penukaran');
     }
 
-    public function kelola_voucher()
+    public function manajemen_voucher()
     {
-        return view('kelola_voucher');
+        return view('manajemen_voucher');
     }
 
-    public function kelola_user()
+    public function manajemen_user()
     {
-        return view('kelola_user');
+        return view('manajemen_user');
     }
 }
