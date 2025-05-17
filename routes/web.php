@@ -25,8 +25,8 @@ Route::get('/penukaran_koin', [PageController::class, 'penukaran_koin'])->name('
 
 // Halaman Admin
 Route::get('/admin/verifikasi_penukaran', [AdminPageController::class, 'verifikasi_penukaran'])->name('verifikasi_penukaran');
-Route::get('/admin/kelola_voucher', [AdminPageController::class, 'kelola_voucher'])->name('kelola_voucher');
-Route::get('/admin/kelola_user', [AdminPageController::class, 'kelola_user'])->name('kelola_user');
+Route::get('/admin/manajemen_voucher', [AdminPageController::class, 'manajemen_voucher'])->name('manajemen_voucher');
+Route::get('/admin/manajemen_user', [AdminPageController::class, 'manajemen_user'])->name('manajemen_user');
 
 // Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 // Route::post('/login', [AuthController::class, 'login'])->name('auth.login');

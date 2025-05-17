@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import FeatureItem from '@/components/FeatureItem.vue';
-import StepCard from '@/components/StepCard.vue';
-import VoucherCard from '@/components/VoucherCard.vue';
+import FeatureItem from '../components/FeatureItem.vue';
+import StepCard from '../components/StepCard.vue';
+import VoucherCard from '../components/VoucherCard.vue';
 import Navbar from '../components/Navbar.vue';
 import Footer from '../components/Footer.vue';
 
