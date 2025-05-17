@@ -1,6 +1,8 @@
 <script setup>
 import Footer from '../components/Footer.vue';
 import Navbar from '../components/Navbar.vue';
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
 const scrollToSection = (id) => {
     const el = document.getElementById(id);
@@ -8,6 +10,36 @@ const scrollToSection = (id) => {
         el.scrollIntoView({ behavior: 'smooth' });
     }
 };
+
+const totalSaldo = ref(0);
+const vouchers = ref([]);
+
+onMounted(async () => {
+    try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user) {
+            // Fetch Saldo User
+            const response = await axios.get(`/api/users/${user.id}/saldo`);
+            totalSaldo.value = response.data.saldo;
+            console.log("Saldo User:", totalSaldo.value);
+        } else {
+            console.warn("User not found in localStorage.");
+        }
+    } catch (error) {
+        console.error("Error fetching saldo:", error);
+        totalSaldo.value = 0; // Default jika terjadi error
+    }
+
+    try {
+        // Fetch Voucher Terlepas dari Error Saldo
+        const voucherResponse = await axios.get('/api/vouchers');
+        vouchers.value = voucherResponse.data;
+        console.log("Vouchers:", vouchers.value);
+    } catch (error) {
+        console.error("Error fetching vouchers:", error);
+    }
+});
+
 </script>
 
 <template>
@@ -17,7 +49,7 @@ const scrollToSection = (id) => {
         <div class="hero">
             <h1 class="title">Saldo Anda</h1>
             <div id="tampilan-saldo">
-                <p id="total-saldo">120.000</p>
+                <p id="total-saldo">{{ totalSaldo }}</p>
             </div>
             <h1 class="title">Ayo tukarkan Koin Anda</h1>
             <p class="subtitle">Tukar sekarang, bantu lingkungan & dapatkan reward!</p>
@@ -26,138 +58,17 @@ const scrollToSection = (id) => {
                 <button @click="scrollToSection('tukar-voucher')">Tukar ke Voucher</button>
                 <button @click="scrollToSection('tukar-rupiah')">Tukar ke Rupiah</button>
             </div>
-
         </div>
 
         <div id="tukar-voucher">
             <h1>Tukar ke Voucher</h1>
             <div class="container">
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
+                <div v-for="voucher in vouchers" :key="voucher.id" class="card">
+                    <img :src="voucher.image_url || '/public/images/ic_blank.png'" alt="">
                     <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
+                        <span class="nama-bank">{{ voucher.nama_voucher }}</span><br>
+                        <span class="total-judul">{{ voucher.nilai_koin }} Koin</span><br>
+                        <span class="total-nominal">{{ voucher.deskripsi }}</span>
                     </div>
                 </div>
             </div>
