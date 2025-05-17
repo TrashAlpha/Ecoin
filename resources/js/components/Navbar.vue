@@ -50,7 +50,7 @@ import { theme } from '../config/theme';
 import {ref} from "vue";
 import axios from 'axios';
 
-const user = ref<null>(null);
+// const user = ref<User | null>(null);
 
 export default {
     name: 'Navbar',
