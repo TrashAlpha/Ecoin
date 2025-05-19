@@ -8,6 +8,10 @@ const updateUserPopup = ref(false)
 function updateUser(){
     updateUserPopup.value = true
 }
+
+function close(){
+    updateUserPopup.value = false
+}
 </script>
 
 <template>
@@ -67,17 +71,21 @@ function updateUser(){
                 <h1>Edit User</h1>
                 <form action="">
                     <label for="gambar">Gambar</label><br>
-                    <input type="text" placeholder="Link Gambar"><br>
-                    <label for="judul">Judul</label><br>
-                    <input type="text" placeholder="Judul"><br>
-                    <label for="deskripsi">Deskripsi</label><br>
-                    <input type="text" placeholder="Deskripsi"><br>
-                    <label for="harga">Harga</label><br>
-                    <input type="text" placeholder="Harga"><br>
+                    <input type="text" placeholder="Link Gambar" disabled><br>
+                    <label for="username">Username</label><br>
+                    <input type="text" placeholder="username" disabled><br>
+                    <label for="email">Email</label><br>
+                    <input type="text" placeholder="email" disabled><br>
+                    <label for="saldo">Saldo</label><br>
+                    <input type="text" placeholder="saldo" disabled><br>
+                    <label for="facebook">Facebook</label><br>
+                    <input type="text" placeholder="facebook" disabled><br>
+                    <label for="twitter">Twitter</label><br>
+                    <input type="text" placeholder="twitter" disabled><br>
                     <label for="status">Status</label><br>
                     <select id="status" name="status">
                         <option value="aktif">Aktif</option>
-                        <option value="expired">Kadaluarsa</option>
+                        <option value="nonaktif">Nonaktif</option>
                     </select><br>
                     <button type="submit" class="btn btn-update">Submit</button>
                     <button type="button" class="btn btn-back" @click="close">Kembali</button>
