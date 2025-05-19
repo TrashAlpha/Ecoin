@@ -1,11 +1,12 @@
 <script setup>
 import { ref } from 'vue';
 import Navbar from '../components/Navbar.vue';
+import Footer from '../components/Footer.vue';
 
-const showPopup = ref(false)
+const updateUserPopup = ref(false)
 
-function openDetail(){
-    showPopup.value = true
+function updateUser(){
+    updateUserPopup.value = true
 }
 </script>
 
@@ -17,157 +18,211 @@ function openDetail(){
             <h1 class="title">Manajemen User</h1>
         </section>
 
-        <section class="content">
-            <div class="card">
-                <div class="profil">
-                    <div class="kiri">
-                        <img src="/public/images/logo.png" alt="" width="100px">
-                    </div>
-                    <div class="kanan">
-                        <h1>Username</h1>
-                        <button class="btn-main" @click="openDetail">Detail</button>
-                    </div>
-                    <div v-if="showPopup" @click.self="showPopup = false" class="popup">
-                        <div class="popup-card">
-                            <div class="kiri-konten">
-                                <div class="kiri">
-                                    <img src="/public/images/logo.png" alt="" width="500px">
-                                </div>
-                                <div class="kanan">
-                                    <h1>Username</h1>
-                                    <h1>Email</h1>
-                                    <h1>Status</h1>
-                                    <h1>Saldo</h1>
-                                    <h1>Facebook</h1>
-                                    <h1>Twitter</h1>
-                                </div>
-                            </div>
-                            <div class="kanan">
-                                <h1>Transaksi Terkini</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="btn-container">
-                    <button class="btn-main">Aktif</button>
-                    <button class="btn-delete">Delete</button>
-                </div>
-            </div>
+        <section class="filter-section">
+            <input type="text" placeholder="Cari pengguna" class="search-input">
+            <select name="" id="" class="filter-select">
+                <option value="">Semua status</option>
+                <option value="active">Aktif</option>
+                <option value="nonaktif">Nonaktif</option>
+            </select>
         </section>
+
+        <section class="table-section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Gambar</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Saldo</th>
+                        <th>Facebook</th>
+                        <th>Twitter</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data statis -->
+                    <tr>
+                        <td><img src="/public/images/logo.png" alt="Logo Voucher" width="100px"></td>
+                        <td>Arnamaya</td>
+                        <td>amamiya@gmail.com</td>
+                        <td>Rp. 350.000</td>
+                        <td>@amaya</td>
+                        <td>@amaya</td>
+                        <td><span class="status status-active">Aktif</span></td>
+                        <td>
+                            <button class="btn btn-update" @click="updateUser">Update</button>
+                            <button class="btn btn-delete">Delete</button>
+                        </td>
+                    </tr>
+                    <!-- Tambah sesuai kebutuhan -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- TODO Popup masih belum benar -->
+        <div v-if="updateUserPopup" class="overlay">
+            <div class="popup-form">
+                <h1>Edit User</h1>
+                <form action="">
+                    <label for="gambar">Gambar</label><br>
+                    <input type="text" placeholder="Link Gambar"><br>
+                    <label for="judul">Judul</label><br>
+                    <input type="text" placeholder="Judul"><br>
+                    <label for="deskripsi">Deskripsi</label><br>
+                    <input type="text" placeholder="Deskripsi"><br>
+                    <label for="harga">Harga</label><br>
+                    <input type="text" placeholder="Harga"><br>
+                    <label for="status">Status</label><br>
+                    <select id="status" name="status">
+                        <option value="aktif">Aktif</option>
+                        <option value="expired">Kadaluarsa</option>
+                    </select><br>
+                    <button type="submit" class="btn btn-update">Submit</button>
+                    <button type="button" class="btn btn-back" @click="close">Kembali</button>
+                </form>
+            </div>
+        </div>
+
+        <Footer/>
     </div>
 </template>
 
 <style scoped>
 
-    .manajemen-user{
-        font-family: var(--fontFamily);
-        background-color: var(--backgroundWhite);
-        color: var(--textBlack);
-    }
-    .hero{
-        background-color: var(--primaryGreen);
-        height: 200px;
-        display: flex;
-        text-align: center;
-        justify-content: center;
-        align-items: center;
-    }
-    .title{
-        color: var(--backgroundWhite);
-        font-weight: bold;
-        font-size: 32px;
-    }
+.manajemen-user{
+    font-family: var(--fontFamily);
+    background-color: var(--backgroundWhite);
+    color: var(--textBlack);
+}
+.hero{
+    background-color: var(--primaryGreen);
+    height: 200px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+.title{
+    color: var(--backgroundWhite);
+    font-weight: bold;
+    font-size: 32px;
+}
 
-    /* Content */
-    .content{
-        padding: 40px 5%;
-    }
-    .card{
-        background-color: var(--textField);
-        padding: 20px;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    .kiri-konten{
-        display: flex;
-        flex-direction: row;
-    }
+.filter-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 0 32px;
+}
+.search-input {
+    padding: 10px;
+    flex: 1;
+    min-width: 200px;
+    background-color: var(--textField);
+    border: none;
+}
+.filter-select {
+    padding: 10px;
+    background-color: var(--textField);
+    border: none;
+}
 
-    /* Detail Popup */
-    .popup{
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5); /* background gelap transparan */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-    }
-    .popup div {
-        background-color: white;
-        padding: 24px;
-        border-radius: 8px;
-        max-width: 100%;
-        width: 90%;
-    }
-    .popup-card{
-        background-color: var(--textField);
-        padding: 20px;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+.table-section {
+    overflow-x: auto;
+    padding: 0 32px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--backgroundWhite);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+th {
+    background-color: var(--primaryGreen);
+    color: var(--backgroundWhite);
+    font-weight: 600;
+}
 
-    /* Profil */
-    .profil{
-        display: flex;
-    }
-    .profil h1{
-        font-size: 20px;
-        font-weight: 600;
-    }
+.status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 12px;
+}
+.status-active {
+    background-color: green;
+    color: white;
+}
+.status-expired {
+    background-color: red;
+    color: white;
+}
 
-    /* btn-container */
-    .btn-container{
-        display: flex;
-        flex-direction: row;
-        margin-right: 28px;
-    }
+.btn {
+    border: none;
+    cursor: pointer;
+    padding: 6px 10px;
+    margin: 0 2px;
+    font-size: 16px;
+    border-radius: 4px;
+}
+.btn-update {
+    background-color: #27ae60;
+    color: white;
+}
+.btn-delete {
+    background-color: #c0392b;
+    color: white;
+}
+.btn-add {
+    background-color: var(--color-blue-500);
+    color: white;
+}
+.btn-back {
+    background-color: grey;
+    color: white;
+}
 
-    /* Buttons */
-    .btn-main{
-        padding: 8px 20px;
-        background-color: var(--primaryGreen);
-        color: var(--backgroundWhite);
-        border: 2px solid transparent;
-        font-weight: 600;
-        cursor: pointer;
-    }
-    .btn-main:hover {
-        border: 2px solid var(--primaryGreen);
-        background-color: var(--accentGreen2);
-        color: var(--primaryGreen);
-        transition-duration: 0.3s;
-    }
-    .btn-delete{
-        padding: 8px 20px;
-        background-color: var(--accentRed);
-        color: var(--backgroundWhite);
-        border: 2px solid transparent;
-        font-weight: 600;
-        cursor: pointer;
-    }
-    .btn-delete:hover{
-        border: 2px solid var(--accentRed);
-        background-color: var(--accentGreen2);
-        color: var(--accentRed);
-        transition-duration: 0.3s;
-    }
+
+/* Popup Tambah Voucher */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+.popup-form {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 300px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.popup-form input,
+.popup-form select {
+  width: 100%;
+  padding: 6px 10px;
+  margin: 5px 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.popup-form h1 {
+    margin-bottom: 40px;
+    font-size: larger;
+    font-weight: 700;
+}
 
 </style>
