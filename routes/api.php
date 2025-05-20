@@ -5,14 +5,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PenukaranKoinController;
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
-
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('/login', [AuthController::class, 'login'])
+     ->middleware('web'); // Ini yang paling krusial
 Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
-Route::get('/get-user', [AuthController::class, 'getUser'])->name('auth.getUser');
+// Route::get('/get-user', [AuthController::class, 'getUser'])->name('auth.getUser');
+
+Route::middleware(['web', 'auth'])->group(function () { // Gunakan middleware 'web'
+    Route::get('/get-user', [AuthController::class, 'getUser'])->name('auth.getUser');
+});
 
 // Penukaran Koin API Routes
 Route::get('/user/{id}/saldo', [PenukaranKoinController::class, 'getSaldo'])->name('user.saldo');
