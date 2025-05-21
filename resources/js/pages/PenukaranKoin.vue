@@ -1,7 +1,7 @@
 <script setup>
 import Footer from '../components/Footer.vue';
 import Navbar from '../components/Navbar.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 
 const scrollToSection = (id) => {
@@ -11,32 +11,37 @@ const scrollToSection = (id) => {
     }
 };
 
-const totalSaldo = ref(0);
+const totalSaldo = computed(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return user ? user.saldo_koin : 0;
+});
+
 const vouchers = ref([]);
+const isLoading = ref(true);
+const errorMessage = ref('');
 
 onMounted(async () => {
     try {
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (user) {
-            // Fetch Saldo User
-            const response = await axios.get(`/api/users/${user.id}/saldo`);
-            totalSaldo.value = response.data.saldo;
-            console.log("Saldo User:", totalSaldo.value);
+        isLoading.value = true;
+        const response = await axios.get('/api/vouchers', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        // Pastikan response.data memiliki array vouchers
+        if (response.data && Array.isArray(response.data.vouchers)) {
+            vouchers.value = response.data.vouchers;
+            console.log("Vouchers data:", vouchers.value);
         } else {
-            console.warn("User not found in localStorage.");
+            throw new Error('Format data voucher tidak valid');
         }
     } catch (error) {
-        console.error("Error fetching saldo:", error);
-        totalSaldo.value = 0; // Default jika terjadi error
-    }
-
-    try {
-        // Fetch Voucher Terlepas dari Error Saldo
-        const voucherResponse = await axios.get('/api/vouchers');
-        vouchers.value = voucherResponse.data;
-        console.log("Vouchers:", vouchers.value);
-    } catch (error) {
         console.error("Error fetching vouchers:", error);
+        errorMessage.value = 'Gagal memuat data voucher. Silakan coba lagi.';
+    } finally {
+        isLoading.value = false;
     }
 });
 
@@ -49,7 +54,7 @@ onMounted(async () => {
         <div class="hero">
             <h1 class="title">Saldo Anda</h1>
             <div id="tampilan-saldo">
-                <p id="total-saldo">{{ totalSaldo }}</p>
+                <p id="total-saldo">{{ totalSaldo.toLocaleString() }}</p>
             </div>
             <h1 class="title">Ayo tukarkan Koin Anda</h1>
             <p class="subtitle">Tukar sekarang, bantu lingkungan & dapatkan reward!</p>
@@ -62,13 +67,26 @@ onMounted(async () => {
 
         <div id="tukar-voucher">
             <h1>Tukar ke Voucher</h1>
+            
+            <!-- Loading state -->
+            <div v-if="isLoading" class="loading-message">
+                Memuat data voucher...
+            </div>
+            
+            <!-- Error message -->
+            <div v-if="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+            
+            <!-- Voucher list -->
             <div class="container">
                 <div v-for="voucher in vouchers" :key="voucher.id" class="card">
-                    <img :src="voucher.image_url || '/public/images/ic_blank.png'" alt="">
+                    <img :src="voucher.image_url || '/images/ic_blank.png'" alt="Voucher Image">
                     <div class="info">
-                        <span class="nama-bank">{{ voucher.nama_voucher }}</span><br>
-                        <span class="total-judul">{{ voucher.nilai_koin }} Koin</span><br>
-                        <span class="total-nominal">{{ voucher.deskripsi }}</span>
+                        <h3 class="nama-voucher">{{ voucher.nama_voucher }}</h3>
+                        <p class="nilai-koin">{{ voucher.nilai_koin.toLocaleString() }} Koin</p>
+                        <p class="deskripsi">{{ voucher.deskripsi }}</p>
+                        <button class="tukar-btn">Tukar Sekarang</button>
                     </div>
                 </div>
             </div>
@@ -225,6 +243,18 @@ onMounted(async () => {
         background-color: var(--accentGreen1);
     }
 
+    /* Tambahkan style untuk loading dan error message */
+    .loading-message, .error-message {
+        text-align: center;
+        padding: 20px;
+        font-size: 18px;
+        color: var(--primaryGreen);
+    }
+
+    .error-message {
+        color: var(--accentRed);
+    }
+
     /* Tukar ke Voucher */
     #tukar-voucher {
         display: flex;
@@ -241,20 +271,64 @@ onMounted(async () => {
     }
     .container {
         display: grid;
-        grid-template-columns: repeat(4, 2fr);
-        gap: 16px;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
     }
+
     .card {
-        background-color: var(--accentGreen1);
-        display: flex;
-        align-items: center;
-        padding: 12px 16px;
-        gap: 12px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease;
     }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
     .card img {
-        width: 75px;
-        height: auto;
-        object-fit: contain;
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .info {
+        padding: 15px;
+    }
+
+    .nama-voucher {
+        color: var(--primaryGreen);
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .nilai-koin {
+        font-weight: bold;
+        color: var(--textBlack);
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .deskripsi {
+        color: var(--textGrey);
+        margin-bottom: 15px;
+    }
+
+    .tukar-btn {
+        background-color: var(--primaryGreen);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        font-weight: bold;
+    }
+
+    .tukar-btn:hover {
+        background-color: var(--accentGreen1);
     }
 
     /* Tukar ke Rupiah */

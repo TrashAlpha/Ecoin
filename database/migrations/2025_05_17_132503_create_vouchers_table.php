@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_voucher');
             $table->integer('nilai_koin');
             $table->text('deskripsi')->nullable();
+            $table->string('image_url')->nullable();
             $table->enum('status', ['aktif', 'kadaluarsa'])->default('aktif');
             $table->timestamps();
         });

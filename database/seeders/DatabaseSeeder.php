@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
             DB::table('vouchers')->insert([
                 'nama_voucher' => 'Voucher ' . $x,
                 'deskripsi' => $faker->sentence(),
-                'nilai_koin' => $faker->numberBetween(100, 1000),
+                'nilai_koin' => $faker->numberBetween(10, 500),
                 'status' => 'aktif',
                 'created_at' => now(),
                 'updated_at' => now(),
