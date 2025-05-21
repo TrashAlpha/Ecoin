@@ -72,64 +72,64 @@ function handleConfirm() {
                     <div class="voucher-card" @click="openModal({ name: 'Pluxxe', image: '/public/images/pluxxe.png' })">
                         <img src="/public/images/pluxxe.png" alt="">
                         <div class="info">
-                            <span class="voucher-name"> Koin</span><br>
-                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="voucher-name"> Koin</span>
+                            <span class="total-judul">Detail Voucher</span>
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
                     <div class="voucher-card" @click="openModal({ name: 'Shell', image: '/public/images/shell.png' })">
                         <img src="/public/images/shell.png" alt="">
                         <div class="info">
-                            <span class="voucher-name"> Koin</span><br>
-                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="voucher-name"> Koin</span>
+                            <span class="total-judul">Detail Voucher</span>
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
                     <div class="voucher-card" @click="openModal({ name: 'Steam', image: '/public/images/steam.jpg' })">
                         <img src="/public/images/steam.jpg" alt="">
                         <div class="info">
-                            <span class="voucher-name"> Koin</span><br>
-                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="voucher-name"> Koin</span>
+                            <span class="total-judul">Detail Voucher</span>
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
                     <div class="voucher-card" @click="openModal({ name: 'Indomaret', image: '/public/images/indomaret.png' })">
                         <img src="/public/images/indomaret.png" alt="">
                         <div class="info">
-                            <span class="voucher-name"> Koin</span><br>
-                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="voucher-name"> Koin</span>
+                            <span class="total-judul">Detail Voucher</span>
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
                     <div class="voucher-card" @click="openModal({ name: 'Familymart', image: '/public/images/familymart.png' })">
                         <img src="/public/images/familymart.png" alt="">
                         <div class="info">
-                            <span class="voucher-name"> Koin</span><br>
-                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="voucher-name"> Koin</span>
+                            <span class="total-judul">Detail Voucher</span>
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
                     <div class="voucher-card" @click="openModal({ name: 'Amazon', image: '/public/images/amazon.png' })">
                         <img src="/public/images/amazon.png" alt="">
                         <div class="info">
-                            <span class="voucher-name"> Koin</span><br>
-                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="voucher-name"> Koin</span>
+                            <span class="total-judul">Detail Voucher</span>
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
                     <div class="voucher-card" @click="openModal({ name: 'Alfamidi', image: '/public/images/alfamidi.png' })">
                         <img src="/public/images/alfamidi.png" alt="">
                         <div class="info">
-                            <span class="voucher-name"> Koin</span><br>
-                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="voucher-name"> Koin</span>
+                            <span class="total-judul">Detail Voucher</span>
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
                     <div class="voucher-card" @click="openModal({ name: 'Alfamart', image: '/public/images/alfamaert.png' })">
                         <img src="/public/images/alfamart.png" alt="">
                         <div class="info">
-                            <span class="voucher-name"> Koin</span><br>
-                            <span class="total-judul">Detail Voucher</span><br>
+                            <span class="voucher-name"> Koin</span>
+                            <span class="total-judul">Detail Voucher</span>
                             <span class="total-nominal">detail</span>
                         </div>
                     </div>
@@ -153,6 +153,7 @@ function handleConfirm() {
             :visible="showModal"
             :coins="150"
             :voucherName="selectedVoucher?.name"
+            :icon="'/images/mdi_voucher.png'"
             @cancel="handleCancel"
             @confirm="handleConfirm"
         />
@@ -362,8 +363,7 @@ function handleConfirm() {
         margin-top: 20px;
         margin-bottom: 20px;
         width: 500px;
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
+        border-radius: 4px;
     }
 
     .form button {
@@ -374,6 +374,7 @@ function handleConfirm() {
         color: var(--textField);
         font-size: 20px;
         font-weight: bold;
+        border-radius: 4px;
     }
 
     .form button:hover {
@@ -396,18 +397,22 @@ function handleConfirm() {
     .voucher-card {
         background-color: var(--accentGreen1);
         display: flex;
+        flex-direction: row;
         align-items: center;
         padding: 12px 16px;
         gap: 12px;
+        border-radius: 4px;
     }
 
     .voucher-card img {
         width: 75px;
         height: auto;
         object-fit: contain;
+        border-radius: 4px;
     }
 
     .voucher-card .info {
+        flex: 1; /* atau flex-basis: 60%; jika mau lebih kontrol */
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -415,11 +420,13 @@ function handleConfirm() {
 
     .voucher-name {
         background-color: var(--primaryGreen);
-        width: 60px;
+        width: 60px; /* atau bisa pakai fit-content jika fleksibel */
         padding: 2px 8px;
         color: var(--textField);
         font-size: 14px;
         font-weight: bold;
+        text-align: right; /* ini yang meratakan teks ke kanan di dalam elemen */
+        border-radius: 4px;
     }
 
     .total-judul {

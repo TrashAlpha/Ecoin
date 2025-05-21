@@ -15,6 +15,7 @@ import PenukaranKoin from './pages/PenukaranKoin.vue';
 import ManajemenUser from './pages/ManajemenUser.vue';
 import DaftarTransaksi from './pages/DaftarTransaksi.vue';
 import VerifikasiPenukaran from './pages/VerifikasiPenukaran.vue';
+import ManajemenVoucher from './pages/ManajemenVoucher.vue';
 
 const el = document.getElementById('app');
 
@@ -56,6 +57,9 @@ if (el) {
       break;
     case 'manajemen-user':
         component = ManajemenUser;
+        break;
+    case 'manajemen-voucher':
+        component = ManajemenVoucher;
         break;
     case 'profil':
         component = Profil;
