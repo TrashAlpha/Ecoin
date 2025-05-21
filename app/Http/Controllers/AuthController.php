@@ -34,10 +34,27 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+        // Logout user
         Auth::logout();
-        return redirect('/')->with('success', 'Logout successful!');
+        
+        // Invalidate session
+        $request->session()->invalidate();
+        
+        // Regenerate CSRF token
+        $request->session()->regenerateToken();
+        
+        // Untuk request API (Postman/Axios)
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Logout successful',
+                'redirect' => url('/') // Tambahkan URL redirect untuk frontend
+            ]);
+        }
+        
+        // Untuk request web biasa
+        return redirect('/');
     }
 
     public function register(Request $request)

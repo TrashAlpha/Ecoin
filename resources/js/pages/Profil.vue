@@ -1,21 +1,42 @@
 <script setup>
+import axios from 'axios';
+
 function daftarTransaksi(){
-    window.location.href = '/daftartransaksi'
+    window.location.href = '/daftartransaksi';
 }
+
 function beranda(){
-    window.location.href = '/beranda'
+    window.location.href = '/beranda';
 }
-function logout(){
-    // Implement logout logic here
-    axios.get('/api/logout')
-        .then(response => {
-            // Handle successful logout
-            localStorage.removeItem('user'); // Remove user data from local storage
-            window.location.href = '/beranda'; // Redirect to login page
-        })
-        .catch(error => {
-            console.error('Logout failed:', error);
+
+async function logout() {
+    try {
+        // Tambahkan CSRF token dari meta tag
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        
+        const response = await axios.post('/api/logout', {}, {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            withCredentials: true
         });
+        
+        // Hapus data user dari localStorage
+        localStorage.removeItem('user');
+        
+        // Redirect ke halaman beranda
+        window.location.href = '/beranda';
+        
+    } catch (error) {
+        console.error('Logout failed:', error);
+        
+        // Jika error karena CSRF token mismatch, reload halaman
+        if (error.response && error.response.status === 419) {
+            window.location.reload();
+        }
+    }
 }
 </script>
 <template>
