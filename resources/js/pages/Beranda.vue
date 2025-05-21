@@ -35,13 +35,13 @@ import Footer from '../components/Footer.vue';
                 </h1>
             </div>
             <div class="flex flex-wrap justify-between">
-                <FeatureItem :icon="'/public/images/phone.png'" title="Mudah Cepat" description="Proses penukaran yang mudah dipelajari dan dipahami" />
+                <FeatureItem :icon="'/images/phone.png'" title="Mudah Cepat" description="Proses penukaran yang mudah dipelajari dan dipahami" />
                 <FeatureItem
-                    :icon="'/public/images/calculator.png'"
+                    :icon="'/images/calculator.png'"
                     title="Atur Jadwal"
                     description="Penukaran dapat disesuaikan berdasarkan tanggal dan waktu"
                 />
-                <FeatureItem :icon="'/public/images/paper.png'" title="Mudah Cepat" description="Banyak informasi mengenai sampah dan manfaatnya" />
+                <FeatureItem :icon="'/images/paper.png'" title="Mudah Cepat" description="Banyak informasi mengenai sampah dan manfaatnya" />
             </div>
         </div>
         <div class="flex items-center gap-10 px-10 pt-24">

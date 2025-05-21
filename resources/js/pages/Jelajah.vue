@@ -63,8 +63,8 @@ import Navbar from '../components/Navbar.vue';
                         <h3>Memilah Sampah</h3>
                         <p>Menyesuaikan sampah dengan kategorinya dan kelompoknya...</p>
                         <div class="card-links">
-                            <a href="#">📖 Baca Artikel</a>
-                            <a href="#">📝 Buat Kuis</a>
+                            <a href="#"><img src="/public/images/iconamoon_eye_light.png" class="icon"/> Baca Artikel</a>
+                            <a href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
                         </div>
                     </div>
                 </div>
@@ -75,8 +75,8 @@ import Navbar from '../components/Navbar.vue';
                         <h3>Memilah Sampah</h3>
                         <p>Menyesuaikan sampah dengan kategorinya dan kelompoknya...</p>
                         <div class="card-links">
-                            <a href="#">📖 Baca Artikel</a>
-                            <a href="#">📝 Buat Kuis</a>
+                            <a href="#"><img src="/public/images/iconamoon_eye_light.png" class="icon"/> Baca Artikel</a>
+                            <a href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
                         </div>
                     </div>
                 </div>
@@ -87,8 +87,8 @@ import Navbar from '../components/Navbar.vue';
                         <h3>Memilah Sampah</h3>
                         <p>Menyesuaikan sampah dengan kategorinya dan kelompoknya...</p>
                         <div class="card-links">
-                            <a href="#">📖 Baca Artikel</a>
-                            <a href="#">📝 Buat Kuis</a>
+                            <a href="#"><img src="/public/images/iconamoon_eye_light.png" class="icon"/> Baca Artikel</a>
+                            <a href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
                         </div>
                     </div>
                 </div>
@@ -99,8 +99,8 @@ import Navbar from '../components/Navbar.vue';
                         <h3>Memilah Sampah</h3>
                         <p>Menyesuaikan sampah dengan kategorinya dan kelompoknya...</p>
                         <div class="card-links">
-                            <a href="#">📖 Baca Artikel</a>
-                            <a href="#">📝 Buat Kuis</a>
+                            <a href="#"><img src="/public/images/iconamoon_eye_light.png" class="icon"/> Baca Artikel</a>
+                            <a href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
                         </div>
                     </div>
                 </div>
@@ -344,7 +344,10 @@ import Navbar from '../components/Navbar.vue';
     .artikel-button button {
         border: 1px solid var(--primaryGreen);
         background-color: var(--primaryGreen);
-        padding: 20px;
+        padding: 8px 24px; /* 12px atas-bawah, 24px kiri-kanan */
+        border-radius: 4px;
+        color: white; /* pastikan teks terlihat */
+        font-size: 16px; /* opsional: atur ukuran teks */
     }
     .artikel-button button:hover {
         background-color: var(--accentGreen2);
@@ -381,6 +384,7 @@ import Navbar from '../components/Navbar.vue';
         font-size: 12px;
         padding: 4px 8px;
         z-index: 1;
+        border-radius: 4px;
     }
     .card-body {
         padding: 16px;
@@ -436,6 +440,14 @@ import Navbar from '../components/Navbar.vue';
     }
     .harga {
         font-weight: 600;
+    }
+        .card-links a img.icon {
+        width: 16px !important;
+        height: 16px !important;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 6px;
+        object-fit: contain;
     }
 
 
