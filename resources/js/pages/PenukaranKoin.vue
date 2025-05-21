@@ -79,14 +79,18 @@ onMounted(async () => {
             </div>
             
             <!-- Voucher list -->
-            <div class="container">
+             <div class="container">
                 <div v-for="voucher in vouchers" :key="voucher.id" class="card">
-                    <img :src="voucher.image_url || '/images/ic_blank.png'" alt="Voucher Image">
+                    <img :src="voucher.image_url || '/images/logo.png'" alt="Voucher Image">
                     <div class="info">
                         <h3 class="nama-voucher">{{ voucher.nama_voucher }}</h3>
                         <p class="nilai-koin">{{ voucher.nilai_koin.toLocaleString() }} Koin</p>
-                        <p class="deskripsi">{{ voucher.deskripsi }}</p>
-                        <button class="tukar-btn">Tukar Sekarang</button>
+                        <div class="deskripsi-container">
+                            <p class="deskripsi">{{ voucher.deskripsi }}</p>
+                        </div>
+                        <div class="button-container">
+                            <button class="tukar-btn">Tukar Sekarang</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -282,10 +286,9 @@ onMounted(async () => {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         overflow: hidden;
         transition: transform 0.3s ease;
-    }
-
-    .card:hover {
-        transform: translateY(-5px);
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Pastikan semua card memiliki tinggi yang sama */
     }
 
     .card img {
@@ -294,14 +297,22 @@ onMounted(async () => {
         object-fit: cover;
     }
 
+    .card:hover {
+        transform: scale(1.02);
+    }
+
     .info {
         padding: 15px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; /* Mengisi ruang tersisa */
     }
 
     .nama-voucher {
         color: var(--primaryGreen);
         font-size: 20px;
         margin-bottom: 10px;
+        min-height: 24px; /* Tinggi tetap untuk judul */
     }
 
     .nilai-koin {
@@ -309,11 +320,28 @@ onMounted(async () => {
         color: var(--textBlack);
         font-size: 18px;
         margin-bottom: 10px;
+        min-height: 20px; /* Tinggi tetap untuk nilai koin */
+    }
+
+    .deskripsi-container {
+        flex-grow: 1; /* Mengisi ruang tersisa */
+        margin-bottom: 15px;
+        overflow: hidden; /* Untuk deskripsi yang panjang */
     }
 
     .deskripsi {
         color: var(--textGrey);
-        margin-bottom: 15px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Batasi jumlah baris */
+        -webkit-box-orient: vertical;
+        line-clamp: 3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .button-container {
+        margin-top: auto; /* Dorong tombol ke bawah */
+        padding-top: 10px;
     }
 
     .tukar-btn {
@@ -325,6 +353,7 @@ onMounted(async () => {
         cursor: pointer;
         width: 100%;
         font-weight: bold;
+        margin-top: auto; /* Pastikan tombol selalu di bawah */
     }
 
     .tukar-btn:hover {
