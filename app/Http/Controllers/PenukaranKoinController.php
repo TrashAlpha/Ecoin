@@ -22,10 +22,32 @@ class PenukaranKoinController extends Controller
     }
 
     // Mendapatkan daftar voucher yang tersedia
+    // public function getAvailableVouchers()
+    // {
+    //     $vouchers = Voucher::all();
+
+    //     return response()->json(['vouchers' => $vouchers], 200);
+    // }
+
     public function getAvailableVouchers()
     {
-        $vouchers = Voucher::all();
+        try {
+            // Ambil hanya voucher yang statusnya aktif
+            $vouchers = Voucher::where('status', 'aktif')
+                ->select(['id', 'nama_voucher', 'nilai_koin', 'deskripsi', 'image_url'])
+                ->get()
+                ->toArray();
 
-        return response()->json(['vouchers' => $vouchers], 200);
+            return response()->json([
+                'success' => true,
+                'vouchers' => $vouchers
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengambil data voucher'
+            ], 500);
+        }
     }
 }
