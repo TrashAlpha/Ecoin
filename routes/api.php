@@ -7,7 +7,7 @@ use App\Http\Controllers\PenukaranKoinController;
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/login', [AuthController::class, 'login'])
-     ->middleware('web'); // Ini yang paling krusial
+     ->middleware('web');
 Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 // Route::get('/get-user', [AuthController::class, 'getUser'])->name('auth.getUser');
 
