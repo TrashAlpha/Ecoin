@@ -1,5 +1,8 @@
 <script setup>
 import axios from 'axios';
+import { ref, onMounted } from 'vue';
+
+const user = ref(null);
 
 function daftarTransaksi(){
     window.location.href = '/daftartransaksi';
@@ -38,7 +41,49 @@ async function logout() {
         }
     }
 }
+
+async function fetchUserData() {
+    try {
+        // Cek localStorage terlebih dahulu untuk UX yang lebih cepat
+        const saved = localStorage.getItem('user');
+        if (saved) {
+            user.value = JSON.parse(saved);
+        }
+
+        // Ambil data terbaru dari API
+        const response = await axios.get('http://localhost:8000/api/get-user', {
+            withCredentials: true,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (response.data && response.data.user) {
+            user.value = response.data.user;
+            // Simpan ke localStorage untuk akses lebih cepat next time
+            localStorage.setItem('user', JSON.stringify(user.value));
+            console.log('User data fetched:', user.value);
+        } else {
+            // Jika tidak ada user yang login
+            user.value = null;
+            localStorage.removeItem('user');
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        // Jika error (misal: token expired), anggap user tidak login
+        if (error.response && error.response.status === 401) {
+            user.value = null;
+            localStorage.removeItem('user');
+        }
+    }
+}
+
+// Panggil fetchUserData ketika komponen dimount
+onMounted(() => {
+    fetchUserData();
+});
 </script>
+
 <template>
     <div class="profil">
         <!-- Tombol close -->
@@ -52,8 +97,8 @@ async function logout() {
                     alt="User Icon"
                     class="ikon"
                 />
-                <h2>Pengguna</h2>
-                <p>pengguna@contoh.com</p>
+                <h2>{{ user ? user.name : 'Pengguna' }}</h2>
+                <p>{{ user ? user.email : 'pengguna@contoh.com' }}</p>
                 <button class="keluar" @click="logout">Keluar</button>
             </div>
 
@@ -69,13 +114,13 @@ async function logout() {
                 <!-- Tambahkan pembungkus form -->
                 <div class="form-container">
                     <label>Nama</label>
-                    <input type="text" placeholder="Pengguna" />
+                    <input type="text" :placeholder="user ? user.name : 'Pengguna'" :value="user ? user.name : ''" />
 
                     <label>Email</label>
-                    <input type="email" placeholder="pengguna@contoh.com" />
+                    <input type="email" :placeholder="user ? user.email : 'pengguna@contoh.com'" :value="user ? user.email : ''" />
 
                     <label>Saldo Koin</label>
-                    <input type="text" placeholder="0.000000" />
+                    <input type="text" :placeholder="user ? user.saldo_koin + '' : '0.000000'" :value="user ? user.saldo_koin + '' : ''" />
 
                     <label>Facebook</label>
                     <input
