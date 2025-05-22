@@ -70,7 +70,7 @@ const transaksi = [
 ];
 
 function goBack() {
-    window.location.href = "/profil";
+    window.location.href = "/profile";
 }
 </script>
 
