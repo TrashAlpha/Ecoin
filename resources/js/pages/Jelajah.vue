@@ -210,7 +210,7 @@ const formatHarga = (angka) => {
     .hero {
         position: relative; /* tetap supaya .hero-konten absolute bisa relatif ke sini, tapi kita akan ubah */
         display: flex;      /* aktifkan flexbox */
-        height: 550px;      /* tinggi hero */
+        height: 600px;      /* tinggi hero */
         width: 100%;
         overflow: hidden;
     }
