@@ -1,26 +1,52 @@
-<<<<<<< HEAD
 <script setup>
-function daftarTransaksi(){
-    window.location.href = '/daftartransaksi'
+import { onMounted } from "vue";
+import axios from "axios";
+import { theme } from "@/config/theme";
+
+// Navigasi ke halaman daftar transaksi
+function daftarTransaksi() {
+    window.location.href = "/daftartransaksi";
 }
-function beranda(){
-    window.location.href = '/beranda'
+
+// Navigasi ke beranda
+function beranda() {
+    window.location.href = "/beranda";
 }
-function logout(){
-    // Implement logout logic here
+
+// Logout user
+function logout() {
     axios.get('/api/logout')
-        .then(response => {
-            // Handle successful logout
-            localStorage.removeItem('user'); // Remove user data from local storage
-            window.location.href = '/beranda'; // Redirect to login page
+        .then(() => {
+            localStorage.removeItem('user');
+            window.location.href = '/beranda';
         })
         .catch(error => {
             console.error('Logout failed:', error);
         });
 }
+
+// Set tema saat komponen dimount
+onMounted(() => {
+    const root = document.documentElement;
+    root.style.setProperty("--primaryGreen", theme.colors.primaryGreen);
+    root.style.setProperty("--accentGreen1", theme.colors.accentGreen1);
+    root.style.setProperty("--accentGreen2", theme.colors.accentGreen2);
+    root.style.setProperty("--textGrey", theme.colors.textGrey);
+    root.style.setProperty("--textBlack", theme.colors.textBlack);
+    root.style.setProperty("--textField", theme.colors.textField);
+    root.style.setProperty("--backgroundWhite", theme.colors.backgroundWhite);
+    root.style.setProperty("--fontFamily", theme.fonts.family);
+});
+
+// Gaya untuk teks "ECOIN"
+const styleEcoinText = {
+    fontFamily: "'DM Sans', sans-serif",
+    fontSize: "40px",
+    fontWeight: 700,
+    color: "var(--backgroundWhite)",
+};
 </script>
-=======
->>>>>>> 7cef0fd6559c8ee396111405009d869ade967852
+
 <template>
     <div class="profil">
         <button class="tutup" @click="beranda">✕</button>
@@ -33,15 +59,9 @@ function logout(){
                     alt="User Icon"
                     class="ikon"
                 />
-<<<<<<< HEAD
                 <h2>Pengguna</h2>
                 <p>pengguna@contoh.com</p>
                 <button class="keluar" @click="logout">Keluar</button>
-=======
-                <h2 :style="stylePengguna">Pengguna</h2>
-                <p :style="styleEmail">pengguna@contoh.com</p>
-                <button class="keluar">Keluar</button>
->>>>>>> 7cef0fd6559c8ee396111405009d869ade967852
             </div>
 
             <!-- KANAN -->
@@ -90,51 +110,6 @@ function logout(){
         </section>
     </div>
 </template>
-
-<script setup>
-import { onMounted } from "vue";
-import { theme } from "@/config/theme";
-
-function daftarTransaksi() {
-    window.location.href = "/daftartransaksi";
-}
-function beranda() {
-    window.location.href = "/beranda";
-}
-
-onMounted(() => {
-    const root = document.documentElement;
-    root.style.setProperty("--primaryGreen", theme.colors.primaryGreen);
-    root.style.setProperty("--accentGreen1", theme.colors.accentGreen1);
-    root.style.setProperty("--accentGreen2", theme.colors.accentGreen2);
-    root.style.setProperty("--textGrey", theme.colors.textGrey);
-    root.style.setProperty("--textBlack", theme.colors.textBlack);
-    root.style.setProperty("--textField", theme.colors.textField);
-    root.style.setProperty("--backgroundWhite", theme.colors.backgroundWhite);
-    root.style.setProperty("--fontFamily", theme.fonts.family);
-});
-
-const stylePengguna = {
-    color: "var(--textBlack)",
-    fontFamily: "var(--fontFamily)",
-    fontSize: theme.fonts.size.subheading,
-    fontWeight: theme.fonts.weight.semibold,
-};
-
-const styleEmail = {
-    color: "var(--textGrey)",
-    fontFamily: "var(--fontFamily)",
-    fontSize: theme.fonts.size.small,
-    fontWeight: theme.fonts.weight.regular,
-};
-
-const styleEcoinText = {
-    fontFamily: "'DM Sans', sans-serif",
-    fontSize: "40px",
-    fontWeight: 700,
-    color: "var(--backgroundWhite)",
-};
-</script>
 
 
 <style scoped>
