@@ -251,14 +251,19 @@ const formatHarga = (angka) => {
         padding: 20px;
     }
     .konten-heading {
-        text-align: center;
-        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        padding-left: 32px;
+        gap: 12px;
+        font-weight: var(--fontWeightBold);
+        color: var(--primaryGreen);
+        font-size: var(--fontSizeMedium);
+        margin-bottom: 8px;
     }
     .heading-line {
-        width: 50px;
-        height: 3px;
-        background-color: #004d4a;
-        margin: 0 auto 10px;
+        width: 100px;
+        height: 5px;
+        background-color: var(--primaryGreen);
     }
     .carousel-container {
         display: flex;
