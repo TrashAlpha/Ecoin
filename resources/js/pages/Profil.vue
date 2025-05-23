@@ -1,7 +1,6 @@
 <script setup>
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
-import { theme } from "@/config/theme";
 
 const user = ref(null);
 
