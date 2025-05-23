@@ -31,7 +31,7 @@
                 <img
                     src="/public/images/recycle-woman.png"
                     alt="Recycle"
-                    class="image-box"
+                    class="image-box image-right"
                 />
             </div>
         </section>
@@ -92,7 +92,7 @@
                 <img
                     src="/public/images/sorting-trash.png"
                     alt="Sorting Trash"
-                    class="image-box"
+                    class="image-box image-right"
                 />
             </div>
         </section>
@@ -181,6 +181,10 @@ export default {
     color: white;
 }
 
+.alt-bg .content-left {
+    padding-left: 5rem;
+}
+
 .content-left,
 .content-right {
     flex: 1;
@@ -210,7 +214,6 @@ export default {
     margin: 0;
     white-space: nowrap;
     position: relative;
-    /* margin: 0 0 1.5rem 0; */
 }
 
 .subtitle-white {
@@ -223,6 +226,7 @@ export default {
     background-color: var(--primaryGreen);
     border: none;
     margin-left: 1rem;
+    border-radius: 4px;
 }
 
 .section-text {
@@ -241,6 +245,7 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    margin-top: 1.5rem;
 }
 
 .mission-item {
@@ -263,18 +268,27 @@ export default {
     justify-content: center;
     flex-shrink: 0;
     box-shadow: 5px 8px 0 rgba(152, 176, 176, 0.4);
+    border-radius: 4px;
 }
 
 .image-container {
     display: flex;
     justify-content: center;
+    align-items: center;
+    padding: 0 2rem;
+    width: 100%;
 }
 
 .image-box {
-    border-radius: var(--borderRadius);
+    border-radius: 5px;
     box-shadow: var(--shadowLight);
-    width: 20rem;
+    width: 100%;
+    max-width: 450px;
     height: auto;
+}
+
+.image-right {
+    margin-left: 1rem;
 }
 
 /* HUBUNGI KAMI */
@@ -304,7 +318,7 @@ export default {
 .contact-input {
     padding: 0.75rem 1rem;
     border: none;
-    /* border-radius: 4px; */
+    border-radius: 4px;
     background-color: white;
     color: var(--primaryGreen);
     font-family: "Poppins", sans-serif;
@@ -319,7 +333,7 @@ export default {
     padding: 1rem;
     min-height: 150px;
     border: none;
-    /* border-radius: 4px; */
+    border-radius: 4px;
     background-color: white;
     color: var(--primaryGreen);
     resize: none;
@@ -329,12 +343,15 @@ export default {
 .send-button {
     position: absolute;
     bottom: 10px;
-    left: 10px;
+    right: 10px;
     background-color: var(--primaryGreen);
-    padding: 6px;
+    padding: 10px;
     border: none;
-    /* border-radius: 4px; */
+    border-radius: 6px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .plane-icon {
