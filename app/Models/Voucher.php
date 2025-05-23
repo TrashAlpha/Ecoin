@@ -14,7 +14,12 @@ class Voucher extends Model
         'nama_voucher',
         'nilai_koin',
         'deskripsi',
+        'image_url',
         'status'
+    ];
+
+    protected $casts = [
+        'nilai_koin' => 'float',
     ];
 
     public function penukaranKoin()

@@ -1,6 +1,8 @@
 <script setup>
 import Footer from '../components/Footer.vue';
 import Navbar from '../components/Navbar.vue';
+import { ref, onMounted, computed } from 'vue';
+import axios from 'axios';
 
 const scrollToSection = (id) => {
     const el = document.getElementById(id);
@@ -8,6 +10,41 @@ const scrollToSection = (id) => {
         el.scrollIntoView({ behavior: 'smooth' });
     }
 };
+
+const totalSaldo = computed(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return user ? user.saldo_koin : 0;
+});
+
+const vouchers = ref([]);
+const isLoading = ref(true);
+const errorMessage = ref('');
+
+onMounted(async () => {
+    try {
+        isLoading.value = true;
+        const response = await axios.get('/api/vouchers', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        // Pastikan response.data memiliki array vouchers
+        if (response.data && Array.isArray(response.data.vouchers)) {
+            vouchers.value = response.data.vouchers;
+            console.log("Vouchers data:", vouchers.value);
+        } else {
+            throw new Error('Format data voucher tidak valid');
+        }
+    } catch (error) {
+        console.error("Error fetching vouchers:", error);
+        errorMessage.value = 'Gagal memuat data voucher. Silakan coba lagi.';
+    } finally {
+        isLoading.value = false;
+    }
+});
+
 </script>
 
 <template>
@@ -17,7 +54,7 @@ const scrollToSection = (id) => {
         <div class="hero">
             <h1 class="title">Saldo Anda</h1>
             <div id="tampilan-saldo">
-                <p id="total-saldo">120.000</p>
+                <p id="total-saldo">{{ totalSaldo.toLocaleString() }}</p>
             </div>
             <h1 class="title">Ayo tukarkan Koin Anda</h1>
             <p class="subtitle">Tukar sekarang, bantu lingkungan & dapatkan reward!</p>
@@ -26,138 +63,34 @@ const scrollToSection = (id) => {
                 <button @click="scrollToSection('tukar-voucher')">Tukar ke Voucher</button>
                 <button @click="scrollToSection('tukar-rupiah')">Tukar ke Rupiah</button>
             </div>
-
         </div>
 
         <div id="tukar-voucher">
             <h1>Tukar ke Voucher</h1>
-            <div class="container">
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
+            
+            <!-- Loading state -->
+            <div v-if="isLoading" class="loading-message">
+                Memuat data voucher...
+            </div>
+            
+            <!-- Error message -->
+            <div v-if="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+            
+            <!-- Voucher list -->
+             <div class="container">
+                <div v-for="voucher in vouchers" :key="voucher.id" class="card">
+                    <img :src="voucher.image_url || '/images/logo.png'" alt="Voucher Image">
                     <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="/public/images/ic_blank.png" alt="">
-                    <div class="info">
-                        <span class="nama-bank">KOIN</span><br>
-                        <span class="total-judul">Detail Voucher</span><br>
-                        <span class="total-nominal">detail</span>
+                        <h3 class="nama-voucher">{{ voucher.nama_voucher }}</h3>
+                        <p class="nilai-koin">{{ voucher.nilai_koin.toLocaleString() }} Koin</p>
+                        <div class="deskripsi-container">
+                            <p class="deskripsi">{{ voucher.deskripsi }}</p>
+                        </div>
+                        <div class="button-container">
+                            <button class="tukar-btn">Tukar Sekarang</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -316,6 +249,18 @@ const scrollToSection = (id) => {
         background-color: var(--accentGreen1);
     }
 
+    /* Tambahkan style untuk loading dan error message */
+    .loading-message, .error-message {
+        text-align: center;
+        padding: 20px;
+        font-size: 18px;
+        color: var(--primaryGreen);
+    }
+
+    .error-message {
+        color: var(--accentRed);
+    }
+
     /* Tukar ke Voucher */
     #tukar-voucher {
         display: flex;
@@ -332,20 +277,89 @@ const scrollToSection = (id) => {
     }
     .container {
         display: grid;
-        grid-template-columns: repeat(4, 2fr);
-        gap: 16px;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
     }
+
     .card {
-        background-color: var(--accentGreen1);
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease;
         display: flex;
-        align-items: center;
-        padding: 12px 16px;
-        gap: 12px;
+        flex-direction: column;
+        height: 100%; /* Pastikan semua card memiliki tinggi yang sama */
     }
+
     .card img {
-        width: 75px;
-        height: auto;
-        object-fit: contain;
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+    }
+
+    .info {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; /* Mengisi ruang tersisa */
+    }
+
+    .nama-voucher {
+        color: var(--primaryGreen);
+        font-size: 20px;
+        margin-bottom: 10px;
+        min-height: 24px; /* Tinggi tetap untuk judul */
+    }
+
+    .nilai-koin {
+        font-weight: bold;
+        color: var(--textBlack);
+        font-size: 18px;
+        margin-bottom: 10px;
+        min-height: 20px; /* Tinggi tetap untuk nilai koin */
+    }
+
+    .deskripsi-container {
+        flex-grow: 1; /* Mengisi ruang tersisa */
+        margin-bottom: 15px;
+        overflow: hidden; /* Untuk deskripsi yang panjang */
+    }
+
+    .deskripsi {
+        color: var(--textGrey);
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Batasi jumlah baris */
+        -webkit-box-orient: vertical;
+        line-clamp: 3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .button-container {
+        margin-top: auto; /* Dorong tombol ke bawah */
+        padding-top: 10px;
+    }
+
+    .tukar-btn {
+        background-color: var(--primaryGreen);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        font-weight: bold;
+        margin-top: auto; /* Pastikan tombol selalu di bawah */
+    }
+
+    .tukar-btn:hover {
+        background-color: var(--accentGreen1);
     }
 
     /* Tukar ke Rupiah */

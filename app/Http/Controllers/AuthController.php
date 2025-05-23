@@ -15,11 +15,12 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
+            $request->session()->regenerate(); // Regenerasi session
+            
             return response()->json([
                 'message' => 'Login berhasil!',
-                'user'    => $user
-            ], 200);
+                'user' => Auth::user()
+            ])->withCookie(cookie('laravel_session', session()->getId())); // Eksplisit set cookie
         }
 
         if ($request->expectsJson()) {
@@ -33,10 +34,27 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+        // Logout user
         Auth::logout();
-        return redirect('/')->with('success', 'Logout successful!');
+        
+        // Invalidate session
+        $request->session()->invalidate();
+        
+        // Regenerate CSRF token
+        $request->session()->regenerateToken();
+        
+        // Untuk request API (Postman/Axios)
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Logout successful',
+                'redirect' => url('/') // Tambahkan URL redirect untuk frontend
+            ]);
+        }
+        
+        // Untuk request web biasa
+        return redirect('/');
     }
 
     public function register(Request $request)
@@ -70,7 +88,16 @@ class AuthController extends Controller
 
     public function getUser(Request $request)
     {
-        $user = Auth::user();
+        // Gunakan guard 'web' untuk auth session biasa
+        $user = Auth::guard('web')->user();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthenticated',
+                'user' => null
+            ], 401);
+        }
+
         return response()->json([
             'user'    => $user
         ]);

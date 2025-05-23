@@ -1,65 +1,87 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import axios from "axios";
-import { theme } from "@/config/theme";
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
 
-// Navigasi ke halaman daftar transaksi
-function daftarTransaksi() {
-    window.location.href = "/daftartransaksi";
+const user = ref(null);
+
+function daftarTransaksi(){
+    window.location.href = '/daftartransaksi';
 }
 
-// Navigasi ke beranda
-function beranda() {
-    window.location.href = "/beranda";
+function beranda(){
+    window.location.href = '/beranda';
 }
 
-// Logout user
-function logout() {
-    axios.get('/api/logout')
-        .then(() => {
-            localStorage.removeItem('user');
-            window.location.href = '/beranda';
-        })
-        .catch(error => {
-            console.error('Logout failed:', error);
+async function logout() {
+    try {
+        // Tambahkan CSRF token dari meta tag
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        
+        const response = await axios.post('/api/logout', {}, {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            withCredentials: true
         });
+        
+        // Hapus data user dari localStorage
+        localStorage.removeItem('user');
+        
+        // Redirect ke halaman beranda
+        window.location.href = '/beranda';
+        
+    } catch (error) {
+        console.error('Logout failed:', error);
+        
+        // Jika error karena CSRF token mismatch, reload halaman
+        if (error.response && error.response.status === 419) {
+            window.location.reload();
+        }
+    }
 }
 
-// Tema saat mount
+async function fetchUserData() {
+    try {
+        // Cek localStorage terlebih dahulu untuk UX yang lebih cepat
+        const saved = localStorage.getItem('user');
+        if (saved) {
+            user.value = JSON.parse(saved);
+        }
+
+        // Ambil data terbaru dari API
+        const response = await axios.get('http://localhost:8000/api/get-user', {
+            withCredentials: true,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (response.data && response.data.user) {
+            user.value = response.data.user;
+            // Simpan ke localStorage untuk akses lebih cepat next time
+            localStorage.setItem('user', JSON.stringify(user.value));
+            console.log('User data fetched:', user.value);
+        } else {
+            // Jika tidak ada user yang login
+            user.value = null;
+            localStorage.removeItem('user');
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        // Jika error (misal: token expired), anggap user tidak login
+        if (error.response && error.response.status === 401) {
+            user.value = null;
+            localStorage.removeItem('user');
+        }
+    }
+}
+
+// Panggil fetchUserData ketika komponen dimount
 onMounted(() => {
-    const root = document.documentElement;
-    root.style.setProperty("--primaryGreen", theme.colors.primaryGreen);
-    root.style.setProperty("--accentGreen1", theme.colors.accentGreen1);
-    root.style.setProperty("--accentGreen2", theme.colors.accentGreen2);
-    root.style.setProperty("--textGrey", theme.colors.textGrey);
-    root.style.setProperty("--textBlack", theme.colors.textBlack);
-    root.style.setProperty("--textField", theme.colors.textField);
-    root.style.setProperty("--backgroundWhite", theme.colors.backgroundWhite);
-    root.style.setProperty("--fontFamily", theme.fonts.family);
+    fetchUserData();
 });
-
-// Gaya teks ECOIN
-const styleEcoinText = {
-    fontFamily: "'DM Sans', sans-serif",
-    fontSize: "40px",
-    fontWeight: 700,
-    color: "var(--backgroundWhite)",
-};
-
-// Modal & voucher dummy
-const showVoucherModal = ref(false);
-const vouchers = ref([
-    { id: 1, title: "Diskon 10% Belanja", desc: "Berlaku hingga 30 Juni 2025" },
-    { id: 2, title: "Gratis Ongkir", desc: "Min. belanja Rp50.000" },
-    { id: 3, title: "Potongan Rp25.000", desc: "Untuk pengguna baru" },
-    { id: 4, title: "Cashback 20%", desc: "Untuk pembelian makanan" },
-    { id: 5, title: "Diskon 50% Tiket", desc: "Event tertentu" },
-    { id: 6, title: "Voucher Kopi Gratis", desc: "Khusus member" },
-]);
-
-function toggleVoucherModal() {
-    showVoucherModal.value = !showVoucherModal.value;
-}
 </script>
 
 <template>
@@ -69,9 +91,13 @@ function toggleVoucherModal() {
         <section class="profil-isi">
             <!-- SISI KIRI -->
             <div class="sisi-kiri">
-                <img src="/public/images/user-icon.png" alt="User Icon" class="ikon" />
-                <h2>Pengguna</h2>
-                <p>pengguna@contoh.com</p>
+                <img
+                    src="/public/images/user-icon.png"
+                    alt="User Icon"
+                    class="ikon"
+                />
+                <h2>{{ user ? user.name : 'Pengguna' }}</h2>
+                <p>{{ user ? user.email : 'pengguna@contoh.com' }}</p>
                 <button class="keluar" @click="logout">Keluar</button>
             </div>
 
@@ -85,15 +111,16 @@ function toggleVoucherModal() {
 
                     <h1 class="judul">Profil</h1>
 
-                    <div class="form-container">
-                        <label>Nama</label>
-                        <input type="text" placeholder="Pengguna" />
+                <!-- Tambahkan pembungkus form -->
+                <div class="form-container">
+                    <label>Nama</label>
+                    <input type="text" :placeholder="user ? user.name : 'Pengguna'" :value="user ? user.name : ''" />
 
-                        <label>Email</label>
-                        <input type="email" placeholder="pengguna@contoh.com" />
+                    <label>Email</label>
+                    <input type="email" :placeholder="user ? user.email : 'pengguna@contoh.com'" :value="user ? user.email : ''" />
 
-                        <label>Saldo Koin</label>
-                        <input type="text" placeholder="0.000000" readonly class="readonly-field" />
+                    <label>Saldo Koin</label>
+                    <input type="text" :placeholder="user ? user.saldo_koin + '' : '0.000000'" :value="user ? user.saldo_koin + '' : ''" />
 
                         <label>Facebook</label>
                         <input type="text" placeholder="https://facebook.com/..." />

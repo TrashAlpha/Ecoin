@@ -12,7 +12,18 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->web([
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            // ...
+        ]);
+
+        // Custom CORS handler
+        $middleware->prepend(\App\Http\Middleware\CorsMiddleware::class);
+        $middleware->validateCsrfTokens(except: [
+        'api/*'
+    ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
