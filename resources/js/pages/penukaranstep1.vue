@@ -378,6 +378,7 @@ export default {
     width: 100px;
     height: 5px;
     background-color: var(--primaryGreen);
+    border-radius: 4px;
 }
 
 .steps {
@@ -426,73 +427,68 @@ export default {
 }
 
 /* Konten */
-.konten {
+/* .konten {
     padding: 60px 32px;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
+} */
 
-.form-container {
+/* .form-container {
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 40px;
     width: 100%;
     max-width: 1000px;
-}
+} */
 
-.upload-section {
+/* .upload-section {
     display: flex;
     flex-direction: column;
     gap: 16px;
-}
+    border-radius: 4px; 
+} */
 
-.upload-section label {
+/* .upload-section label {
     font-weight: var(--fontWeightSemiBold);
     margin-bottom: 8px;
-}
+} */
 
-.hidden-input {
+/* .hidden-input {
     display: none;
-}
+} */
 
-.upload-box {
+/* .upload-box {
     border: 2px dashed var(--textGrey);
     padding: 40px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: var(--textField);
-}
+    border-radius: 4px;
+} */
 
-.upload-btn {
+/* .upload-btn {
     padding: 10px 20px;
     background-color: var(--primaryGreen);
     color: white;
     border: none;
     cursor: pointer;
     font-weight: var(--fontWeightSemiBold);
-}
+} */
 
-.detail-section {
+/* .detail-section {
     display: flex;
     flex-direction: column;
     gap: 24px;
-}
+} */
 
-.form-group {
+/* .form-group {
     display: flex;
     flex-direction: column;
     gap: 8px;
-}
+} */
 
-input[type="range"],
-input[type="date"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--textGrey);
-    background-color: var(--textField);
-}
 
 .time-options {
     display: flex;
@@ -710,7 +706,7 @@ input[type="date"] {
     font-size: 16px;
     border: none;
     padding: 8px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 /* Jam Penukaran */
@@ -914,4 +910,6 @@ input[type="range"]::-webkit-slider-thumb {
 .btn.send:hover {
     background-color: var(--primaryGreen);
 }
+
 </style>
+
