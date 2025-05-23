@@ -2,6 +2,62 @@
 import Footer from '../components/Footer.vue';
 import Navbar from '../components/Navbar.vue';
 
+import { ref } from 'vue';
+
+const produkList = ref([
+  {
+    nama: 'Dompet Kecil',
+    harga: 18000,
+    gambar: '/images/jelajahBelanja1.png',
+    link: 'https://tk.tokopedia.com/ZShnfgnaG/'
+  },
+  {
+    nama: 'Tas Besar',
+    harga: 30000,
+    gambar: '/images/jelajahBelanja2.png',
+    link: 'https://www.lazada.co.id/products/pdp-i5784198953-s14699096519.html?c=&channelLpJumpArgs=&clickTrackInfo=query%253Atempat%252Bpenyimpanan%252Bbarang%252Bbekas%253Bnid%253A5784198953%253Bsrc%253ALazadaMainSrp%253Brn%253Ae9b1de42a381c7184087f4cb792f8753%253Bregion%253Aid%253Bsku%253A5784198953_ID%253Bprice%253A11900%253Bclient%253Adesktop%253Bsupplier_id%253A400618356013%253Bbiz_source%253Ah5_internal%253Bslot%253A5%253Butlog_bucket_id%253A470687%253Basc_category_id%253A16413%253Bitem_id%253A5784198953%253Bsku_id%253A14699096519%253Bshop_id%253A3843756%253BtemplateInfo%253A-1_A3_C%25231103_L%2523107879_D_E%2523&freeshipping=1&fs_ab=2&fuse_fs=&lang=en&location=Kota%20Tangerang&price=1.19E%204&priceCompare=skuId%3A14699096519%3Bsource%3Alazada-search-voucher%3Bsn%3Ae9b1de42a381c7184087f4cb792f8753%3BoriginPrice%3A1190000%3BdisplayPrice%3A1190000%3BsinglePromotionId%3A-1%3BsingleToolCode%3AmockedSalePrice%3BvoucherPricePlugin%3A0%3Btimestamp%3A1747928664820&ratingscore=4.81&request_id=e9b1de42a381c7184087f4cb792f8753&review=100&sale=329&search=1&source=search&spm=a2o4j.searchlist.list.5&stock=1'
+  },
+  {
+    nama: 'Kandang Hewan',
+    harga: 200500,
+    gambar: '/images/jelajahBelanja3.png',
+    link: '/produk/dompet-kecil.html'
+  },
+  {
+    nama: 'Tas Belanja',
+    harga: 23000,
+    gambar: '/images/jelajahBelanja4.png',
+    link: 'https://tk.tokopedia.com/ZShnPfoxa/'
+  },
+  {
+    nama: 'Tas Belanja',
+    harga: 28000,
+    gambar: '/images/jelajahBelanja4.png',
+    link: 'https://tk.tokopedia.com/ZShnPDy2k/'
+  },
+  // Tambahkan produk baru langsung di sini
+]);
+
+const carousel = ref(null);
+
+const next = () => {
+  carousel.value.scrollLeft += 300;
+};
+
+const prev = () => {
+  carousel.value.scrollLeft -= 300;
+};
+
+const openProduct = (produk) => {
+  alert(`Detail produk:\nNama: ${produk.nama}\nHarga: Rp ${produk.harga}`);
+  // Anda bisa ganti alert dengan modal atau link eksternal seperti:
+  // window.location.href = produk.link;
+};
+
+const formatHarga = (angka) => {
+  return angka.toLocaleString('id-ID');
+};
+
 </script>
 
 <template>
@@ -112,41 +168,34 @@ import Navbar from '../components/Navbar.vue';
 
         <!-- TODO: Benerin CARD dan Gambarnya -->
         <section class="konten">
-            <div class="konten-heading">
-                <div class="heading-line"></div>
-                <p>Beberapa Produk Daur <br> Ulang Sampah</p>
+        <div class="konten-heading">
+            <div class="heading-line"></div>
+            <p>Beberapa Produk Daur <br />Ulang Sampah</p>
+        </div>
+
+        <div class="carousel-container">
+            <button @click="prev" class="arrow-btn">‹</button>
+            <div class="carousel" ref="carousel">
+            <a
+                v-for="(produk, index) in produkList"
+                :key="index"
+                :href="produk.link"
+                class="produk-card"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <img :src="produk.gambar" :alt="produk.nama" />
+                <div class="produk-info">
+                <p class="keterangan">{{ produk.nama }}</p>
+                <p class="harga">Rp {{ formatHarga(produk.harga) }}</p>
+                </div>
+            </a>
             </div>
-            <div class="belanja">
-                <div class="produk-card">
-                    <img src="/public/images/jelajahBelanja1.png" alt="Produk 1" />
-                    <div class="produk-info">
-                        <p class="keterangan">Dompet Kecil</p>
-                        <p class="harga">Rp 20.500</p>
-                    </div>
-                </div>
-                <div class="produk-card">
-                    <img src="/public/images/jelajahBelanja2.png" alt="Produk 1" />
-                    <div class="produk-info">
-                        <p class="keterangan">Tas Besar</p>
-                        <p class="harga">Rp 30.000</p>
-                    </div>
-                </div>
-                <div class="produk-card">
-                    <img src="/public/images/jelajahBelanja3.png" alt="Produk 1" />
-                    <div class="produk-info">
-                        <p class="keterangan">Kandang Hewan</p>
-                        <p class="harga">Rp 200.500</p>
-                    </div>
-                </div>
-                <div class="produk-card">
-                    <img src="/public/images/jelajahBelanja4.png" alt="Produk 1" />
-                    <div class="produk-info">
-                        <p class="keterangan">Tas Belanja</p>
-                        <p class="harga">Rp 30.500</p>
-                    </div>
-                </div>
-            </div>
+            <button @click="next" class="arrow-btn">›</button>
+        </div>
         </section>
+
+
 
         <Footer/>
     </div>
@@ -161,7 +210,7 @@ import Navbar from '../components/Navbar.vue';
     .hero {
         position: relative; /* tetap supaya .hero-konten absolute bisa relatif ke sini, tapi kita akan ubah */
         display: flex;      /* aktifkan flexbox */
-        height: 550px;      /* tinggi hero */
+        height: 600px;      /* tinggi hero */
         width: 100%;
         overflow: hidden;
     }
@@ -199,9 +248,7 @@ import Navbar from '../components/Navbar.vue';
 
     /* Konten */
     .konten {
-        text-align: start;
-        margin-top: 60px;
-        padding: 40px 5%;
+        padding: 20px;
     }
     .konten-heading {
         display: flex;
@@ -211,49 +258,64 @@ import Navbar from '../components/Navbar.vue';
         font-weight: var(--fontWeightBold);
         color: var(--primaryGreen);
         font-size: var(--fontSizeMedium);
-        margin-bottom: 30px;
+        margin-bottom: 8px;
     }
     .heading-line {
         width: 100px;
         height: 5px;
         background-color: var(--primaryGreen);
     }
-
-    .kegiatan-grid {
+    .carousel-container {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        gap: 24px;
-        padding: 20px;
+        justify-content: space-between;
+        width: auto; /* gunakan lebar viewport penuh */
+        padding: 0 20px;
+        box-sizing: border-box;
+        overflow: hidden;
     }
-
-    .kegiatan-teks {
-        max-width: 500px;
-    }
-
-    .kegiatan-teks h2 {
-        font-size: 28px;
-        font-weight: bold;
-        color: var(--primaryGreen);
-    }
-
-    .kegiatan-teks p {
-        margin: 12px 0;
-        font-size: 16px;
-        color: var(--primaryGreen);
-    }
-
-    .kegiatan-teks button {
-        background-color: var(--primaryGreen);
-        color: var(--backgroundWhite);
-        padding: 10px 16px;
+    .arrow-btn {
+        font-size: 30px;
+        background: none;
         border: none;
-        font-weight: bold;
         cursor: pointer;
+        padding: 10px;
     }
-    .kegiatan-teks button:hover {
-        background-color: var(--accentGreen1);
-        transition-duration: 0.3s;
+    .carousel {
+        display: flex;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        gap: 20px;
+        padding: 10px 0;
+        flex: 1;
+    }
+    .produk-card {
+        min-width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        overflow: hidden;
+        cursor: pointer;
+        flex-shrink: 0;
+        background: #f5f5f5;
+        transition: transform 0.2s;
+    }
+    .produk-card:hover {
+        transform: scale(1.03);
+    }
+    .produk-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+    .produk-info {
+        padding: 10px;
+        text-align: center;
+    }
+    .keterangan {
+        font-weight: bold;
+    }
+    .harga {
+        color: #004d4a;
     }
 
     /* Baris atas: Teks dan 1 gambar */
@@ -262,6 +324,7 @@ import Navbar from '../components/Navbar.vue';
         flex-wrap: wrap;
         gap: 24px;
         align-items: center;
+        justify-content: center;
     }
 
     .kegiatan-teks {
@@ -306,6 +369,7 @@ import Navbar from '../components/Navbar.vue';
         display: flex;
         margin-top: 20px;
         gap: 16px;
+        justify-content: center;
     }
 
     .gambar-bawah img {
