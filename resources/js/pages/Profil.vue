@@ -113,6 +113,21 @@ const styleEcoinText = {
     fontWeight: 700,
     color: "var(--backgroundWhite)",
 };
+
+// Modal & voucher dummy
+const showVoucherModal = ref(false);
+const vouchers = ref([
+    { id: 1, title: "Diskon 10% Belanja", desc: "Berlaku hingga 30 Juni 2025" },
+    { id: 2, title: "Gratis Ongkir", desc: "Min. belanja Rp50.000" },
+    { id: 3, title: "Potongan Rp25.000", desc: "Untuk pengguna baru" },
+    { id: 4, title: "Cashback 20%", desc: "Untuk pembelian makanan" },
+    { id: 5, title: "Diskon 50% Tiket", desc: "Event tertentu" },
+    { id: 6, title: "Voucher Kopi Gratis", desc: "Khusus member" },
+]);
+
+function toggleVoucherModal() {
+    showVoucherModal.value = !showVoucherModal.value;
+}
 </script>
 
 <template>
@@ -168,15 +183,30 @@ const styleEcoinText = {
                         <input type="text" placeholder="https://x.com/..." />
 
                         <div class="aksi">
-                            <button class="transaksi" @click="daftarTransaksi">
-                                Daftar Transaksi
-                            </button>
+                            <div class="aksi-row">
+                                <button class="transaksi" @click="daftarTransaksi">Daftar Transaksi</button>
+                                <button class="voucher" @click="toggleVoucherModal">Voucher Anda</button>
+                            </div>
                             <button class="edit">Edit Profil</button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- MODAL VOUCHER -->
+        <div v-if="showVoucherModal" class="modal-overlay" @click.self="toggleVoucherModal">
+            <div class="modal-content">
+                <h2>Voucher Anda</h2>
+                <div class="voucher-list">
+                    <div v-for="voucher in vouchers" :key="voucher.id" class="voucher-item">
+                        <h3>{{ voucher.title }}</h3>
+                        <p>{{ voucher.desc }}</p>
+                    </div>
+                </div>
+                <button class="close-modal" @click="toggleVoucherModal">Tutup</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -327,8 +357,22 @@ input:disabled {
     align-items: center;
 }
 
+.aksi-row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.aksi-row button {
+    flex: 1;
+    min-width: 120px;
+}
+
 .transaksi,
-.edit {
+.edit,
+.voucher {
     width: 200px;
     border: 1px solid white;
     background-color: transparent;
@@ -344,9 +388,74 @@ input:disabled {
 }
 
 .transaksi:hover,
-.edit:hover {
+.edit:hover,
+.voucher:hover {
     background-color: var(--accentGreen1);
     color: white;
+}
+
+/* === MODAL === */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.modal-content h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: var(--primaryGreen);
+}
+
+.voucher-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.voucher-item {
+    padding: 10px;
+    border: 1px solid var(--textGrey);
+    border-radius: 6px;
+    text-align: left;
+}
+
+.voucher-item h3 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--textBlack);
+}
+
+.voucher-item p {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: var(--textGrey);
+}
+
+.close-modal {
+    padding: 8px 16px;
+    background-color: var(--primaryGreen);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 /* Responsive */
