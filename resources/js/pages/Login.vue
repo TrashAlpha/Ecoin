@@ -95,14 +95,26 @@
       methods: {
         async handleLogin() {
           try {
+            // Pertama dapatkan CSRF cookie
+            await axios.get('http://localhost:8000/sanctum/csrf-cookie', {
+              withCredentials: true
+            });
+
+            // Lakukan login
             const response = await axios.post('http://localhost:8000/api/login', {
               email: this.email,
               password: this.password
-            },);
+            }, {
+              withCredentials: true,
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              }
+            });
 
             if(response.status === 200) {
               localStorage.setItem('user', JSON.stringify(response.data.user));
-              console.log("User data:", response.data.user);
+              window.location.href = '/beranda'; // Redirect akan mempertahankan session
             }
 
             // Login sukses, arahkan ke halaman beranda

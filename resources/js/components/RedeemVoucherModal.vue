@@ -27,7 +27,7 @@
       },
       icon: {
         type: String,
-        default: "/public/images/mdi_voucher.png" // Ganti jika icon berada di path lain
+        default: "/images/mdi_voucher.png" // Ganti jika icon berada di path lain
       }
     }
   };
@@ -64,6 +64,7 @@
     width: 48px;
     height: 48px;
     margin-bottom: 16px;
+    margin: 0 auto 16px auto;
   }
   
   .text {

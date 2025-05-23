@@ -1,34 +1,45 @@
 <script setup>
-import { ref } from 'vue';
 import Navbar from '../components/Navbar.vue';
 import Footer from '../components/Footer.vue';
+import { ref } from 'vue';
 
-const updateUserPopup = ref(false)
+const popupAdd = ref(false);
+const popupUpdate = ref(false);
 
-function updateUser(){
-    updateUserPopup.value = true
+function addVoucher(){
+    popupAdd.value = true;
+}
+
+function updateVoucher(){
+    popupUpdate.value = true;
 }
 
 function close(){
-    updateUserPopup.value = false
+    if (popupAdd.value == true) {
+        popupAdd.value = false;
+    } else {
+        popupUpdate.value = false;
+    }
 }
 </script>
 
 <template>
-    <div class="manajemen-user">
+    <div class="manajemen-voucher">
         <Navbar/>
 
         <section class="hero">
-            <h1 class="title">Manajemen User</h1>
+            <h1 class="title">Manajemen Voucher</h1>
         </section>
 
         <section class="filter-section">
-            <input type="text" placeholder="Cari pengguna" class="search-input">
+            <input type="text" placeholder="Cari voucher" class="search-input">
             <select name="" id="" class="filter-select">
                 <option value="">Semua status</option>
                 <option value="active">Aktif</option>
-                <option value="nonaktif">Nonaktif</option>
+                <option value="expired">Kadaluarsa</option>
             </select>
+            <button class="btn btn-add" @click="addVoucher()">Tambah Voucher</button>
+            <!-- TODO Popup tambah voucher, isinya form -->
         </section>
 
         <section class="table-section">
@@ -36,11 +47,9 @@ function close(){
                 <thead>
                     <tr>
                         <th>Gambar</th>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Saldo</th>
-                        <th>Facebook</th>
-                        <th>Twitter</th>
+                        <th>Judul</th>
+                        <th>Deskripsi</th>
+                        <th>Harga</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -49,14 +58,12 @@ function close(){
                     <!-- Data statis -->
                     <tr>
                         <td><img src="/public/images/logo.png" alt="Logo Voucher" width="100px"></td>
-                        <td>Arnamaya</td>
-                        <td>amamiya@gmail.com</td>
+                        <td>Voucher satu</td>
+                        <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</td>
                         <td>Rp. 350.000</td>
-                        <td>@amaya</td>
-                        <td>@amaya</td>
                         <td><span class="status status-active">Aktif</span></td>
                         <td>
-                            <button class="btn btn-update" @click="updateUser">Update</button>
+                            <button class="btn btn-update" @click="updateVoucher()">Update</button>
                             <button class="btn btn-delete">Delete</button>
                         </td>
                     </tr>
@@ -65,29 +72,47 @@ function close(){
             </table>
         </section>
 
-        <!-- TODO Popup masih belum benar -->
-        <div v-if="updateUserPopup" class="overlay">
+        <div v-if="popupAdd" class="overlay">
             <div class="popup-form">
-                <h1>Edit User</h1>
+                <h1>Tambah Voucher</h1>
                 <form action="">
                     <label for="gambar">Gambar</label><br>
-                    <input type="text" placeholder="Link Gambar" disabled><br>
-                    <label for="username">Username</label><br>
-                    <input type="text" placeholder="username" disabled><br>
-                    <label for="email">Email</label><br>
-                    <input type="text" placeholder="email" disabled><br>
-                    <label for="saldo">Saldo</label><br>
-                    <input type="text" placeholder="saldo" disabled><br>
-                    <label for="facebook">Facebook</label><br>
-                    <input type="text" placeholder="facebook" disabled><br>
-                    <label for="twitter">Twitter</label><br>
-                    <input type="text" placeholder="twitter" disabled><br>
+                    <input type="text" placeholder="Link Gambar"><br>
+                    <label for="judul">Judul</label><br>
+                    <input type="text" placeholder="Judul"><br>
+                    <label for="deskripsi">Deskripsi</label><br>
+                    <input type="text" placeholder="Deskripsi"><br>
+                    <label for="harga">Harga</label><br>
+                    <input type="text" placeholder="Harga"><br>
                     <label for="status">Status</label><br>
                     <select id="status" name="status">
                         <option value="aktif">Aktif</option>
-                        <option value="nonaktif">Nonaktif</option>
+                        <option value="expired">Kadaluarsa</option>
                     </select><br>
                     <button type="submit" class="btn btn-update">Submit</button>
+                    <button type="button" class="btn btn-back" @click="close">Kembali</button>
+                </form>
+            </div>
+        </div>
+
+        <div v-if="popupUpdate" class="overlay">
+            <div class="popup-form">
+                <h1>Ubah Voucher</h1>
+                <form action="">
+                    <label for="gambar">Gambar</label><br>
+                    <input type="text" placeholder="Link Gambar"><br>
+                    <label for="judul">Judul</label><br>
+                    <input type="text" placeholder="Judul"><br>
+                    <label for="deskripsi">Deskripsi</label><br>
+                    <input type="text" placeholder="Deskripsi"><br>
+                    <label for="harga">Harga</label><br>
+                    <input type="text" placeholder="Harga"><br>
+                    <label for="status">Status</label><br>
+                    <select id="status" name="status">
+                        <option value="aktif">Aktif</option>
+                        <option value="expired">Kadaluarsa</option>
+                    </select><br>
+                    <button type="submit" class="btn btn-update">Ubah</button>
                     <button type="button" class="btn btn-back" @click="close">Kembali</button>
                 </form>
             </div>
@@ -98,13 +123,14 @@ function close(){
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 
-.manajemen-user{
-    font-family: var(--fontFamily);
+.manajemen-voucher {
+    font-family: 'Poppins', sans-serif;
     background-color: var(--backgroundWhite);
     color: var(--textBlack);
 }
-.hero{
+.hero {
     background-color: var(--primaryGreen);
     height: 200px;
     display: flex;
@@ -112,7 +138,7 @@ function close(){
     justify-content: center;
     align-items: center;
 }
-.title{
+.title {
     color: var(--backgroundWhite);
     font-weight: bold;
     font-size: 32px;
@@ -232,5 +258,4 @@ th {
     font-size: larger;
     font-weight: 700;
 }
-
 </style>

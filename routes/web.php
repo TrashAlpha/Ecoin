@@ -15,7 +15,7 @@ Route::get('/login', [PageController::class, 'login'])->name('login');
 Route::get('/tentang', [PageController::class, 'tentang'])->name('tentang');
 Route::get('/jelajah', [PageController::class, 'jelajah'])->name('jelajah');
 Route::get('/register', [PageController::class, 'register'])->name('register');
-Route::get('/profil', [PageController::class, 'profil'])->name('profil');
+Route::get('/profile', [PageController::class, 'profil'])->name('profil');
 Route::get('/daftartransaksi', [PageController::class, 'daftartransaksi'])->name('daftartransaksi');
 Route::get('/penukaran1', [PageController::class, 'penukaran1'])->name('penukaran1');
 Route::get('/penukaran2', [PageController::class, 'penukaran2'])->name('penukaran2');
@@ -25,16 +25,11 @@ Route::get('/penukaran_koin', [PageController::class, 'penukaran_koin'])->name('
 
 // Halaman Admin
 Route::get('/admin/verifikasi_penukaran', [AdminPageController::class, 'verifikasi_penukaran'])->name('verifikasi_penukaran');
-Route::get('/admin/kelola_voucher', [AdminPageController::class, 'kelola_voucher'])->name('kelola_voucher');
-Route::get('/admin/kelola_user', [AdminPageController::class, 'kelola_user'])->name('kelola_user');
+Route::get('/admin/manajemen_voucher', [AdminPageController::class, 'manajemen_voucher'])->name('manajemen_voucher');
+Route::get('/admin/manajemen_user', [AdminPageController::class, 'manajemen_user'])->name('manajemen_user');
 
 // Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 // Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 // Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 
-Route::resource('tests', TestController::class); // test route resource
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/manajemen_user', [ManajemenController::class, 'user']);
+// Route::resource('tests', TestController::class); // test route resource

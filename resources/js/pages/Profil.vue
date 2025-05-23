@@ -1,3 +1,89 @@
+<script setup>
+import axios from 'axios';
+import { ref, onMounted } from 'vue';
+
+const user = ref(null);
+
+function daftarTransaksi(){
+    window.location.href = '/daftartransaksi';
+}
+
+function beranda(){
+    window.location.href = '/beranda';
+}
+
+async function logout() {
+    try {
+        // Tambahkan CSRF token dari meta tag
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        const response = await axios.post('/api/logout', {}, {
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            withCredentials: true
+        });
+
+        // Hapus data user dari localStorage
+        localStorage.removeItem('user');
+
+        // Redirect ke halaman beranda
+        window.location.href = '/beranda';
+
+    } catch (error) {
+        console.error('Logout failed:', error);
+
+        // Jika error karena CSRF token mismatch, reload halaman
+        if (error.response && error.response.status === 419) {
+            window.location.reload();
+        }
+    }
+}
+
+async function fetchUserData() {
+    try {
+        // Cek localStorage terlebih dahulu untuk UX yang lebih cepat
+        const saved = localStorage.getItem('user');
+        if (saved) {
+            user.value = JSON.parse(saved);
+        }
+
+        // Ambil data terbaru dari API
+        const response = await axios.get('http://localhost:8000/api/get-user', {
+            withCredentials: true,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.data && response.data.user) {
+            user.value = response.data.user;
+            // Simpan ke localStorage untuk akses lebih cepat next time
+            localStorage.setItem('user', JSON.stringify(user.value));
+            console.log('User data fetched:', user.value);
+        } else {
+            // Jika tidak ada user yang login
+            user.value = null;
+            localStorage.removeItem('user');
+        }
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        // Jika error (misal: token expired), anggap user tidak login
+        if (error.response && error.response.status === 401) {
+            user.value = null;
+            localStorage.removeItem('user');
+        }
+    }
+}
+
+// Panggil fetchUserData ketika komponen dimount
+onMounted(() => {
+    fetchUserData();
+});
+</script>
+
 <template>
     <div class="profil">
         <button class="tutup" @click="beranda">✕</button>
@@ -10,9 +96,9 @@
                     alt="User Icon"
                     class="ikon"
                 />
-                <h2 :style="stylePengguna">Pengguna</h2>
-                <p :style="styleEmail">pengguna@contoh.com</p>
-                <button class="keluar">Keluar</button>
+                <h2 :style="stylePengguna">{{ user ? user.name : 'Pengguna' }}</h2>
+                <p :style="styleEmail">{{ user ? user.email : 'pengguna@contoh.com' }}</p>
+                <button class="keluar" @click="logout">Keluar</button>
             </div>
 
             <!-- KANAN -->
@@ -25,17 +111,18 @@
 
                     <h1 class="judul">Profil</h1>
 
-                    <div class="form-container">
-                        <label>Nama</label>
-                        <input type="text" placeholder="Pengguna" />
+                <!-- Tambahkan pembungkus form -->
+                <div class="form-container">
+                    <label>Nama</label>
+                    <input type="text" :placeholder="user ? user.name : 'Pengguna'" :value="user ? user.name : ''" />
 
-                        <label>Email</label>
-                        <input type="email" placeholder="pengguna@contoh.com" />
+                    <label>Email</label>
+                    <input type="email" :placeholder="user ? user.email : 'pengguna@contoh.com'" :value="user ? user.email : ''" />
 
                         <label>Saldo Koin</label>
                         <input
                             type="text"
-                            placeholder="0.000000"
+                            :placeholder="user ? user.saldo_koin + '' : '0.000000'" :value="user ? user.saldo_koin + '' : ''"
                             readonly
                             class="readonly-field"
                         />
@@ -193,7 +280,7 @@ const styleEcoinText = {
 }
 
 .ecoin-header span {
-    margin-left: -2px; 
+    margin-left: -2px;
 }
 
 .ecoin-header img {

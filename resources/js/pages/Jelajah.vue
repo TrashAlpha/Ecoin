@@ -9,32 +9,40 @@ import Navbar from '../components/Navbar.vue';
         <Navbar/>
 
         <section class="hero">
+            <img src="/public/images/heroJelajah.png" alt="Gambar Jelajah" class="hero-image" />
             <div class="hero-konten">
                 <h1 class="judul">Ayo Jelajah dan<br>Telusuri</h1>
                 <p>Cari dan gali informasi lebih mendalam mengenai<br>sampah serta manfaatnya</p>
             </div>
-            <img src="/public/images/heroJelajah.png" alt="Gambar Jelajah" class="hero-image">
         </section>
 
         <section class="konten">
-            <div class="konten-heading">
-                <div class="heading-line"></div>
-                <p>Informasi Mengenai <br/> Sampah dan Manfaaatnya</p>
+        <div class="konten-heading">
+            <div class="heading-line"></div>
+            <p>Informasi Mengenai <br> Sampah dan Manfaaatnya</p>
+        </div>
+        <div class="kegiatan-grid">
+            <!-- BARIS ATAS: TEKS + GAMBAR -->
+            <div class="baris-atas">
+            <div class="kegiatan-teks">
+                <h2>Kegiatan Peduli Lingkungan</h2>
+                <p>
+                Beberapa kegiatan positif untuk menjaga lingkungan telah dilakukan seperti
+                bakti sosial dan seminar tentang pentingnya kebersihan.
+                </p>
+                <button>Lihat Lebih</button>
             </div>
-            <div class="konten-isi">
-                <div class="kegiatan-utama">
-                    <img src="/public/images/jelajahGambar1.png" alt="">
-                    <div class="kegiatan-teks">
-                        <h2>Kegiatan Peduli Lingkungan</h2>
-                        <p>Beberapa kegiatan positif untuk menjaga lingkungan telah dilakukan seperti bakti sosial dan seminar tentang pentingnya kebersihan</p>
-                        <button>Lihat Lebih</button>
-                    </div>
-                </div>
-                <div class="kegiatan-galeri">
-                    <img src="/public/images/jelajahGambar2.png" alt="">
-                    <img src="/public/images/jelajahGambar3.png" alt="">
-                </div>
+            <div class="gambar-atas">
+                <img src="/public/images/jelajahGambar1.png" alt="Gambar 1">
             </div>
+            </div>
+
+            <!-- BARIS BAWAH: 2 GAMBAR -->
+            <div class="gambar-bawah">
+                <img src="/public/images/jelajahGambar2.png" alt="Gambar 2">
+                <img src="/public/images/jelajahGambar3.png" alt="Gambar 3">
+            </div>
+        </div>
         </section>
 
         <section class="artikel">
@@ -55,8 +63,8 @@ import Navbar from '../components/Navbar.vue';
                         <h3>Memilah Sampah</h3>
                         <p>Menyesuaikan sampah dengan kategorinya dan kelompoknya...</p>
                         <div class="card-links">
-                            <a href="#">📖 Baca Artikel</a>
-                            <a href="#">📝 Buat Kuis</a>
+                            <a href="#"><img src="/public/images/iconamoon_eye_light.png" class="icon"/> Baca Artikel</a>
+                            <a href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
                         </div>
                     </div>
                 </div>
@@ -67,8 +75,8 @@ import Navbar from '../components/Navbar.vue';
                         <h3>Memilah Sampah</h3>
                         <p>Menyesuaikan sampah dengan kategorinya dan kelompoknya...</p>
                         <div class="card-links">
-                            <a href="#">📖 Baca Artikel</a>
-                            <a href="#">📝 Buat Kuis</a>
+                            <a href="#"><img src="/public/images/iconamoon_eye_light.png" class="icon"/> Baca Artikel</a>
+                            <a href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
                         </div>
                     </div>
                 </div>
@@ -79,8 +87,8 @@ import Navbar from '../components/Navbar.vue';
                         <h3>Memilah Sampah</h3>
                         <p>Menyesuaikan sampah dengan kategorinya dan kelompoknya...</p>
                         <div class="card-links">
-                            <a href="#">📖 Baca Artikel</a>
-                            <a href="#">📝 Buat Kuis</a>
+                            <a href="#"><img src="/public/images/iconamoon_eye_light.png" class="icon"/> Baca Artikel</a>
+                            <a href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
                         </div>
                     </div>
                 </div>
@@ -91,8 +99,8 @@ import Navbar from '../components/Navbar.vue';
                         <h3>Memilah Sampah</h3>
                         <p>Menyesuaikan sampah dengan kategorinya dan kelompoknya...</p>
                         <div class="card-links">
-                            <a href="#">📖 Baca Artikel</a>
-                            <a href="#">📝 Buat Kuis</a>
+                            <a href="#"><img src="/public/images/iconamoon_eye_light.png" class="icon"/> Baca Artikel</a>
+                            <a href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
                         </div>
                     </div>
                 </div>
@@ -151,38 +159,43 @@ import Navbar from '../components/Navbar.vue';
         color: var(--textBlack);
     }
     .hero {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        padding: 0 32px;
-    }
-    .hero-image {
+        position: relative; /* tetap supaya .hero-konten absolute bisa relatif ke sini, tapi kita akan ubah */
+        display: flex;      /* aktifkan flexbox */
+        height: 550px;      /* tinggi hero */
         width: 100%;
-        max-height: 850px;
+        overflow: hidden;
+    }
+
+    .hero-image {
+        width: 70%;
+        height: 100%;
         object-fit: cover;
     }
+
     .hero-konten {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-210%, -50%);
+        position: relative; 
+        width: 30%;            /* lebar 30% di kiri */
+        background-color: var(--primaryGreen);
+        color: var(--backgroundWhite);
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: start;
-        padding: 40px 20px;
-        background-color: var(--primaryGreen);
+        padding: 20px;  
     }
+
+
     .hero-konten h1 {
-        font-size: 32px;
+        font-size: 40px;
         font-weight: bold;
-        color: var(--backgroundWhite);
+        margin-bottom: 12px;
     }
+
     .hero-konten p {
         font-size: 16px;
         font-weight: 500;
-        color: var(--backgroundWhite);
+        line-height: 1.5;
     }
+
 
     /* Konten */
     .konten {
@@ -206,32 +219,28 @@ import Navbar from '../components/Navbar.vue';
         background-color: var(--primaryGreen);
     }
 
-    .kegiatan-utama {
+    .kegiatan-grid {
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: column;
         align-items: center;
-        gap: 40px;
-        margin-bottom: 24px;
-    }
-    .kegiatan-utama img {
-        width: 100%;
-        max-width: 700px;
-        object-fit: cover;
+        gap: 24px;
+        padding: 20px;
     }
 
     .kegiatan-teks {
         max-width: 500px;
-        margin-left: 160px;
     }
+
     .kegiatan-teks h2 {
         font-size: 28px;
         font-weight: bold;
         color: var(--primaryGreen);
     }
+
     .kegiatan-teks p {
         margin: 12px 0;
         font-size: 16px;
-        color: var(--textBlack);
+        color: var(--primaryGreen);
     }
 
     .kegiatan-teks button {
@@ -247,15 +256,64 @@ import Navbar from '../components/Navbar.vue';
         transition-duration: 0.3s;
     }
 
-    .kegiatan-galeri {
+    /* Baris atas: Teks dan 1 gambar */
+    .baris-atas {
         display: flex;
-        gap: 16px;
         flex-wrap: wrap;
+        gap: 24px;
+        align-items: center;
     }
-    .kegiatan-galeri img {
-        width: calc(50% - 8px);
+
+    .kegiatan-teks {
+        flex: 1;
+        min-width: 280px;
+        max-width: 500px;
+    }
+
+    .kegiatan-teks h2 {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+
+    .kegiatan-teks p {
+        font-size: 16px;
+        margin-bottom: 16px;
+        line-height: 1.5;
+    }
+
+    .kegiatan-teks button {
+        background-color: #006662;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .kegiatan-teks button:hover {
+        background-color: #004d4a;
+    }
+
+    .gambar-atas img {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 10px;
         object-fit: cover;
     }
+
+    /* Baris bawah: 2 gambar sejajar */
+    .gambar-bawah {
+        display: flex;
+        margin-top: 20px;
+        gap: 16px;
+    }
+
+    .gambar-bawah img {
+        width: 455px;
+        border-radius: 10px;
+        object-fit: cover;
+    }
+
 
     /* Artikel */
     .artikel {
@@ -286,7 +344,10 @@ import Navbar from '../components/Navbar.vue';
     .artikel-button button {
         border: 1px solid var(--primaryGreen);
         background-color: var(--primaryGreen);
-        padding: 20px;
+        padding: 8px 24px; /* 12px atas-bawah, 24px kiri-kanan */
+        border-radius: 4px;
+        color: white; /* pastikan teks terlihat */
+        font-size: 16px; /* opsional: atur ukuran teks */
     }
     .artikel-button button:hover {
         background-color: var(--accentGreen2);
@@ -323,6 +384,7 @@ import Navbar from '../components/Navbar.vue';
         font-size: 12px;
         padding: 4px 8px;
         z-index: 1;
+        border-radius: 4px;
     }
     .card-body {
         padding: 16px;
@@ -378,6 +440,14 @@ import Navbar from '../components/Navbar.vue';
     }
     .harga {
         font-weight: 600;
+    }
+        .card-links a img.icon {
+        width: 16px !important;
+        height: 16px !important;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 6px;
+        object-fit: contain;
     }
 
 
