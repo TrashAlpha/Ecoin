@@ -1,6 +1,7 @@
 <script setup>
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
+import { theme } from "@/config/theme";
 
 const user = ref(null);
 
@@ -81,7 +82,37 @@ async function fetchUserData() {
 // Panggil fetchUserData ketika komponen dimount
 onMounted(() => {
     fetchUserData();
+    const root = document.documentElement;
+    root.style.setProperty("--primaryGreen", theme.colors.primaryGreen);
+    root.style.setProperty("--accentGreen1", theme.colors.accentGreen1);
+    root.style.setProperty("--accentGreen2", theme.colors.accentGreen2);
+    root.style.setProperty("--textGrey", theme.colors.textGrey);
+    root.style.setProperty("--textBlack", theme.colors.textBlack);
+    root.style.setProperty("--textField", theme.colors.textField);
+    root.style.setProperty("--backgroundWhite", theme.colors.backgroundWhite);
+    root.style.setProperty("--fontFamily", theme.fonts.family);
 });
+
+const stylePengguna = {
+    color: "var(--textBlack)",
+    fontFamily: "var(--fontFamily)",
+    fontSize: theme.fonts.size.subheading,
+    fontWeight: theme.fonts.weight.semibold,
+};
+
+const styleEmail = {
+    color: "var(--textGrey)",
+    fontFamily: "var(--fontFamily)",
+    fontSize: theme.fonts.size.small,
+    fontWeight: theme.fonts.weight.regular,
+};
+
+const styleEcoinText = {
+    fontFamily: "'DM Sans', sans-serif",
+    fontSize: "40px",
+    fontWeight: 700,
+    color: "var(--backgroundWhite)",
+};
 </script>
 
 <template>
@@ -148,52 +179,6 @@ onMounted(() => {
         </section>
     </div>
 </template>
-
-<script setup>
-import { onMounted } from "vue";
-import { theme } from "@/config/theme";
-
-function daftarTransaksi() {
-    window.location.href = "/daftartransaksi";
-}
-function beranda() {
-    window.location.href = "/beranda";
-}
-
-onMounted(() => {
-    const root = document.documentElement;
-    root.style.setProperty("--primaryGreen", theme.colors.primaryGreen);
-    root.style.setProperty("--accentGreen1", theme.colors.accentGreen1);
-    root.style.setProperty("--accentGreen2", theme.colors.accentGreen2);
-    root.style.setProperty("--textGrey", theme.colors.textGrey);
-    root.style.setProperty("--textBlack", theme.colors.textBlack);
-    root.style.setProperty("--textField", theme.colors.textField);
-    root.style.setProperty("--backgroundWhite", theme.colors.backgroundWhite);
-    root.style.setProperty("--fontFamily", theme.fonts.family);
-});
-
-const stylePengguna = {
-    color: "var(--textBlack)",
-    fontFamily: "var(--fontFamily)",
-    fontSize: theme.fonts.size.subheading,
-    fontWeight: theme.fonts.weight.semibold,
-};
-
-const styleEmail = {
-    color: "var(--textGrey)",
-    fontFamily: "var(--fontFamily)",
-    fontSize: theme.fonts.size.small,
-    fontWeight: theme.fonts.weight.regular,
-};
-
-const styleEcoinText = {
-    fontFamily: "'DM Sans', sans-serif",
-    fontSize: "40px",
-    fontWeight: 700,
-    color: "var(--backgroundWhite)",
-};
-</script>
-
 
 <style scoped>
 .profil {
