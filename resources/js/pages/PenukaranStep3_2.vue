@@ -343,6 +343,7 @@ function redirectToStep2(){
         width: 500px;
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
+        border-radius: 4px;
     }
 
     .form button {
@@ -353,6 +354,7 @@ function redirectToStep2(){
         color: var(--textField);
         font-size: 20px;
         font-weight: bold;
+        border-radius: 4px;
     }
 
     .form button:hover {
@@ -363,6 +365,7 @@ function redirectToStep2(){
     .opsi-transfer {
         flex: 1;
         min-width: 400px;
+        max-width: 800px;
         margin-left: 200px;
     }
 
@@ -379,12 +382,14 @@ function redirectToStep2(){
         align-items: center;
         padding: 12px 16px;
         gap: 12px;
+        border-radius: 4px;
     }
 
     .bank-card img {
         width: 75px;
         height: auto;
         object-fit: contain;
+        border-radius: 4px;
     }
 
     .bank-card .info {
@@ -395,11 +400,11 @@ function redirectToStep2(){
 
     .nama-bank {
         background-color: var(--primaryGreen);
-        width: 60px;
         padding: 2px 8px;
         color: var(--textField);
         font-size: 14px;
         font-weight: bold;
+        border-radius: 4px;
     }
 
     .total-judul {
@@ -412,6 +417,25 @@ function redirectToStep2(){
     .total-nominal {
         color: var(--textGrey);
         font-size: 14px;
+    }
+
+    /* Media query untuk layar kecil */
+    @media (max-width: 500px) {
+        .opsi-transfer {
+            min-width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .bank-card {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .bank-card img {
+            width: 100%;
+            max-width: 100px;
+        }
     }
 
 </style>

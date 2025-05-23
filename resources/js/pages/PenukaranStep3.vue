@@ -199,7 +199,7 @@ function handleConfirm() {
         width: 150px;
         display: flex;
         flex-direction: column;
-        align-items: center;   
+        align-items: center;
         justify-content: center;
         padding: 10px 20px;
         margin: 0 5px;
@@ -384,6 +384,7 @@ function handleConfirm() {
     .opsi-transfer {
         flex: 1;
         min-width: 400px;
+        max-width: 800px;
         margin-left: 200px;
     }
 
@@ -412,7 +413,6 @@ function handleConfirm() {
     }
 
     .voucher-card .info {
-        flex: 1; /* atau flex-basis: 60%; jika mau lebih kontrol */
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -420,12 +420,10 @@ function handleConfirm() {
 
     .voucher-name {
         background-color: var(--primaryGreen);
-        width: 60px; /* atau bisa pakai fit-content jika fleksibel */
         padding: 2px 8px;
         color: var(--textField);
         font-size: 14px;
         font-weight: bold;
-        text-align: right; /* ini yang meratakan teks ke kanan di dalam elemen */
         border-radius: 4px;
     }
 
@@ -439,6 +437,25 @@ function handleConfirm() {
     .total-nominal {
         color: var(--textGrey);
         font-size: 14px;
+    }
+
+    /* Media query untuk layar kecil */
+    @media (max-width: 500px) {
+        .opsi-transfer {
+            min-width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .voucher-card {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .voucher-card img {
+            width: 100%;
+            max-width: 100px;
+        }
     }
 
 </style>
