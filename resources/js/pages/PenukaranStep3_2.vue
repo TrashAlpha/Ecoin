@@ -55,64 +55,64 @@ function redirectToStep2(){
                     <div class="bank-card">
                         <img src="/public/images/ic_bni.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">BNI</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="nama-bank">BNI</span>
+                            <span class="total-judul">Total Transfer</span>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_bca.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">BCA</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="nama-bank">BCA</span>
+                            <span class="total-judul">Total Transfer</span>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_bri.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">BRI</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="nama-bank">BRI</span>
+                            <span class="total-judul">Total Transfer</span>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_mandiri.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">Mandiri</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="nama-bank">Mandiri</span>
+                            <span class="total-judul">Total Transfer</span>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_bsi.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">BSI</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="nama-bank">BSI</span>
+                            <span class="total-judul">Total Transfer</span>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_btn.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">BTN</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="nama-bank">BTN</span>
+                            <span class="total-judul">Total Transfer</span>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_gopay.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">Gopay</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="nama-bank">Gopay</span>
+                            <span class="total-judul">Total Transfer</span>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_dana.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">Dana</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
+                            <span class="nama-bank">Dana</span>
+                            <span class="total-judul">Total Transfer</span>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
