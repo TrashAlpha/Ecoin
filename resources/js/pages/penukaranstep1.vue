@@ -63,72 +63,43 @@
                         ✕
                     </button>
                 </label>
-
-                <!-- Gambar List -->
-                <div class="gambar-list">
-                    <label
-                        v-for="(img, index) in imageList"
-                        :key="index"
-                        class="gambar-item upload-box"
-                    >
-                        <input
-                            type="file"
-                            accept="image/*"
-                            @change="(e) => onListImageChange(e, index)"
-                            hidden
-                        />
-                        <img v-if="img" :src="img" class="preview-image" />
-                        <div v-else>Tambah Gambar</div>
-                        <button
-                            v-if="img"
-                            @click.stop.prevent="removeListImage(index)"
-                            class="remove-button"
-                        >
-                            ✕
-                        </button>
-                    </label>
-                </div>
             </div>
 
             <div class="form-detail">
-                <div class="jenis-sampah">
-                    <label>Jenis Sampah</label>
-                    <div class="tabs">
-                        <button
-                            class="tab-button"
-                            :class="{ active: jenis === 'Botol' }"
-                            @click="jenis = 'Botol'"
-                        >
-                            <img
-                                src="/public/images/botol-icon.png"
-                                class="tab-icon"
-                            />
-                            <span>Botol</span>
-                        </button>
-                        <button
-                            class="tab-button"
-                            :class="{ active: jenis === 'Kertas' }"
-                            @click="jenis = 'Kertas'"
-                        >
-                            <img
-                                src="/public/images/kertas-icon.png"
-                                class="tab-icon"
-                            />
-                            <span>Kertas</span>
-                        </button>
-                        <button
-                            class="tab-button"
-                            :class="{ active: jenis === 'Baju' }"
-                            @click="jenis = 'Baju'"
-                        >
-                            <img
-                                src="/public/images/baju-icon.png"
-                                class="tab-icon"
-                            />
-                            <span>Baju</span>
-                        </button>
-                    </div>
-                </div>
+  <div class="jenis-sampah">
+    <label>Jenis Sampah</label>
+    <div class="tabs">
+      <button
+        class="tab-button"
+        :class="{ active: jenis === 'Botol' }"
+        @click="jenis = 'Botol'"
+      >
+        <img src="/public/images/botol-icon.png" class="tab-icon" />
+        <span>Botol</span>
+        <div class="triangle" v-if="jenis === 'Botol'"></div>
+      </button>
+
+      <button
+        class="tab-button"
+        :class="{ active: jenis === 'Kertas' }"
+        @click="jenis = 'Kertas'"
+      >
+        <img src="/public/images/kertas-icon.png" class="tab-icon" />
+        <span>Kertas</span>
+        <div class="triangle" v-if="jenis === 'Kertas'"></div>
+      </button>
+
+      <button
+        class="tab-button"
+        :class="{ active: jenis === 'Baju' }"
+        @click="jenis = 'Baju'"
+      >
+        <img src="/public/images/baju-icon.png" class="tab-icon" />
+        <span>Baju</span>
+        <div class="triangle" v-if="jenis === 'Baju'"></div>
+      </button>
+    </div>
+  </div>
 
                 <div class="berat">
                     <label>Berat Sampah</label>
@@ -156,6 +127,7 @@
 
                 <label>Tanggal Penukaran</label>
                 <input type="date" v-model="tanggal" />
+
                 <label>Waktu Penukaran</label>
                 <div class="jam">
                     <button
@@ -177,8 +149,7 @@
                         16:00 - 17:00
                     </button>
                 </div>
-                <label>Koin yang Didapat</label>
-                <div class="koin">50 Koin</div>
+
                 <div class="actions">
                     <button
                         class="btn-icon"
@@ -234,8 +205,7 @@ export default {
             tanggal: "",
             waktu: "",
             mainImage: null,
-            imageList: [null, null, null],
-            jenis: "",
+            jenis: "Botol",
             tambahClicked: false,
             simpanClicked: false,
         };
@@ -250,21 +220,13 @@ export default {
                 this.mainImage = URL.createObjectURL(file);
             }
         },
-        onListImageChange(e, index) {
-            const file = e.target.files[0];
-            if (file) {
-                const newList = [...this.imageList];
-                newList[index] = URL.createObjectURL(file);
-                this.imageList = newList;
-            }
-        },
         removeMainImage() {
-            this.mainImage = null;
-        },
-        removeListImage(index) {
-            const newList = [...this.imageList];
-            newList[index] = null;
-            this.imageList = newList;
+            const confirmed = window.confirm(
+                "Apakah Anda yakin ingin menghapus gambar ini?"
+            );
+            if (confirmed) {
+                this.mainImage = null;
+            }
         },
         tambahBarang() {
             this.tambahClicked = true;
@@ -331,7 +293,7 @@ export default {
     width: 150px;
     display: flex;
     flex-direction: column;
-    align-items: center;     /* Pusatkan horizontal */
+    align-items: center; /* Pusatkan horizontal */
     justify-content: center;
     padding: 10px 20px;
     margin: 0 5px;
@@ -426,149 +388,10 @@ export default {
     opacity: 0.5;
 }
 
-/* Konten */
-/* .konten {
-    padding: 60px 32px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-} */
-
-/* .form-container {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 40px;
-    width: 100%;
-    max-width: 1000px;
-} */
-
-/* .upload-section {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    border-radius: 4px; 
-} */
-
-/* .upload-section label {
-    font-weight: var(--fontWeightSemiBold);
-    margin-bottom: 8px;
-} */
-
-/* .hidden-input {
-    display: none;
-} */
-
-/* .upload-box {
-    border: 2px dashed var(--textGrey);
-    padding: 40px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--textField);
-    border-radius: 4px;
-} */
-
-/* .upload-btn {
-    padding: 10px 20px;
-    background-color: var(--primaryGreen);
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-weight: var(--fontWeightSemiBold);
-} */
-
-/* .detail-section {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-} */
-
-/* .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-} */
-
-
-.time-options {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.time-option {
-    padding: 12px;
-    background-color: var(--textField);
-    cursor: pointer;
-}
-
-.time-option:hover {
-    background-color: var(--accentGreen1);
-    color: white;
-}
-
-.info-box {
-    background-color: var(--primaryGreen);
-    color: white;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    width: 100%;
-    max-width: 300px;
-}
-
-.info-box h3 {
-    font-size: var(--fontSizeMedium);
-    font-weight: var(--fontWeightBold);
-}
-
-.coin-display {
-    font-size: 32px;
-    font-weight: var(--fontWeightBold);
-}
-
-.info-text {
-    font-size: var(--fontSizeNormal);
-}
-
-.action-buttons {
-    display: flex;
-    gap: 16px;
-    margin-top: 40px;
-}
-
-.btn {
-    padding: 12px 24px;
-    font-weight: var(--fontWeightSemiBold);
-    cursor: pointer;
-    border: none;
-}
-
-.btn:first-child {
-    background-color: white;
-    color: var(--primaryGreen);
-    border: 1px solid var(--primaryGreen);
-}
-
-.btn:last-child {
-    background-color: var(--primaryGreen);
-    color: white;
-}
-
-.btn:hover {
-    opacity: 0.9;
-}
-
 .range-wrapper {
     display: flex;
     align-items: center;
     gap: 8px;
-}
-
-.range-wrapper input[type="range"] {
-    flex: 1;
 }
 
 /* style tengah*/
@@ -596,10 +419,11 @@ export default {
     font-size: 16px;
     border: 2px dashed #cfd8dc;
     transition: border-color 0.3s ease;
+    border-radius: 4px;
 }
 
 .upload-box:hover {
-    border-color: #90caf9;
+    border-color: #006662;
 }
 
 .gambar-detail {
@@ -611,20 +435,10 @@ export default {
     margin-bottom: 12px;
 }
 
-.gambar-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.gambar-item {
-    padding: 30px;
-}
-
 .preview-image {
     width: 100%;
-    height: auto;
-    object-fit: cover;
+    height: 100%;
+    object-fit: contain;
     max-height: 200px;
 }
 
@@ -641,6 +455,7 @@ export default {
     line-height: 1;
     cursor: pointer;
     z-index: 10;
+    border-radius: 4px;
 }
 
 /* Form */
@@ -659,9 +474,15 @@ export default {
 }
 
 /* Tabs Sampah */
+.jenis-sampah label {
+    display: block;
+    margin-bottom: 8px;
+}
+
 .tabs {
     display: flex;
     gap: 12px;
+    overflow: visible; 
 }
 
 .tabs button {
@@ -681,6 +502,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-radius: 4px;
 }
 
 .tabs button:not(.active):hover {
@@ -697,37 +519,18 @@ export default {
     height: 32px;
 }
 
-/* Input Tanggal */
-input[type="date"] {
-    background-color: #98b0b0;
-    color: white;
-    font-family: "Poppins", sans-serif;
-    font-weight: 600;
-    font-size: 16px;
-    border: none;
-    padding: 8px;
-    /* cursor: pointer; */
+.tab-button {
+    position: relative;
 }
 
-/* Jam Penukaran */
-.jam button {
-    margin-right: 8px;
-    padding: 8px 16px;
-    border: none;
-    background-color: #98b0b0;
-    color: white;
-    font-family: "Poppins", sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.jam button.active {
-    background-color: #006662 !important;
-}
-
-.jam button:not(.active):hover {
-    background-color: #006662;
+.tab-button .triangle {
+    position: absolute;
+    bottom: -8px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #006662;
 }
 
 /* Berat Sampah */
@@ -749,6 +552,7 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-runnable-track {
     height: 8px;
     background: #006662;
+    border-radius: 4px;
 }
 
 input[type="range"]::-webkit-slider-thumb {
@@ -758,66 +562,7 @@ input[type="range"]::-webkit-slider-thumb {
     background: #006662;
     cursor: pointer;
     margin-top: -4px;
-    border-radius: 0;
-}
-
-/* Koin */
-.koin {
-    background-color: var(--primaryGreen);
-    color: white;
-    padding: 8px 16px;
-    width: fit-content;
-    font-family: "Poppins", sans-serif;
-    font-size: 16px;
-}
-
-/* +Barang & Simpan */
-.actions button {
-    padding: 10px 20px;
-    margin-right: 8px;
-    border: none;
-    background-color: #98b0b0;
-    color: white;
-    font-family: "Poppins", sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-.btn-icon {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    background-color: #98b0b0;
-    color: white;
-    font-family: "Poppins", sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-icon img {
-    width: 20px;
-    height: 20px;
-}
-.btn-icon.active {
-    background-color: #006662 !important;
-}
-.btn-icon:not(.active):hover {
-    background-color: #006662;
-}
-
-.btn-icon,
-.jam button {
-    transition: background-color 0.2s ease-in-out;
-}
-
-.actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    border-radius: 4px;
 }
 
 .berat-indikator-wrapper {
@@ -837,11 +582,12 @@ input[type="range"]::-webkit-slider-thumb {
     color: white;
     white-space: nowrap;
     transition: left 0.15s ease-in-out;
+    border-radius: 4px;
 }
 
 .range-wrapper {
     position: relative;
-    margin-top: 32px;
+    margin-top: 10px;
 }
 
 .berat-display-label {
@@ -858,6 +604,89 @@ input[type="range"]::-webkit-slider-thumb {
     font-size: 14px;
     transition: left 0.2s ease-in-out;
     pointer-events: none;
+    border-radius: 4px;
+}
+
+/* Input Tanggal */
+input[type="date"] {
+    background-color: #98b0b0;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+/* Waktu Penukaran */
+.jam {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.jam button {
+    flex: 1 1 30%;
+    min-width: 100px;
+    padding: 8px 16px;
+    border: none;
+    background-color: #98b0b0;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.jam button.active {
+    background-color: #006662 !important;
+}
+
+.jam button:not(.active):hover {
+    background-color: #006662;
+}
+
+.btn-icon,
+.jam button {
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* +Barang & Simpan */
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: #98b0b0;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn-icon img {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-icon.active {
+    background-color: #006662 !important;
+}
+
+.btn-icon:not(.active):hover {
+    background-color: #006662;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 /* Langganan */
@@ -910,6 +739,4 @@ input[type="range"]::-webkit-slider-thumb {
 .btn.send:hover {
     background-color: var(--primaryGreen);
 }
-
 </style>
-
