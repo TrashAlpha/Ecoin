@@ -43,7 +43,7 @@
         <label>Lokasi Penukaran</label>
         <!-- TODO Kasih FORM nyari lokasi penukaran yang dekat dengan input di atas -->
         <div class="rekomendasi">
-            <input type="text" placeholder="Masukan Lokasi Penukaran" />
+          <input v-model="lokasiPenukaran" type="text" placeholder="Masukan Lokasi Penukaran" />
         </div>
 
         <div class="action-buttons">
@@ -285,7 +285,7 @@ export default {
 }
 
 .rekomendasi {
-    display:contents;
+    display: contents;
     gap: 12px;
 }
 
