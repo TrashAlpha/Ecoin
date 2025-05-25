@@ -433,6 +433,8 @@ export default {
 
 .gambar-utama {
     margin-bottom: 12px;
+    height: 500px;
+    max-height: 500px;
 }
 
 .preview-image {
@@ -482,7 +484,7 @@ export default {
 .tabs {
     display: flex;
     gap: 12px;
-    overflow: visible; 
+    overflow: visible;
 }
 
 .tabs button {
