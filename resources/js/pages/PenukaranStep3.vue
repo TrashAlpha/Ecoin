@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import Footer from '../components/Footer.vue';
 import Navbar from '../components/Navbar.vue';
 import RedeemVoucherModal from "@/components/RedeemVoucherModal.vue";
+import KonfirmasiPenukaranModal from '@/components/KonfirmasiPenukaran.vue';
 
 function redirectToStep2(){
     window.location.href = '/penukaran2';
@@ -10,6 +11,7 @@ function redirectToStep2(){
 
 const showModal = ref(false);
 const selectedVoucher = ref<any>(null);
+const showConfirmationModal = ref(false);
 
 function openModal(voucher: any) {
   selectedVoucher.value = voucher;
@@ -23,6 +25,11 @@ function handleCancel() {
 function handleConfirm() {
   showModal.value = false;
   alert(`Voucher ${selectedVoucher.value.name} berhasil ditukar!`);
+}
+
+function handleConfirmKonfirmasi() {
+  showConfirmationModal.value = false;
+  alert("Penukaran berhasil dikonfirmasi!");
 }
 
 </script>
@@ -63,7 +70,7 @@ function handleConfirm() {
                     <br>
 
                     <button type="button" @click="redirectToStep2">Kembali</button>
-                    <button type="submit">Tukarkan</button>
+                    <button type="button" @click="showConfirmationModal = true">Tukarkan</button>
                 </form>
             </div>
             <div class="opsi-transfer">
@@ -156,6 +163,13 @@ function handleConfirm() {
             :icon="'/images/mdi_voucher.png'"
             @cancel="handleCancel"
             @confirm="handleConfirm"
+        />
+
+        <KonfirmasiPenukaranModal
+            v-if="showConfirmationModal"
+            :visible="showConfirmationModal"
+            :icon="'/images/VerificationIcon.png'"
+            @confirm="handleConfirmKonfirmasi"
         />
 
         <Footer/>
@@ -403,6 +417,7 @@ function handleConfirm() {
         padding: 12px 16px;
         gap: 12px;
         border-radius: 4px;
+        cursor: pointer;
     }
 
     .voucher-card img {
