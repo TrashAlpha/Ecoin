@@ -29,7 +29,7 @@ onMounted(async () => {
                 'Content-Type': 'application/json'
             }
         });
-        
+
         // Pastikan response.data memiliki array vouchers
         if (response.data && Array.isArray(response.data.vouchers)) {
             vouchers.value = response.data.vouchers;
@@ -67,17 +67,17 @@ onMounted(async () => {
 
         <div id="tukar-voucher">
             <h1>Tukar ke Voucher</h1>
-            
+
             <!-- Loading state -->
             <div v-if="isLoading" class="loading-message">
                 Memuat data voucher...
             </div>
-            
+
             <!-- Error message -->
             <div v-if="errorMessage" class="error-message">
                 {{ errorMessage }}
             </div>
-            
+
             <!-- Voucher list -->
              <div class="container">
                 <div v-for="voucher in vouchers" :key="voucher.id" class="card">
@@ -117,64 +117,64 @@ onMounted(async () => {
                     <div class="bank-card">
                         <img src="/public/images/ic_bni.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">BNI</span>
-                            <span class="total-judul">Total Transfer</span>
+                            <span class="nama-bank">BNI</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_bca.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">BCA</span>
-                            <span class="total-judul">Total Transfer</span>
+                            <span class="nama-bank">BCA</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_bri.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">BRI</span>
-                            <span class="total-judul">Total Transfer</span>
+                            <span class="nama-bank">BRI</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_mandiri.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">Mandiri</span>
-                            <span class="total-judul">Total Transfer</span>
+                            <span class="nama-bank">Mandiri</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_bsi.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">BSI</span>
-                            <span class="total-judul">Total Transfer</span>
+                            <span class="nama-bank">BSI</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_btn.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">BTN</span>
-                            <span class="total-judul">Total Transfer</span>
+                            <span class="nama-bank">BTN</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_gopay.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">Gopay</span>
-                            <span class="total-judul">Total Transfer</span>
+                            <span class="nama-bank">Gopay</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
                     <div class="bank-card">
                         <img src="/public/images/ic_dana.png" alt="">
                         <div class="info">
-                            <span class="nama-bank">Dana</span>
-                            <span class="total-judul">Total Transfer</span>
+                            <span class="nama-bank">Dana</span><br>
+                            <span class="total-judul">Total Transfer</span><br>
                             <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
                         </div>
                     </div>
@@ -408,7 +408,8 @@ onMounted(async () => {
     /* Opsi Transfer */
     .opsi-transfer {
         flex: 1;
-        max-width: 600px;
+        min-width: 400px;
+        max-width: 800px;
         margin-left: 200px;
     }
 
@@ -416,21 +417,23 @@ onMounted(async () => {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 16px;
+        margin-top: 16px;
     }
 
-    /* card */
     .bank-card {
         background-color: var(--accentGreen1);
         display: flex;
         align-items: center;
         padding: 12px 16px;
         gap: 12px;
+        border-radius: 4px;
     }
 
     .bank-card img {
         width: 75px;
         height: auto;
         object-fit: contain;
+        border-radius: 4px;
     }
 
     .bank-card .info {
@@ -441,11 +444,11 @@ onMounted(async () => {
 
     .nama-bank {
         background-color: var(--primaryGreen);
-        width: 60px;
         padding: 2px 8px;
         color: var(--textField);
         font-size: 14px;
         font-weight: bold;
+        border-radius: 4px;
     }
 
     .total-judul {
@@ -458,6 +461,25 @@ onMounted(async () => {
     .total-nominal {
         color: var(--textGrey);
         font-size: 14px;
+    }
+
+    /* Media query untuk layar kecil */
+    @media (max-width: 500px) {
+        .opsi-transfer {
+            min-width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .bank-card {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .bank-card img {
+            width: 100%;
+            max-width: 100px;
+        }
     }
 
 </style>
