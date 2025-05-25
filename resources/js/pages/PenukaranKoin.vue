@@ -107,7 +107,7 @@ onMounted(async () => {
                     <input type="text" name="" id="konversi_rupiah" readonly>
                     <br>
 
-                    <button type="button" onclick="window.location.href='/penukaran2'">Kembali</button>
+                    <button type="button" onclick="window.location.href='/beranda'">Kembali</button>
                     <button type="submit">Tukarkan</button>
                 </form>
             </div>
