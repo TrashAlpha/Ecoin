@@ -222,14 +222,14 @@ const formatHarga = (angka) => {
     }
 
     .hero-konten {
-        position: relative; 
+        position: relative;
         width: 30%;            /* lebar 30% di kiri */
         background-color: var(--primaryGreen);
         color: var(--backgroundWhite);
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: 20px;  
+        padding: 20px;
     }
 
 
