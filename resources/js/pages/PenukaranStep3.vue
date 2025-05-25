@@ -74,7 +74,7 @@ function handleConfirmKonfirmasi() {
                 </form>
             </div>
             <div class="opsi-transfer">
-                <label>Opsi Transfer</label><br>
+                <label>Opsi Voucher</label><br>
                 <div class="opsi-grid">
                     <div class="voucher-card" @click="openModal({ name: 'Pluxxe', image: '/public/images/pluxxe.png' })">
                         <img src="/public/images/pluxxe.png" alt="">

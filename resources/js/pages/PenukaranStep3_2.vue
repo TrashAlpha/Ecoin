@@ -12,9 +12,17 @@ function redirectToStep2() {
 const showModal = ref(false);
 const selectedBank = ref<any>(null);
 const showConfirmationModal = ref(false);
+const koinDitukar = ref(2000);
 
 function openModal(bank: any) {
   selectedBank.value = bank;
+}
+
+function handleTukarkan() {
+  if (!selectedBank.value) {
+    alert("Pilih bank atau e-wallet terlebih dahulu.");
+    return;
+  }
   showModal.value = true;
 }
 
@@ -22,9 +30,11 @@ function handleCancel() {
   showModal.value = false;
 }
 
-function handleConfirm() {
+function handleConfirm(data: { rekening: string; password: string }) {
   showModal.value = false;
-  alert(`Penukaran ke ${selectedBank.value.name} berhasil!`);
+  console.log('Nomor rekening:', data.rekening);
+  console.log('Password:', data.password);
+  showConfirmationModal.value = true;
 }
 
 function handleConfirmKonfirmasi() {
@@ -35,7 +45,7 @@ function handleConfirmKonfirmasi() {
 
 <template>
   <div class="penukaran-step-3-2">
-    <Navbar/>
+    <Navbar />
 
     <section class="hero">
       <img src="/public/images/heroPenukaran.png" alt="Penukaran Sampah" class="hero-image" />
@@ -65,28 +75,25 @@ function handleConfirmKonfirmasi() {
           <input type="text" id="saldo_koin" value="2000" readonly><br>
 
           <label for="koin-yang-ditukar">Koin yang ditukarkan</label><br>
-          <input type="text" id="koin_yang_ditukar" value="2000" readonly><br>
+          <input type="number" id="koin_yang_ditukar" v-model="koinDitukar"><br>
 
           <label for="konversi-rupiah">Konversi ke Rupiah</label><br>
-          <input type="text" id="konversi_rupiah" value="Rp 20.000" readonly><br>
+          <input type="text" id="konversi_rupiah" :value="`Rp ${(koinDitukar * 10).toLocaleString('id-ID')}`" readonly><br>
 
           <button type="button" @click="redirectToStep2">Kembali</button>
-          <button type="button" @click="showConfirmationModal = true">Tukarkan</button>
+          <button type="button" @click="handleTukarkan">Tukarkan</button>
         </form>
       </div>
 
       <div class="opsi-transfer">
         <label>Opsi Transfer</label>
         <div class="opsi-grid">
-          <div
-            class="bank-card"
-            @click="openModal({ name: 'BNI', image: '/public/images/ic_bni.png' })"
-          >
+          <div class="bank-card" @click="openModal({ name: 'BNI', image: '/public/images/ic_bni.png' })">
             <img src="/public/images/ic_bni.png" alt="">
             <div class="info">
               <span class="nama-bank">BNI</span>
               <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. 20.000</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
           <div class="bank-card" @click="openModal({ name: 'BCA', image: '/public/images/ic_bca.png' })">
@@ -94,15 +101,15 @@ function handleConfirmKonfirmasi() {
             <div class="info">
               <span class="nama-bank">BCA</span>
               <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. 20.000</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
           <div class="bank-card" @click="openModal({ name: 'BRI', image: '/public/images/ic_bri.png' })">
-            <img src="/public/images/ic_bri.png" alt="">
+            <img src="/public/images/ic_BRI.png" alt="">
             <div class="info">
               <span class="nama-bank">BRI</span>
               <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. 20.000</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
           <div class="bank-card" @click="openModal({ name: 'Mandiri', image: '/public/images/ic_mandiri.png' })">
@@ -110,7 +117,7 @@ function handleConfirmKonfirmasi() {
             <div class="info">
               <span class="nama-bank">Mandiri</span>
               <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. 20.000</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
           <div class="bank-card" @click="openModal({ name: 'BSI', image: '/public/images/ic_bsi.png' })">
@@ -118,7 +125,7 @@ function handleConfirmKonfirmasi() {
             <div class="info">
               <span class="nama-bank">BSI</span>
               <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. 20.000</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
           <div class="bank-card" @click="openModal({ name: 'BTN', image: '/public/images/ic_btn.png' })">
@@ -126,7 +133,7 @@ function handleConfirmKonfirmasi() {
             <div class="info">
               <span class="nama-bank">BTN</span>
               <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. 20.000</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
           <div class="bank-card" @click="openModal({ name: 'Gopay', image: '/public/images/ic_gopay.png' })">
@@ -134,7 +141,7 @@ function handleConfirmKonfirmasi() {
             <div class="info">
               <span class="nama-bank">Gopay</span>
               <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. 20.000</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
           <div class="bank-card" @click="openModal({ name: 'Dana', image: '/public/images/ic_dana.png' })">
@@ -142,12 +149,12 @@ function handleConfirmKonfirmasi() {
             <div class="info">
               <span class="nama-bank">Dana</span>
               <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. 20.000</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
         </div>
 
-        <a href="/penukaran3_3" style="color: blue;">Atau tukar ke voucher</a>
+        <a href="/penukaran3" style="color: blue;">Atau tukar ke voucher</a>
       </div>
     </section>
 
@@ -162,25 +169,26 @@ function handleConfirmKonfirmasi() {
     </section>
 
     <RedeemMoneyModal
-        v-if="showModal"
-        :visible="showModal"
-        :coins="2000"
-        :bankName="selectedBank?.name"
-        :icon="'/images/GroupMoney.png'"
-        @cancel="handleCancel"
-        @confirm="handleConfirm"
+      v-if="showModal"
+      :visible="showModal"
+      :coins="koinDitukar"
+      :bankName="selectedBank?.name"
+      :icon="'/images/GroupMoney.png'"
+      @cancel="handleCancel"
+      @confirm="handleConfirm"
     />
 
     <KonfirmasiPenukaranModal
-        v-if="showConfirmationModal"
-        :visible="showConfirmationModal"
-        :icon="'/images/VerificationIcon.png'"
-        @confirm="handleConfirmKonfirmasi"
+      v-if="showConfirmationModal"
+      :visible="showConfirmationModal"
+      :icon="'/images/VerificationIcon.png'"
+      @confirm="handleConfirmKonfirmasi"
     />
 
-    <Footer/>
+    <Footer />
   </div>
 </template>
+
 
 
 <style scoped>
