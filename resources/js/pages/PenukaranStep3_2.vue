@@ -88,7 +88,7 @@ function handleConfirmKonfirmasi() {
       <div class="opsi-transfer">
         <label>Opsi Transfer</label>
         <div class="opsi-grid">
-          <div class="bank-card" @click="openModal({ name: 'BNI', image: '/public/images/ic_bni.png' })">
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BNI' }" @click="openModal({ name: 'BNI', image: '/public/images/ic_bni.png' })">
             <img src="/public/images/ic_bni.png" alt="">
             <div class="info">
               <span class="nama-bank">BNI</span>
@@ -96,7 +96,7 @@ function handleConfirmKonfirmasi() {
               <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
-          <div class="bank-card" @click="openModal({ name: 'BCA', image: '/public/images/ic_bca.png' })">
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BCA' }" @click="openModal({ name: 'BCA', image: '/public/images/ic_bca.png' })">
             <img src="/public/images/ic_bca.png" alt="">
             <div class="info">
               <span class="nama-bank">BCA</span>
@@ -104,7 +104,7 @@ function handleConfirmKonfirmasi() {
               <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
-          <div class="bank-card" @click="openModal({ name: 'BRI', image: '/public/images/ic_bri.png' })">
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BRI' }" @click="openModal({ name: 'BRI', image: '/public/images/ic_bri.png' })">
             <img src="/public/images/ic_BRI.png" alt="">
             <div class="info">
               <span class="nama-bank">BRI</span>
@@ -112,7 +112,7 @@ function handleConfirmKonfirmasi() {
               <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
-          <div class="bank-card" @click="openModal({ name: 'Mandiri', image: '/public/images/ic_mandiri.png' })">
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'Mandiri' }" @click="openModal({ name: 'Mandiri', image: '/public/images/ic_mandiri.png' })">
             <img src="/public/images/ic_mandiri.png" alt="">
             <div class="info">
               <span class="nama-bank">Mandiri</span>
@@ -120,7 +120,7 @@ function handleConfirmKonfirmasi() {
               <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
-          <div class="bank-card" @click="openModal({ name: 'BSI', image: '/public/images/ic_bsi.png' })">
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BSI' }" @click="openModal({ name: 'BSI', image: '/public/images/ic_bsi.png' })">
             <img src="/public/images/ic_bsi.png" alt="">
             <div class="info">
               <span class="nama-bank">BSI</span>
@@ -128,7 +128,7 @@ function handleConfirmKonfirmasi() {
               <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
-          <div class="bank-card" @click="openModal({ name: 'BTN', image: '/public/images/ic_btn.png' })">
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BTN' }" @click="openModal({ name: 'BTN', image: '/public/images/ic_btn.png' })">
             <img src="/public/images/ic_btn.png" alt="">
             <div class="info">
               <span class="nama-bank">BTN</span>
@@ -136,7 +136,7 @@ function handleConfirmKonfirmasi() {
               <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
-          <div class="bank-card" @click="openModal({ name: 'Gopay', image: '/public/images/ic_gopay.png' })">
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'Gopay' }" @click="openModal({ name: 'Gopay', image: '/public/images/ic_gopay.png' })">
             <img src="/public/images/ic_gopay.png" alt="">
             <div class="info">
               <span class="nama-bank">Gopay</span>
@@ -144,7 +144,7 @@ function handleConfirmKonfirmasi() {
               <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
             </div>
           </div>
-          <div class="bank-card" @click="openModal({ name: 'Dana', image: '/public/images/ic_dana.png' })">
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'Dana' }" @click="openModal({ name: 'Dana', image: '/public/images/ic_dana.png' })">
             <img src="/public/images/ic_dana.png" alt="">
             <div class="info">
               <span class="nama-bank">Dana</span>
@@ -474,6 +474,25 @@ function handleConfirmKonfirmasi() {
     .total-nominal {
         color: var(--textGrey);
         font-size: 14px;
+    }
+
+    .bank-card.selected {
+      background-color: var(--primaryGreen);
+      color: white;
+      transition-duration: 0.5s;
+    }
+
+    .bank-card.selected .nama-bank {
+      background-color: var(--backgroundWhite);
+      color: var(--primaryGreen);
+    }
+
+    .bank-card.selected .total-judul {
+      color: var(--backgroundWhite);
+    }
+
+    .bank-card.selected .total-nominal {
+      color: var(--backgroundWhite);
     }
 
     /* Media query untuk layar kecil */
