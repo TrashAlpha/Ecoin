@@ -1,10 +1,13 @@
 <script setup>
 import Navbar from '../components/Navbar.vue';
 import Footer from '../components/Footer.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const popupAdd = ref(false);
 const popupUpdate = ref(false);
+const vouchers = ref([]);
+
+
 
 function addVoucher(){
     popupAdd.value = true;
@@ -21,6 +24,21 @@ function close(){
         popupUpdate.value = false;
     }
 }
+
+function fetchVouchers(){
+    fetch("http://localhost:8000/api/vouchers")
+        .then((res) => res.json())
+        .then((data) => {
+          vouchers.value = data;
+        })
+        .catch((err) => {
+          console.error("Gagal ambil data voucher:", err);
+        });
+}
+
+onMounted(() => {
+    fetchVouchers();
+})
 </script>
 
 <template>
@@ -49,25 +67,23 @@ function close(){
                         <th>Gambar</th>
                         <th>Judul</th>
                         <th>Deskripsi</th>
-                        <th>Harga</th>
+                        <th>Nilai Koin</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Data statis -->
-                    <tr>
+                    <tr v-for="voucher in vouchers" :key="voucher.id">
                         <td><img src="/public/images/logo.png" alt="Logo Voucher" width="100px"></td>
-                        <td>Voucher satu</td>
-                        <td>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</td>
-                        <td>Rp. 350.000</td>
-                        <td><span class="status status-active">Aktif</span></td>
+                        <td>{{ voucher.nama_voucher }}</td>
+                        <td>{{ voucher.deskripsi }}</td>
+                        <td>{{ voucher.nilai_koin }}</td>
+                        <td><span :class="`status status-${voucher.status}`">{{ voucher.status }}</span></td>
                         <td>
                             <button class="btn btn-update" @click="updateVoucher()">Update</button>
                             <button class="btn btn-delete">Delete</button>
                         </td>
                     </tr>
-                    <!-- Tambah sesuai kebutuhan -->
                 </tbody>
             </table>
         </section>
@@ -82,8 +98,8 @@ function close(){
                     <input type="text" placeholder="Judul"><br>
                     <label for="deskripsi">Deskripsi</label><br>
                     <input type="text" placeholder="Deskripsi"><br>
-                    <label for="harga">Harga</label><br>
-                    <input type="text" placeholder="Harga"><br>
+                    <label for="nilai_koin">Nilai Koin</label><br>
+                    <input type="text" placeholder="Nilai Koin"><br>
                     <label for="status">Status</label><br>
                     <select id="status" name="status">
                         <option value="aktif">Aktif</option>
@@ -105,8 +121,8 @@ function close(){
                     <input type="text" placeholder="Judul"><br>
                     <label for="deskripsi">Deskripsi</label><br>
                     <input type="text" placeholder="Deskripsi"><br>
-                    <label for="harga">Harga</label><br>
-                    <input type="text" placeholder="Harga"><br>
+                    <label for="nilai_koin">Nilai Koin</label><br>
+                    <input type="text" placeholder="Nilai Koin"><br>
                     <label for="status">Status</label><br>
                     <select id="status" name="status">
                         <option value="aktif">Aktif</option>
@@ -193,11 +209,11 @@ th {
     font-weight: bold;
     font-size: 12px;
 }
-.status-active {
+.status-aktif {
     background-color: green;
     color: white;
 }
-.status-expired {
+.status-kadaluarsa {
     background-color: red;
     color: white;
 }
