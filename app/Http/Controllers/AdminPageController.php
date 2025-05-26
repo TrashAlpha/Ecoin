@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Voucher;
+use App\Models\User;
 
 class AdminPageController extends Controller
 {
@@ -19,5 +21,13 @@ class AdminPageController extends Controller
     public function manajemen_user()
     {
         return view('manajemen_user');
+    }
+    public function getAllVouchers()
+    {
+        return response()->json(Voucher::all());
+    }
+    public function getAllUsers()
+    {
+        return response()->json(User::all());
     }
 }

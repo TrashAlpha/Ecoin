@@ -1,139 +1,195 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import Footer from '../components/Footer.vue';
 import Navbar from '../components/Navbar.vue';
+import RedeemMoneyModal from "@/components/RedeemMoneyModal.vue";
+import KonfirmasiPenukaranModal from '@/components/KonfirmasiPenukaran.vue';
 
-function redirectToStep2(){
-    window.location.href = '/penukaran2';
+function redirectToStep2() {
+  window.location.href = '/penukaran2';
+}
+
+const showModal = ref(false);
+const selectedBank = ref<any>(null);
+const showConfirmationModal = ref(false);
+const koinDitukar = ref(2000);
+
+function openModal(bank: any) {
+  selectedBank.value = bank;
+}
+
+function handleTukarkan() {
+  if (!selectedBank.value) {
+    alert("Pilih bank atau e-wallet terlebih dahulu.");
+    return;
+  }
+  showModal.value = true;
+}
+
+function handleCancel() {
+  showModal.value = false;
+}
+
+function handleConfirm(data: { rekening: string; password: string }) {
+  showModal.value = false;
+  console.log('Nomor rekening:', data.rekening);
+  console.log('Password:', data.password);
+  showConfirmationModal.value = true;
+}
+
+function handleConfirmKonfirmasi() {
+  showConfirmationModal.value = false;
+  alert("Penukaran berhasil dikonfirmasi!");
 }
 </script>
 
 <template>
-    <div class="penukaran-step-3-2">
-        <Navbar/>
+  <div class="penukaran-step-3-2">
+    <Navbar />
 
-        <section class="hero">
-            <img src="/public/images/heroPenukaran.png" alt="Penukaran Sampah" class="hero-image" />
-            <div class="kategori-tabs">
-                <div class="tab"><img src="/public/images/ic_plastic.png" alt=""> Non Organik</div>
-                <div class="tab"><img src="/public/images/ic_leaf.png" alt=""> Organik</div>
-                <div class="tab"><img src="/public/images/ic_mask.png" alt=""> Limbah Medis</div>
-            </div>
-        </section>
+    <section class="hero">
+      <img src="/public/images/heroPenukaran.png" alt="Penukaran Sampah" class="hero-image" />
+      <div class="kategori-tabs">
+        <div class="tab"><img src="/public/images/ic_plastic.png" alt=""> Non Organik</div>
+        <div class="tab"><img src="/public/images/ic_leaf.png" alt=""> Organik</div>
+        <div class="tab"><img src="/public/images/ic_mask.png" alt=""> Limbah Medis</div>
+      </div>
+    </section>
 
-        <section class="step-indikator">
-            <div class="step-heading">
-                <div class="heading-line"></div>
-                <p>Detail Sampah <br /> Yang Ditukarkan</p>
-            </div>
-            <div class="steps">
-                <div class="step active"><span>1</span> Detail Sampah</div>
-                <div class="step active"><span>2</span> Lokasi Penukaran</div>
-                <div class="step active"><span>3</span> Konfirmasi Penukaran</div>
-            </div>
-        </section>
+    <section class="step-indikator">
+      <div class="step-heading">
+        <div class="heading-line"></div>
+        <p>Detail Sampah <br /> Yang Ditukarkan</p>
+      </div>
+      <div class="steps">
+        <div class="step active"><span>1</span> Detail Sampah</div>
+        <div class="step active"><span>2</span> Lokasi Penukaran</div>
+        <div class="step active"><span>3</span> Konfirmasi Penukaran</div>
+      </div>
+    </section>
 
-        <section class="konten">
-            <div class="form">
-                <form action="">
-                    <label for="saldo-koin">Saldo Koin</label><br>
-                    <input type="text" name="" id="saldo_koin" readonly>
-                    <br>
-                    <label for="koin-yang-ditukar">Koin yang ditukarkan</label><br>
-                    <input type="text" name="" id="koin_yang_ditukar" readonly>
-                    <br>
-                    <label for="konversi-rupiah">Konversi ke Rupiah</label><br>
-                    <input type="text" name="" id="konversi_rupiah" readonly>
-                    <br>
+    <section class="konten">
+      <div class="form">
+        <form>
+          <label for="saldo-koin">Saldo Koin</label><br>
+          <input type="text" id="saldo_koin" value="2000" readonly><br>
 
-                    <button type="button" @click="redirectToStep2">Kembali</button>
-                    <button type="submit">Tukarkan</button>
-                </form>
-            </div>
-            <div class="opsi-transfer">
-                <label>Opsi Transfer</label>
-                <div class="opsi-grid">
-                    <div class="bank-card">
-                        <img src="/public/images/ic_bni.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">BNI</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_bca.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">BCA</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_bri.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">BRI</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_mandiri.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">Mandiri</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_bsi.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">BSI</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_btn.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">BTN</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_gopay.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">Gopay</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_dana.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">Dana</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="/penukaran3" style="color: blue;">Atau tukar ke voucher</a>
-            </div>
-        </section>
+          <label for="koin-yang-ditukar">Koin yang ditukarkan</label><br>
+          <input type="number" id="koin_yang_ditukar" v-model="koinDitukar"><br>
 
-        <section class="langganan">
-            <h2>Berlangganan ECOIN</h2>
-            <h3>Untuk Mendapatkan Informasi Terbaru</h3>
-            <p>Masukkan emailmu dan dapatkan notifikasi informasi terbaru<br />dan terupdate tentang aplikasi</p>
-            <div class="email-box">
-                <input type="email" placeholder="Tulis Emailmu Disini ..." />
-                <button class="btn send"><img src="/public/images/ic_send.png" alt="Send" /></button>
-            </div>
-      </section>
+          <label for="konversi-rupiah">Konversi ke Rupiah</label><br>
+          <input type="text" id="konversi_rupiah" :value="`Rp ${(koinDitukar * 10).toLocaleString('id-ID')}`" readonly><br>
 
-        <Footer/>
-    </div>
+          <button type="button" @click="redirectToStep2">Kembali</button>
+          <button type="button" @click="handleTukarkan">Tukarkan</button>
+        </form>
+      </div>
+
+      <div class="opsi-transfer">
+        <label>Opsi Transfer</label>
+        <div class="opsi-grid">
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BNI' }" @click="openModal({ name: 'BNI', image: '/public/images/ic_bni.png' })">
+            <img src="/public/images/ic_bni.png" alt="">
+            <div class="info">
+              <span class="nama-bank">BNI</span>
+              <span class="total-judul">Total Transfer</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
+            </div>
+          </div>
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BCA' }" @click="openModal({ name: 'BCA', image: '/public/images/ic_bca.png' })">
+            <img src="/public/images/ic_bca.png" alt="">
+            <div class="info">
+              <span class="nama-bank">BCA</span>
+              <span class="total-judul">Total Transfer</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
+            </div>
+          </div>
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BRI' }" @click="openModal({ name: 'BRI', image: '/public/images/ic_bri.png' })">
+            <img src="/public/images/ic_BRI.png" alt="">
+            <div class="info">
+              <span class="nama-bank">BRI</span>
+              <span class="total-judul">Total Transfer</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
+            </div>
+          </div>
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'Mandiri' }" @click="openModal({ name: 'Mandiri', image: '/public/images/ic_mandiri.png' })">
+            <img src="/public/images/ic_mandiri.png" alt="">
+            <div class="info">
+              <span class="nama-bank">Mandiri</span>
+              <span class="total-judul">Total Transfer</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
+            </div>
+          </div>
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BSI' }" @click="openModal({ name: 'BSI', image: '/public/images/ic_bsi.png' })">
+            <img src="/public/images/ic_bsi.png" alt="">
+            <div class="info">
+              <span class="nama-bank">BSI</span>
+              <span class="total-judul">Total Transfer</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
+            </div>
+          </div>
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BTN' }" @click="openModal({ name: 'BTN', image: '/public/images/ic_btn.png' })">
+            <img src="/public/images/ic_btn.png" alt="">
+            <div class="info">
+              <span class="nama-bank">BTN</span>
+              <span class="total-judul">Total Transfer</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
+            </div>
+          </div>
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'Gopay' }" @click="openModal({ name: 'Gopay', image: '/public/images/ic_gopay.png' })">
+            <img src="/public/images/ic_gopay.png" alt="">
+            <div class="info">
+              <span class="nama-bank">Gopay</span>
+              <span class="total-judul">Total Transfer</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
+            </div>
+          </div>
+          <div class="bank-card" :class="{ selected: selectedBank?.name === 'Dana' }" @click="openModal({ name: 'Dana', image: '/public/images/ic_dana.png' })">
+            <img src="/public/images/ic_dana.png" alt="">
+            <div class="info">
+              <span class="nama-bank">Dana</span>
+              <span class="total-judul">Total Transfer</span>
+              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
+            </div>
+          </div>
+        </div>
+
+        <a href="/penukaran3" style="color: blue;">Atau tukar ke voucher</a>
+      </div>
+    </section>
+
+    <section class="langganan">
+      <h2>Berlangganan ECOIN</h2>
+      <h3>Untuk Mendapatkan Informasi Terbaru</h3>
+      <p>Masukkan emailmu dan dapatkan notifikasi informasi terbaru<br />dan terupdate tentang aplikasi</p>
+      <div class="email-box">
+        <input type="email" placeholder="Tulis Emailmu Disini ..." />
+        <button class="btn send"><img src="/public/images/ic_send.png" alt="Send" /></button>
+      </div>
+    </section>
+
+    <RedeemMoneyModal
+      v-if="showModal"
+      :visible="showModal"
+      :coins="koinDitukar"
+      :bankName="selectedBank?.name"
+      :icon="'/images/GroupMoney.png'"
+      @cancel="handleCancel"
+      @confirm="handleConfirm"
+    />
+
+    <KonfirmasiPenukaranModal
+      v-if="showConfirmationModal"
+      :visible="showConfirmationModal"
+      :icon="'/images/VerificationIcon.png'"
+      @confirm="handleConfirmKonfirmasi"
+    />
+
+    <Footer />
+  </div>
 </template>
+
+
 
 <style scoped>
     .penukaran-step-3-2 {
@@ -383,6 +439,7 @@ function redirectToStep2(){
         padding: 12px 16px;
         gap: 12px;
         border-radius: 4px;
+        cursor: pointer;
     }
 
     .bank-card img {
@@ -417,6 +474,25 @@ function redirectToStep2(){
     .total-nominal {
         color: var(--textGrey);
         font-size: 14px;
+    }
+
+    .bank-card.selected {
+      background-color: var(--primaryGreen);
+      color: white;
+      transition-duration: 0.5s;
+    }
+
+    .bank-card.selected .nama-bank {
+      background-color: var(--backgroundWhite);
+      color: var(--primaryGreen);
+    }
+
+    .bank-card.selected .total-judul {
+      color: var(--backgroundWhite);
+    }
+
+    .bank-card.selected .total-nominal {
+      color: var(--backgroundWhite);
     }
 
     /* Media query untuk layar kecil */

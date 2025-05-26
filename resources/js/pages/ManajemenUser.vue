@@ -1,9 +1,10 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Navbar from '../components/Navbar.vue';
 import Footer from '../components/Footer.vue';
 
 const updateUserPopup = ref(false)
+const users = ref([])
 
 function updateUser(){
     updateUserPopup.value = true
@@ -12,6 +13,21 @@ function updateUser(){
 function close(){
     updateUserPopup.value = false
 }
+
+function fetchUsers(){
+    fetch("http://localhost:8000/api/users")
+    .then((res) => res.json())
+    .then((data) => {
+        users.value = data;
+    })
+    .catch((err) => {
+        console.error("Gagal ambil data user: ", err);
+    })
+}
+
+onMounted(() => {
+    fetchUsers();
+})
 </script>
 
 <template>
@@ -46,21 +62,20 @@ function close(){
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Data statis -->
-                    <tr>
+                    <tr v-for="user in users" :key="user.id">
                         <td><img src="/public/images/logo.png" alt="Logo Voucher" width="100px"></td>
-                        <td>Arnamaya</td>
-                        <td>amamiya@gmail.com</td>
-                        <td>Rp. 350.000</td>
-                        <td>@amaya</td>
-                        <td>@amaya</td>
-                        <td><span class="status status-active">Aktif</span></td>
+                        <td>{{user.name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.saldo_koin}}</td>
+                        <td>{{user.akun_facebook}}</td>
+                        <td>{{user.akun_twitter}}</td>
+                        <td><span :class="`status status-${user.status}`">{{user.status}}</span></td>
                         <td>
+                            <!-- TODO Update dan delete belum bisa -->
                             <button class="btn btn-update" @click="updateUser">Update</button>
                             <button class="btn btn-delete">Delete</button>
                         </td>
                     </tr>
-                    <!-- Tambah sesuai kebutuhan -->
                 </tbody>
             </table>
         </section>

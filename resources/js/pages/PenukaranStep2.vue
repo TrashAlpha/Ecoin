@@ -40,10 +40,10 @@
         <input v-model="lokasi" type="text" placeholder="Masukkan lokasi awal..." />
         <button class="btn action" @click="cariLokasi">Cari Lokasi</button>
 
-        <label>Rekomendasi Penukaran</label>
+        <label>Lokasi Penukaran</label>
+        <!-- TODO Kasih FORM nyari lokasi penukaran yang dekat dengan input di atas -->
         <div class="rekomendasi">
-          <button class="btn action" @click="pilihRekomendasi('Kudus')">Kudus <span>✈</span></button>
-          <button class="btn action" @click="pilihRekomendasi('Semarang')">Semarang <span>✈</span></button>
+          <input v-model="lokasiPenukaran" type="text" placeholder="Masukan Lokasi Penukaran" />
         </div>
 
         <div class="action-buttons">
@@ -285,7 +285,7 @@ export default {
 }
 
 .rekomendasi {
-    display: flex;
+    display: contents;
     gap: 12px;
 }
 

@@ -92,13 +92,13 @@ export default {
                     'Accept': 'application/json'
                   }
                 });
-                
+
                 if (response.data && response.data.user) {
                     this.user = response.data.user;
                     this.isLoggedIn = true;
                     this.role = this.user.role;
                     this.profileImage = this.user.profile_image || '/images/ic_profile.png';
-                    
+
                     // Simpan ke localStorage untuk akses lebih cepat next time
                     localStorage.setItem('user', JSON.stringify(this.user));
                     console.log('User data fetched:', this.user);
@@ -223,6 +223,7 @@ export default {
     border: 2px solid transparent;
     font-weight: 600;
     cursor: pointer;
+    border-radius: 4px;
 }
 
 .login-button:hover {
