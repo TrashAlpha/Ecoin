@@ -26,7 +26,7 @@
           <li :class="{ active: isActive('/tentang') }"><a href="/tentang">Tentang</a></li>
 
           <li v-if="role === 'admin'" :class="{ active: isActive('/admin/verifikasi_penukaran') }"><a href="/admin/verifikasi_penukaran">Verifikasi Penukaran</a></li>
-          <li v-if="role === 'admin'" :class="{ active: isActive('/admin/manajamen_voucher') }"><a href="/admin/manajamen_voucher">Manajemen Voucher</a></li>
+          <li v-if="role === 'admin'" :class="{ active: isActive('/admin/manajemen_voucher') }"><a href="/admin/manajemen_voucher">Manajemen Voucher</a></li>
           <li v-if="role === 'admin'" :class="{ active: isActive('/admin/manajemen_user') }"><a href="/admin/manajemen_user">Manajemen User</a></li>
         </ul>
         <!-- Toggle between login button and profile icon -->
