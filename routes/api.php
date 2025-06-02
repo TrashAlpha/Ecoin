@@ -14,8 +14,9 @@ Route::middleware(['web'])->group(function () {
 
 Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 
-Route::middleware(['web', 'auth'])->group(function () { // Gunakan middleware 'web'
+Route::middleware(['web', 'auth'])->group(function () { 
     Route::get('/get-user', [AuthController::class, 'getUser'])->name('auth.getUser');
+    Route::put('/update-profile', [AuthController::class, 'updateProfile'])->name('auth.updateProfile');
 });
 
 // Fetch data
