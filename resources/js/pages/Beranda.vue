@@ -68,21 +68,21 @@ import Footer from '../components/Footer.vue';
                     title="Buat Akun"
                     description="Langkah Pertama, buat akun untuk bisa login dan bertransaksi"
                     linkText="Registrasi Akun"
-                    linkHref="#"
+                    linkHref="/login"
                 />
                 <StepCard
                     :step="2"
                     title="Tukar Sampah"
                     description="Langkah Kedua, pilih sampah dan tukarkan sesuai langkah-langkah"
                     linkText="Penukaran Sampah"
-                    linkHref="#"
+                    linkHref="/penukaran1"
                 />
                 <StepCard
                     :step="3"
                     title="Tukar koin"
                     description="Langkah Ketiga, dapatkan koin lalu tukar koin dengan kupon"
                     linkText="Dapatkan Kupon"
-                    linkHref="#"
+                    linkHref="/penukaran_koin"
                 />
             </div>
         </div>
