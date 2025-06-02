@@ -136,6 +136,20 @@ function submitNewVoucher() {
     });
 }
 
+// Search and filter function
+const searchKeyword = ref('');
+const selectedStatus = ref('');
+
+import { computed } from 'vue';
+
+const filteredVouchers = computed(() => {
+  return vouchers.value.filter(voucher => {
+    const matchKeyword = voucher.nama_voucher.toLowerCase().includes(searchKeyword.value.toLowerCase());
+    const matchStatus = selectedStatus.value === '' || voucher.status === selectedStatus.value;
+    return matchKeyword && matchStatus;
+  });
+});
+
 onMounted(() => {
     fetchVouchers();
 })
@@ -150,11 +164,11 @@ onMounted(() => {
         </section>
 
         <section class="filter-section">
-            <input type="text" placeholder="Cari voucher" class="search-input">
-            <select name="" id="" class="filter-select">
+            <input type="text" placeholder="Cari voucher" class="search-input" v-model="searchKeyword">
+            <select class="filter-select" v-model="selectedStatus">
                 <option value="">Semua status</option>
-                <option value="active">Aktif</option>
-                <option value="expired">Kadaluarsa</option>
+                <option value="aktif">Aktif</option>
+                <option value="kadaluarsa">Kadaluarsa</option>
             </select>
             <button class="btn btn-add" @click="addVoucher()">Tambah Voucher</button>
             <!-- TODO Popup tambah voucher, isinya form -->
@@ -173,7 +187,7 @@ onMounted(() => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="voucher in vouchers" :key="voucher.id">
+                    <tr v-for="voucher in filteredVouchers" :key="voucher.id">
                         <td><img src="/public/images/logo.png" alt="Logo Voucher" width="100px"></td>
                         <td>{{ voucher.nama_voucher }}</td>
                         <td>{{ voucher.deskripsi }}</td>
