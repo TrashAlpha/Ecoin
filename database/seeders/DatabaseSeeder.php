@@ -62,6 +62,8 @@ class DatabaseSeeder extends Seeder
         // Call other seeders
         $this->call([
             SampahSeeder::class,
+            ArtikelSeeder::class,
+            ProdukSeeder::class,
         ]);
     }
 } 

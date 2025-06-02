@@ -49,6 +49,64 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'saldo_koin' => 'integer',
         ];
+    }
+
+    // Relationships
+    public function penukaranSampah()
+    {
+        return $this->hasMany(Penukaran_Sampah::class);
+    }
+
+    public function penukaranKoin()
+    {
+        return $this->hasMany(Penukaran_Koin::class);
+    }
+
+    public function logTransaksi()
+    {
+        return $this->hasMany(Log_Transaksi::class);
+    }
+
+    public function userVouchers()
+    {
+        return $this->hasMany(UserVoucher::class);
+    }
+
+    // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    public function scopeAdmin($query)
+    {
+        return $query->where('role', 'admin');
+    }
+
+    public function scopeUser($query)
+    {
+        return $query->where('role', 'user');
+    }
+
+    // Methods
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function addKoin($amount)
+    {
+        $this->increment('saldo_koin', $amount);
+    }
+
+    public function subtractKoin($amount)
+    {
+        if ($this->saldo_koin >= $amount) {
+            $this->decrement('saldo_koin', $amount);
+            return true;
+        }
+        return false;
     }
 }
