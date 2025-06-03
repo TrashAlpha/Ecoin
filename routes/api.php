@@ -21,6 +21,9 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::put('/update-profile', [AuthController::class, 'updateProfile'])->name('auth.updateProfile');
     Route::post('/exchange-voucher', [PenukaranKoinController::class, 'exchangeVoucher'])->name('vouchers.exchange');
     Route::post('/confirm-exchange', [PenukaranKoinController::class, 'confirmExchange'])->name('vouchers.confirm');
+    Route::get('/transfer-methods', [PenukaranKoinController::class, 'getTransferMethods'])->name('transfer.methods');
+    Route::post('/exchange-to-money', [PenukaranKoinController::class, 'exchangeToMoney'])->name('exchange.money');
+    Route::post('/confirm-money-exchange', [PenukaranKoinController::class, 'confirmMoneyExchange'])->name('confirm.money');
 });
 
 // Admin API Routes - Protected with admin middleware
