@@ -5,38 +5,36 @@ import { theme } from "@/config/theme";
 
 const user = ref(null);
 
-function daftarTransaksi(){
+// Form binding fields
+const name = ref('');
+const email = ref('');
+const akunFacebook = ref('');
+const akunTwitter = ref('');
+
+function daftarTransaksi() {
     window.location.href = '/daftartransaksi';
 }
 
-function beranda(){
+function beranda() {
     window.location.href = '/beranda';
 }
 
 async function logout() {
     try {
-        // Tambahkan CSRF token dari meta tag
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-        const response = await axios.post('/api/logout', {}, {
+        await axios.post('/api/logout', {}, {
             headers: {
+                'X-CSRF-TOKEN': csrfToken,
                 'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': csrfToken
+                'X-Requested-With': 'XMLHttpRequest'
             },
             withCredentials: true
         });
 
-        // Hapus data user dari localStorage
         localStorage.removeItem('user');
-
-        // Redirect ke halaman beranda
         window.location.href = '/beranda';
-
     } catch (error) {
         console.error('Logout failed:', error);
-
-        // Jika error karena CSRF token mismatch, reload halaman
         if (error.response && error.response.status === 419) {
             window.location.reload();
         }
@@ -45,33 +43,31 @@ async function logout() {
 
 async function fetchUserData() {
     try {
-        // Cek localStorage terlebih dahulu untuk UX yang lebih cepat
         const saved = localStorage.getItem('user');
         if (saved) {
             user.value = JSON.parse(saved);
         }
 
-        // Ambil data terbaru dari API
         const response = await axios.get('http://localhost:8000/api/get-user', {
             withCredentials: true,
-            headers: {
-                'Accept': 'application/json'
-            }
+            headers: { 'Accept': 'application/json' }
         });
 
         if (response.data && response.data.user) {
             user.value = response.data.user;
-            // Simpan ke localStorage untuk akses lebih cepat next time
             localStorage.setItem('user', JSON.stringify(user.value));
-            console.log('User data fetched:', user.value);
+
+            // Isi form
+            name.value = user.value.name || '';
+            email.value = user.value.email || '';
+            akunFacebook.value = user.value.akun_facebook || '';
+            akunTwitter.value = user.value.akun_twitter || '';
         } else {
-            // Jika tidak ada user yang login
             user.value = null;
             localStorage.removeItem('user');
         }
     } catch (error) {
         console.error('Error fetching user data:', error);
-        // Jika error (misal: token expired), anggap user tidak login
         if (error.response && error.response.status === 401) {
             user.value = null;
             localStorage.removeItem('user');
@@ -79,9 +75,38 @@ async function fetchUserData() {
     }
 }
 
-// Panggil fetchUserData ketika komponen dimount
+async function updateProfile() {
+    try {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        const response = await axios.put('/api/update-profile', {
+            name: name.value,
+            email: email.value,
+            akun_facebook: akunFacebook.value,
+            akun_twitter: akunTwitter.value
+        }, {
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            },
+            withCredentials: true
+        });
+
+        if (response.data.success) {
+            alert('Profil berhasil diperbarui');
+            fetchUserData(); // Refresh user data
+        } else {
+            alert('Gagal memperbarui profil');
+        }
+    } catch (error) {
+        console.error('Gagal update profil:', error);
+        alert('Terjadi kesalahan saat memperbarui profil');
+    }
+}
+
 onMounted(() => {
     fetchUserData();
+
     const root = document.documentElement;
     root.style.setProperty("--primaryGreen", theme.colors.primaryGreen);
     root.style.setProperty("--accentGreen1", theme.colors.accentGreen1);
@@ -114,7 +139,6 @@ const styleEcoinText = {
     color: "var(--backgroundWhite)",
 };
 
-// Modal & voucher dummy
 const showVoucherModal = ref(false);
 const vouchers = ref([
     { id: 1, title: "Diskon 10% Belanja", desc: "Berlaku hingga 30 Juni 2025" },
@@ -124,6 +148,33 @@ const vouchers = ref([
     { id: 5, title: "Diskon 50% Tiket", desc: "Event tertentu" },
     { id: 6, title: "Voucher Kopi Gratis", desc: "Khusus member" },
 ]);
+
+// Edit profile
+const isEditModalOpen = ref(false);
+const editedName = ref('');
+const editedEmail = ref('');
+const editedFacebook = ref('');
+const editedTwitter = ref('');
+
+const showEditModal = ref(false);
+function toggleEditModal() {
+    // Salin data asli ke variabel lokal
+    editedName.value = name.value;
+    editedEmail.value = email.value;
+    editedFacebook.value = akunFacebook.value;
+    editedTwitter.value = akunTwitter.value;
+    isEditModalOpen.value = true;
+}
+
+async function saveProfileChanges() {
+    name.value = editedName.value;
+    email.value = editedEmail.value;
+    akunFacebook.value = editedFacebook.value;
+    akunTwitter.value = editedTwitter.value;
+
+    await updateProfile(); // Kirim ke server
+    isEditModalOpen.value = false;
+}
 
 function toggleVoucherModal() {
     showVoucherModal.value = !showVoucherModal.value;
@@ -157,37 +208,34 @@ function toggleVoucherModal() {
 
                     <h1 class="judul">Profil</h1>
 
-                <!-- Tambahkan pembungkus form -->
-                <div class="form-container">
-                    <label>Nama</label>
-                    <input type="text" :placeholder="user ? user.name : 'Pengguna'" :value="user ? user.name : ''" />
+                    <!-- Tambahkan pembungkus form -->
+                    <div class="form-container">
+                        <label>Nama</label>
+                        <input type="text" :value="name" readonly class="readonly-field" />
 
-                    <label>Email</label>
-                    <input type="email" :placeholder="user ? user.email : 'pengguna@contoh.com'" :value="user ? user.email : ''" />
+                        <label>Email</label>
+                        <input type="email" :value="email" readonly class="readonly-field" />
 
                         <label>Saldo Koin</label>
                         <input
                             type="text"
-                            :placeholder="user ? user.saldo_koin + '' : '0.000000'" :value="user ? user.saldo_koin + '' : ''"
+                            :value="user ? user.saldo_koin + '' : '0.000000'"
                             readonly
                             class="readonly-field"
                         />
 
                         <label>Facebook</label>
-                        <input
-                            type="text"
-                            placeholder="https://facebook.com/..."
-                        />
+                        <input type="text" :value="akunFacebook" readonly class="readonly-field" />
 
                         <label>Twitter</label>
-                        <input type="text" placeholder="https://x.com/..." />
+                        <input type="text" :value="akunTwitter" readonly class="readonly-field" />
 
                         <div class="aksi">
                             <div class="aksi-row">
-                                <button class="transaksi" @click="daftarTransaksi">Daftar Transaksi</button>
-                                <button class="voucher" @click="toggleVoucherModal">Voucher Anda</button>
+                            <button class="transaksi" @click="daftarTransaksi">Daftar Transaksi</button>
+                            <button class="voucher" @click="toggleVoucherModal">Voucher Anda</button>
                             </div>
-                            <button class="edit">Edit Profil</button>
+                            <button class="edit" @click="toggleEditModal">Edit Profil</button>
                         </div>
                     </div>
                 </div>
@@ -205,6 +253,31 @@ function toggleVoucherModal() {
                     </div>
                 </div>
                 <button class="close-modal" @click="toggleVoucherModal">Tutup</button>
+            </div>
+        </div>
+
+        <!-- MODAL EDIT PROFIL -->
+        <div v-if="isEditModalOpen" class="modal-overlay" @click.self="isEditModalOpen = false">
+            <div class="modal-content">
+                <h2>Edit Profil</h2>
+                <div class="form-group">
+                    <label>Nama</label>
+                    <input type="text" v-model="editedName" placeholder="Nama" />
+
+                    <label>Email</label>
+                    <input type="email" v-model="editedEmail" placeholder="Email" />
+
+                    <label>Facebook</label>
+                    <input type="text" v-model="editedFacebook" placeholder="https://facebook.com/..." />
+
+                    <label>Twitter</label>
+                    <input type="text" v-model="editedTwitter" placeholder="https://x.com/..." />
+                </div>
+
+                <div class="modal-actions">
+                    <button @click="saveProfileChanges">Simpan</button>
+                    <button @click="isEditModalOpen = false">Batal</button>
+                </div>
             </div>
         </div>
     </div>
@@ -449,13 +522,63 @@ input:disabled {
     color: var(--textGrey);
 }
 
+/* Modal Edit Profil */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
 .close-modal {
-    padding: 8px 16px;
-    background-color: var(--primaryGreen);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.form-group input {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid var(--textBlack);
+  border-radius: 4px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.modal-actions button {
+  padding: 0.5rem 1rem;
+  background-color: var(--primaryGreen);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 /* Responsive */

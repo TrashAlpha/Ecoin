@@ -11,14 +11,75 @@ const scrollToSection = (id) => {
     }
 };
 
-const totalSaldo = computed(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return user ? user.saldo_koin : 0;
-});
+const user = ref(JSON.parse(localStorage.getItem('user')));
+const userKoin = computed(() => user.value?.saldo_koin || 0);
+
+const totalSaldo = computed(() => userKoin.value);
 
 const vouchers = ref([]);
 const isLoading = ref(true);
 const errorMessage = ref('');
+
+const exchangeVoucher = async (voucher) => {
+    console.log('Voucher yang diklik:', voucher);
+    console.log('Nilai koin voucher:', voucher.nilai_koin);
+    console.log('Saldo koin user:', user.value.saldo_koin);
+    console.log('Voucher ID yang dikirim:', voucher.id);
+
+    try {
+        const response = await axios.post(
+            '/api/exchange-voucher',
+            { voucher_id: voucher.id },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (response.data.success) {
+            const confirmed = confirm(response.data.confirmation.message);
+            if (confirmed) {
+                await confirmExchange(voucher.id);
+            }
+        } else {
+            alert(response.data.message || 'Penukaran gagal.');
+        }
+    } catch (error) {
+        console.error('Gagal menukar voucher:', error);
+        console.log('Response data:', error.response ? error.response.data : 'Tidak ada response data');
+        alert(error.response?.data?.message || 'Terjadi kesalahan saat memproses penukaran.');
+    }
+};
+
+const confirmExchange = async (voucherId) => {
+    try {
+        const response = await axios.post(
+            '/api/confirm-exchange',
+            { voucher_id: voucherId },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (response.data.success) {
+            alert('Penukaran berhasil!');
+            // Update saldo di localStorage
+            user.value.saldo_koin = response.data.updated_coin_balance;
+            localStorage.setItem('user', JSON.stringify(user.value));
+            window.location.reload();
+        } else {
+            alert(response.data.message || 'Penukaran gagal.');
+        }
+    } catch (error) {
+        console.error('Gagal konfirmasi penukaran:', error);
+        alert('Terjadi kesalahan saat konfirmasi penukaran.');
+    }
+};
 
 onMounted(async () => {
     try {
@@ -30,7 +91,6 @@ onMounted(async () => {
             }
         });
 
-        // Pastikan response.data memiliki array vouchers
         if (response.data && Array.isArray(response.data.vouchers)) {
             vouchers.value = response.data.vouchers;
             console.log("Vouchers data:", vouchers.value);
@@ -44,7 +104,6 @@ onMounted(async () => {
         isLoading.value = false;
     }
 });
-
 </script>
 
 <template>
@@ -89,7 +148,12 @@ onMounted(async () => {
                             <p class="deskripsi">{{ voucher.deskripsi }}</p>
                         </div>
                         <div class="button-container">
-                            <button class="tukar-btn">Tukar Sekarang</button>
+                            <button
+                                class="tukar-btn"
+                                :disabled="userKoin < voucher.nilai_koin"
+                                @click="exchangeVoucher(voucher)">
+                                Tukar Sekarang
+                            </button>
                         </div>
                     </div>
                 </div>

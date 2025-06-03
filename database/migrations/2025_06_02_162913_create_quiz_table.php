@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tests', function (Blueprint $table) {
+        Schema::create('quiz', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('akun');
+            $table->foreignId('artikel_id')->constrained('artikel')->onDelete('cascade');
+            $table->text('pertanyaan');
+            $table->json('pilihan_jawaban'); // Array of options
+            $table->string('jawaban_benar');
+            $table->integer('urutan')->default(1);
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tests');
+        Schema::dropIfExists('quiz');
     }
-};
+}; 
