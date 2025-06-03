@@ -60,8 +60,8 @@ class Log_Transaksi extends Model
             'jenis_transaksi' => $jenisTransaksi,
             'tanggal_transaksi' => now()->toDateString(),
             'jumlah_koin' => $jumlahKoin,
-            'reference_id' => $reference ? $reference->id : null,
-            'reference_type' => $reference ? get_class($reference) : null,
+            'reference_id' => $reference?->id,
+            'reference_type' => $reference?->getMorphClass(), // Gunakan method getMorphClass() untuk mendapatkan nama class yang benar
         ]);
     }
 }

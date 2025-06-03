@@ -102,7 +102,8 @@ export default {
         const response = await axios.post('http://localhost:8000/api/register', {
           name: this.name,
           email: this.email,
-          password: this.password
+          password: this.password,
+          password_confirmation: this.confirmPassword
         });
 
         // Registrasi sukses, arahkan ke halaman login

@@ -19,6 +19,8 @@ Route::post('/register', [AuthController::class, 'register'])->name('auth.regist
 Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/get-user', [AuthController::class, 'getUser'])->name('auth.getUser');
     Route::put('/update-profile', [AuthController::class, 'updateProfile'])->name('auth.updateProfile');
+    Route::post('/exchange-voucher', [PenukaranKoinController::class, 'exchangeVoucher'])->name('vouchers.exchange');
+    Route::post('/confirm-exchange', [PenukaranKoinController::class, 'confirmExchange'])->name('vouchers.confirm');
 });
 
 // Admin API Routes - Protected with admin middleware

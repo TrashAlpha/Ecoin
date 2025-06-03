@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('penukaran__koins', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->enum('tipe_penukaran', ['tukar_voucher', 'tukar_rupiah']);
+            $table->string('tipe_penukaran'); // lebih aman untuk masa depan
             $table->integer('nilai_koin');
             $table->decimal('nilai_rupiah', 15, 2)->nullable();
             $table->date('tanggal_transaksi');
