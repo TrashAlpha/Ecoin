@@ -3,6 +3,7 @@ import Footer from '../components/Footer.vue';
 import Navbar from '../components/Navbar.vue';
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
+import RedeemMoneyModal from '@/components/RedeemMoneyModal.vue';
 
 const scrollToSection = (id) => {
     const el = document.getElementById(id);
@@ -11,40 +12,214 @@ const scrollToSection = (id) => {
     }
 };
 
-const totalSaldo = computed(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return user ? user.saldo_koin : 0;
-});
+const user = ref(JSON.parse(localStorage.getItem('user')));
+const userKoin = computed(() => user.value?.saldo_koin || 0);
 
+const totalSaldo = computed(() => userKoin.value);
+
+// Tukar Voucher logic
 const vouchers = ref([]);
 const isLoading = ref(true);
 const errorMessage = ref('');
 
+const exchangeVoucher = async (voucher) => {
+    console.log('Voucher yang diklik:', voucher);
+    console.log('Nilai koin voucher:', voucher.nilai_koin);
+    console.log('Saldo koin user:', user.value.saldo_koin);
+    console.log('Voucher ID yang dikirim:', voucher.id);
+
+    try {
+        const response = await axios.post(
+            '/api/exchange-voucher',
+            { voucher_id: voucher.id },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (response.data.success) {
+            const confirmed = confirm(response.data.confirmation.message);
+            if (confirmed) {
+                await confirmExchange(voucher.id);
+            }
+        } else {
+            alert(response.data.message || 'Penukaran gagal.');
+        }
+    } catch (error) {
+        console.error('Gagal menukar voucher:', error);
+        console.log('Response data:', error.response ? error.response.data : 'Tidak ada response data');
+        alert(error.response?.data?.message || 'Terjadi kesalahan saat memproses penukaran.');
+    }
+};
+
+const confirmExchange = async (voucherId) => {
+    try {
+        const response = await axios.post(
+            '/api/confirm-exchange',
+            { voucher_id: voucherId },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (response.data.success) {
+            alert('Penukaran berhasil!');
+            // Update saldo di localStorage
+            user.value.saldo_koin = response.data.updated_coin_balance;
+            localStorage.setItem('user', JSON.stringify(user.value));
+            window.location.reload();
+        } else {
+            alert(response.data.message || 'Penukaran gagal.');
+        }
+    } catch (error) {
+        console.error('Gagal konfirmasi penukaran:', error);
+        alert('Terjadi kesalahan saat konfirmasi penukaran.');
+    }
+};
+
+// Tukar Rupiah logic
+// Data untuk tukar rupiah
+const transferMethods = ref([]);
+const selectedMethod = ref(null);
+const coinAmount = ref('');
+const showModal = ref(false);
+
+// Fungsi untuk memuat metode transfer
+const loadTransferMethods = async () => {
+    try {
+        const response = await axios.get('/api/transfer-methods', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        if (response.data.success) {
+            transferMethods.value = response.data.methods;
+        } else {
+            console.error('Gagal memuat metode transfer');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
+// Fungsi untuk memilih metode transfer
+const selectMethod = (method) => {
+    selectedMethod.value = method;
+    calculateRupiah();
+};
+
+// Fungsi untuk menghitung konversi ke rupiah
+const calculateRupiah = () => {
+    if (!selectedMethod.value || !coinAmount.value) return;
+    
+    const amount = parseInt(coinAmount.value);
+    if (isNaN(amount) || amount <= 0) return;
+    
+    const rupiahAmount = (amount * 1000) - selectedMethod.value.admin_fee;
+    return rupiahAmount > 0 ? rupiahAmount : 0;
+};
+
+// Fungsi untuk memproses penukaran koin ke rupiah
+const exchangeToMoney = async () => {
+    if (!selectedMethod.value) {
+        alert('Pilih metode transfer terlebih dahulu');
+        return;
+    }
+    
+    const amount = parseInt(coinAmount.value);
+    if (isNaN(amount)) {
+        alert('Masukkan jumlah koin yang valid');
+        return;
+    }
+    
+    if (amount <= 0) {
+        alert('Jumlah koin harus lebih dari 0');
+        return;
+    }
+    
+    if (amount > user.value.saldo_koin) {
+        alert('Saldo koin tidak mencukupi');
+        return;
+    }
+    
+    showModal.value = true;
+};
+
+// Fungsi untuk konfirmasi penukaran
+const handleConfirm = (data) => {
+    showModal.value = false;
+    processMoneyExchange(data);
+    alert(`Penukaran berhasil! Anda mendapatkan Rp ${calculateRupiah().toLocaleString('id-ID')}`);
+    // Reset form
+    selectedMethod.value = null;
+    coinAmount.value = '';
+};
+
+const processMoneyExchange = async (data) => {
+    try {
+        const response = await axios.post(
+            '/api/confirm-money-exchange',
+            {
+                transfer_method: selectedMethod.value.id,
+                coin_amount: coinAmount.value,
+                account_number: data.rekening,
+                password: data.password
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (response.data.success) {
+            // Update saldo user
+            user.value.saldo_koin -= parseInt(coinAmount.value);
+            localStorage.setItem('user', JSON.stringify(user.value));
+        } else {
+            alert(response.data.message || 'Penukaran gagal.');
+        }
+    } catch (error) {
+        console.error('Gagal konfirmasi penukaran:', error);
+        alert(error.response?.data?.message || 'Terjadi kesalahan saat konfirmasi penukaran.');
+    }
+};
+
 onMounted(async () => {
     try {
         isLoading.value = true;
-        const response = await axios.get('/api/vouchers', {
+        // Load vouchers
+        const vouchersResponse = await axios.get('/api/vouchers', {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             }
         });
 
-        // Pastikan response.data memiliki array vouchers
-        if (response.data && Array.isArray(response.data.vouchers)) {
-            vouchers.value = response.data.vouchers;
-            console.log("Vouchers data:", vouchers.value);
+        if (vouchersResponse.data && Array.isArray(vouchersResponse.data.vouchers)) {
+            vouchers.value = vouchersResponse.data.vouchers;
         } else {
             throw new Error('Format data voucher tidak valid');
         }
+
+        // Load transfer methods
+        await loadTransferMethods();
     } catch (error) {
-        console.error("Error fetching vouchers:", error);
-        errorMessage.value = 'Gagal memuat data voucher. Silakan coba lagi.';
+        console.error("Error:", error);
+        errorMessage.value = 'Gagal memuat data. Silakan coba lagi.';
     } finally {
         isLoading.value = false;
     }
 });
-
 </script>
 
 <template>
@@ -65,6 +240,7 @@ onMounted(async () => {
             </div>
         </div>
 
+        <!-- Tukar ke Voucher Section -->
         <div id="tukar-voucher">
             <h1>Tukar ke Voucher</h1>
 
@@ -89,93 +265,64 @@ onMounted(async () => {
                             <p class="deskripsi">{{ voucher.deskripsi }}</p>
                         </div>
                         <div class="button-container">
-                            <button class="tukar-btn">Tukar Sekarang</button>
+                            <button
+                                class="tukar-btn"
+                                :disabled="userKoin < voucher.nilai_koin"
+                                @click="exchangeVoucher(voucher)">
+                                Tukar Sekarang
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Tukar ke Rupiah Section -->
         <div id="tukar-rupiah">
             <div class="form">
                 <h1>Tukar ke Rupiah</h1>
-                <form action="">
+                <form @submit.prevent="exchangeToMoney">
                     <label for="koin-yang-ditukar">Koin yang ditukarkan</label><br>
-                    <input type="text" name="" id="koin_yang_ditukar" readonly>
+                    <input 
+                        type="number" 
+                        v-model="coinAmount" 
+                        id="koin_yang_ditukar" 
+                        placeholder="Masukkan jumlah koin"
+                        :disabled="!selectedMethod"
+                        @input="calculateRupiah">
                     <br>
+                    
                     <label for="konversi-rupiah">Konversi ke Rupiah</label><br>
-                    <input type="text" name="" id="konversi_rupiah" readonly>
+                    <input 
+                        type="text" 
+                        :value="calculateRupiah() > 0 ? 'Rp ' + calculateRupiah().toLocaleString('id-ID') : ''" 
+                        id="konversi_rupiah" 
+                        readonly>
                     <br>
 
-                    <button type="button" onclick="window.location.href='/beranda'">Kembali</button>
-                    <button type="submit">Tukarkan</button>
+                    <button type="button" @click="selectedMethod = null; coinAmount = ''">Kembali</button>
+                    <button 
+                        type="submit" 
+                        :disabled="!selectedMethod || !coinAmount">
+                        Tukarkan
+                    </button>
                 </form>
             </div>
+            
             <div class="opsi-transfer">
                 <label>Opsi Transfer</label>
                 <div class="opsi-grid">
-                    <div class="bank-card">
-                        <img src="/public/images/ic_bni.png" alt="">
+                    <div 
+                        v-for="method in transferMethods" 
+                        :key="method.id"
+                        class="bank-card"
+                        :class="{ selected: selectedMethod?.id === method.id }"
+                        @click="selectMethod(method)">
+                        <img :src="`/images/ic_${method.id}.png`" :alt="method.name">
                         <div class="info">
-                            <span class="nama-bank">BNI</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_bca.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">BCA</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_bri.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">BRI</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_mandiri.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">Mandiri</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_bsi.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">BSI</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_btn.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">BTN</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_gopay.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">Gopay</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
-                        </div>
-                    </div>
-                    <div class="bank-card">
-                        <img src="/public/images/ic_dana.png" alt="">
-                        <div class="info">
-                            <span class="nama-bank">Dana</span><br>
-                            <span class="total-judul">Total Transfer</span><br>
-                            <span class="total-nominal">Rp. xxx.xxx.xxx,00</span>
+                            <span class="nama-bank">{{ method.name }}</span>
+                            <span class="total-judul">Biaya Admin</span>
+                            <span class="total-nominal">Rp {{ method.admin_fee.toLocaleString('id-ID') }}</span>
                         </div>
                     </div>
                 </div>
@@ -183,6 +330,19 @@ onMounted(async () => {
         </div>
 
         <Footer/>
+
+        <!-- Modal untuk konfirmasi penukaran -->
+        <RedeemMoneyModal
+            v-if="showModal"
+            :visible="showModal"
+            :coins="coinAmount"
+            :bankName="selectedMethod?.name"
+            :adminFee="selectedMethod?.admin_fee"
+            icon="/images/GroupMoney.png"
+            @cancel="showModal = false"
+            @confirm="handleConfirm"
+        />
+
     </div>
 </template>
 
@@ -427,6 +587,8 @@ onMounted(async () => {
         padding: 12px 16px;
         gap: 12px;
         border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
 
     .bank-card img {
@@ -463,22 +625,54 @@ onMounted(async () => {
         font-size: 14px;
     }
 
-    /* Media query untuk layar kecil */
+    /* Style untuk card yang dipilih */
+    .bank-card.selected {
+        background-color: var(--primaryGreen);
+        color: white;
+    }
+
+    .bank-card.selected .nama-bank {
+        background-color: var(--backgroundWhite);
+        color: var(--primaryGreen);
+    }
+
+    .bank-card.selected .total-judul {
+        color: var(--backgroundWhite);
+    }
+
+    .bank-card.selected .total-nominal {
+        color: var(--backgroundWhite);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        #tukar-rupiah {
+            flex-direction: column;
+        }
+        
+        .opsi-transfer {
+            margin-left: 0;
+            margin-top: 30px;
+        }
+        
+        .form input {
+            width: 100%;
+        }
+    }
+
     @media (max-width: 500px) {
         .opsi-transfer {
             min-width: 100%;
             margin-left: 0;
-            margin-right: 0;
+        }
+
+        .opsi-grid {
+            grid-template-columns: 1fr;
         }
 
         .bank-card {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .bank-card img {
-            width: 100%;
-            max-width: 100px;
+            flex-direction: row;
+            align-items: center;
         }
     }
 

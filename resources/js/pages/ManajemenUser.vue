@@ -5,8 +5,10 @@ import Footer from '../components/Footer.vue';
 
 const updateUserPopup = ref(false)
 const users = ref([])
+const selectedUser = ref(null)
 
-function updateUser(){
+function updateUser(user){
+    selectedUser.value = { ...user } // clone data user
     updateUserPopup.value = true
 }
 
@@ -15,15 +17,74 @@ function close(){
 }
 
 function fetchUsers(){
-    fetch("http://localhost:8000/api/users")
+    fetch("http://localhost:8000/api/admin/users")
     .then((res) => res.json())
     .then((data) => {
-        users.value = data;
+        users.value = data.data; // <- Ambil dari properti "data"
     })
     .catch((err) => {
         console.error("Gagal ambil data user: ", err);
     })
 }
+
+function submitUpdateUser() {
+    const konfirmasi = window.confirm("Apakah Anda yakin ingin mengupdate data user?");
+    if (!konfirmasi) return;
+
+    const id = selectedUser.value.id;
+
+    // Update status
+    fetch(`http://localhost:8000/api/admin/users/${id}/status`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: selectedUser.value.status })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log('Status updated', data);
+        fetchUsers();
+    });
+
+    // Update koin
+    fetch(`http://localhost:8000/api/admin/users/${id}/coins`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ saldo_koin: selectedUser.value.saldo_koin })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log('Saldo updated', data);
+        fetchUsers();
+        close();
+    })
+    .catch(err => {
+        console.error("Gagal update user: ", err);
+    });
+}
+
+// Search and filter function
+const searchQuery = ref('');
+const selectedStatus = ref('');
+
+import { computed } from 'vue';
+
+const filteredUsers = computed(() => {
+    return users.value
+        .filter(user => {
+            const matchesSearch = user.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+                                  user.email.toLowerCase().includes(searchQuery.value.toLowerCase());
+            const matchesStatus = selectedStatus.value === '' || user.status === selectedStatus.value;
+            return matchesSearch && matchesStatus;
+        })
+        // Optional sorting by name (A-Z)
+        .sort((a, b) => a.name.localeCompare(b.name));
+});
+
+
 
 onMounted(() => {
     fetchUsers();
@@ -39,11 +100,11 @@ onMounted(() => {
         </section>
 
         <section class="filter-section">
-            <input type="text" placeholder="Cari pengguna" class="search-input">
-            <select name="" id="" class="filter-select">
+            <input type="text" placeholder="Cari pengguna" class="search-input" v-model="searchQuery">
+            <select class="filter-select" v-model="selectedStatus">
                 <option value="">Semua status</option>
                 <option value="active">Aktif</option>
-                <option value="nonaktif">Nonaktif</option>
+                <option value="banned">Banned</option>
             </select>
         </section>
 
@@ -62,7 +123,7 @@ onMounted(() => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="user in users" :key="user.id">
+                    <tr v-for="user in filteredUsers" :key="user.id">
                         <td><img src="/public/images/logo.png" alt="Logo Voucher" width="100px"></td>
                         <td>{{user.name}}</td>
                         <td>{{user.email}}</td>
@@ -72,8 +133,7 @@ onMounted(() => {
                         <td><span :class="`status status-${user.status}`">{{user.status}}</span></td>
                         <td>
                             <!-- TODO Update dan delete belum bisa -->
-                            <button class="btn btn-update" @click="updateUser">Update</button>
-                            <button class="btn btn-delete">Delete</button>
+                            <button class="btn btn-update" @click="updateUser(user)">Update</button>
                         </td>
                     </tr>
                 </tbody>
@@ -83,26 +143,16 @@ onMounted(() => {
         <!-- TODO Popup masih belum benar -->
         <div v-if="updateUserPopup" class="overlay">
             <div class="popup-form">
-                <h1>Edit User</h1>
+                <h1>Edit User {{ selectedUser.name }}</h1>
                 <form action="">
-                    <label for="gambar">Gambar</label><br>
-                    <input type="text" placeholder="Link Gambar" disabled><br>
-                    <label for="username">Username</label><br>
-                    <input type="text" placeholder="username" disabled><br>
-                    <label for="email">Email</label><br>
-                    <input type="text" placeholder="email" disabled><br>
                     <label for="saldo">Saldo</label><br>
-                    <input type="text" placeholder="saldo" disabled><br>
-                    <label for="facebook">Facebook</label><br>
-                    <input type="text" placeholder="facebook" disabled><br>
-                    <label for="twitter">Twitter</label><br>
-                    <input type="text" placeholder="twitter" disabled><br>
-                    <label for="status">Status</label><br>
-                    <select id="status" name="status">
-                        <option value="aktif">Aktif</option>
-                        <option value="nonaktif">Nonaktif</option>
-                    </select><br>
-                    <button type="submit" class="btn btn-update">Submit</button>
+                    <input type="number" v-model="selectedUser.saldo_koin"><br>
+                    
+                    <select v-model="selectedUser.status">
+                        <option value="active">Aktif</option>
+                        <option value="banned">Banned</option>
+                    </select>
+                    <button type="button" class="btn btn-update" @click="submitUpdateUser">Submit</button>
                     <button type="button" class="btn btn-back" @click="close">Kembali</button>
                 </form>
             </div>
@@ -186,7 +236,7 @@ th {
     background-color: green;
     color: white;
 }
-.status-expired {
+.status-banned {
     background-color: red;
     color: white;
 }
@@ -201,10 +251,6 @@ th {
 }
 .btn-update {
     background-color: #27ae60;
-    color: white;
-}
-.btn-delete {
-    background-color: #c0392b;
     color: white;
 }
 .btn-add {

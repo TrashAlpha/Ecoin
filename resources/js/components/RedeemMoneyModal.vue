@@ -2,7 +2,7 @@
   <div v-if="visible" class="modal-overlay">
     <div class="modal-container">
       <img class="icon" :src="icon" alt="Icon" />
-      <p class="text">Anda akan menukar <strong>{{ coins }}</strong> koin menjadi <strong>Rp {{ coins * 10 }}</strong> ke <strong>{{ bankName }}</strong>.</p>
+      <p class="text">Anda akan menukar <strong>{{ coins }}</strong> koin menjadi <strong>Rp {{ ((coins * 1000) - adminFee).toLocaleString('id-ID') }}</strong> ke <strong>{{ bankName }}</strong>.</p>
       
       <input v-model="rekening" type="text" placeholder="Masukkan Nomor Rekening" class="input-field" />
       <input v-model="password" type="password" placeholder="Masukkan Password Rekening" class="input-field" />
@@ -22,6 +22,7 @@ const props = defineProps({
   visible: Boolean,
   coins: Number,
   icon: String,
+  adminFee: Number,
   bankName: String
 });
 

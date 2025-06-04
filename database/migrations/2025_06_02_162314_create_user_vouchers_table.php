@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('penukaran__koins', function (Blueprint $table) {
+        Schema::create('user_vouchers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('tipe_penukaran'); // lebih aman untuk masa depan
-            $table->integer('nilai_koin');
-            $table->decimal('nilai_rupiah', 15, 2)->nullable();
-            $table->date('tanggal_transaksi');
-            $table->foreignId('voucher_id')->nullable()->constrained('vouchers')->onDelete('set null');
+            $table->foreignId('voucher_id')->constrained('vouchers')->onDelete('cascade');
+            $table->timestamp('tanggal_diperoleh');
+            $table->enum('status', ['active', 'used', 'expired'])->default('active');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('penukaran__koins');
+        Schema::dropIfExists('user_vouchers');
     }
-};
+}; 
