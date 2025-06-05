@@ -46,7 +46,6 @@ class ProfileController extends Controller
             ->get([
                 'id',
                 'voucher_id',
-                // 'kode_voucher', // Pastikan kolom ini ada di tabel
                 'tanggal_diperoleh',
                 'status'
             ]);
@@ -57,7 +56,6 @@ class ProfileController extends Controller
                 'nilai_voucher' => $userVoucher->voucher->nilai_koin ?? 0,
                 'deskripsi' => $userVoucher->voucher->deskripsi ?? '',
                 'tanggal_diperoleh' => $userVoucher->tanggal_diperoleh->format('d F Y'),
-                // 'kode_voucher' => $userVoucher->kode_voucher ?? '-',
                 'status' => $userVoucher->status,
             ];
         });

@@ -29,15 +29,11 @@
                 <div class="voucher-detail">
                     <div class="detail-row">
                         <span class="label">Nilai Voucher:</span>
-                        <span class="value">{{ voucher.nilai_voucher }}</span>
+                        <span class="value">{{ voucher.nilai_voucher }} ecoin</span>
                     </div>
                     <div class="detail-row">
                         <span class="label">Diperoleh pada:</span>
                         <span class="value">{{ voucher.tanggal_diperoleh }}</span>
-                    </div>
-                    <div class="detail-row">
-                        <span class="label">Kode Voucher:</span>
-                        <span class="value code">{{ voucher.kode_voucher }}</span>
                     </div>
                 </div>
             </div>
@@ -56,12 +52,9 @@ onMounted(async () => {
     try {
         const response = await axios.get("/api/user-vouchers"); // Sesuaikan endpoint dengan API yang tersedia
         vouchers.value = response.data.map(item => ({
-            nama_voucher: item.voucher.nama,
-            nilai_voucher: formatCurrency(item.voucher.nilai),
-            tanggal_diperoleh: new Date(item.tanggal_diperoleh).toLocaleDateString('id-ID', {
-                day: 'numeric', month: 'long', year: 'numeric'
-            }),
-            kode_voucher: item.kode_voucher || '-',
+            nama_voucher: item.nama_voucher,
+            nilai_voucher: item.nilai_voucher,
+            tanggal_diperoleh: item.tanggal_diperoleh,
             status: item.status
         }));
     } catch (error) {
@@ -79,14 +72,6 @@ onMounted(async () => {
     root.style.setProperty("--backgroundWhite", theme.colors.backgroundWhite);
     root.style.setProperty("--fontFamily", theme.fonts.family);
 });
-
-function formatCurrency(amount) {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0
-    }).format(amount);
-}
 
 function goBack() {
     window.location.href = "/profile";
