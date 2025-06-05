@@ -56,16 +56,19 @@ class PageController extends Controller
     public function tentang(){
         return view('tentang');
     }
+
     public function profil()
     {
         return view('profil');
     }
+
     public function daftartransaksi()
     {
         return view('daftartransaksi');
     }
 
-    public function verifikasi_penukaran(){
-        return view('verifikasipenukaran');
+    public function voucheranda()
+    {
+        return view('voucher_anda');
     }
 }
