@@ -124,7 +124,7 @@ onMounted(() => {
                 </thead>
                 <tbody>
                     <tr v-for="user in filteredUsers" :key="user.id">
-                        <td><img src="/public/images/logo.png" alt="Logo Voucher" width="100px"></td>
+                        <td><img :src="user?.photo_profile_url || '/images/user-icon.png'" alt="Logo Voucher" style="max-width: 60px; max-height: 60px; object-fit: cover;"></td>
                         <td>{{user.name}}</td>
                         <td>{{user.email}}</td>
                         <td>{{user.saldo_koin}}</td>
