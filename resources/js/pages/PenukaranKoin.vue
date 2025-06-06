@@ -22,7 +22,7 @@ const vouchers = ref([]);
 const isLoading = ref(true);
 const errorMessage = ref('');
 
-const exchangeVoucher = async (voucher) => {
+const exchangeVoucher = async (voucher) => {    
     console.log('Voucher yang diklik:', voucher);
     console.log('Nilai koin voucher:', voucher.nilai_koin);
     console.log('Saldo koin user:', user.value.saldo_koin);
@@ -267,7 +267,6 @@ onMounted(async () => {
                         <div class="button-container">
                             <button
                                 class="tukar-btn"
-                                :disabled="userKoin < voucher.nilai_koin"
                                 @click="exchangeVoucher(voucher)">
                                 Tukar Sekarang
                             </button>

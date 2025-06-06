@@ -52,7 +52,6 @@ class DatabaseSeeder extends Seeder
                 'nama_voucher' => 'Voucher ' . $x,
                 'deskripsi' => $faker->sentence(),
                 'nilai_koin' => $faker->numberBetween(10, 500),
-                'image_url' => 'https://via.placeholder.com/300x200?text=Voucher+' . $x,
                 'status' => 'aktif',
                 'created_at' => now(),
                 'updated_at' => now(),
