@@ -19,6 +19,30 @@ function beranda() {
     window.location.href = '/beranda';
 }
 
+// cloudinary upload img
+const selectedPhoto = ref(null);
+const previewPhoto = ref(null);
+
+function handlePhotoUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        selectedPhoto.value = file;
+        previewPhoto.value = URL.createObjectURL(file);
+    }
+}
+
+async function uploadToCloudinary(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'EcoinUp'); // Upload preset cloudinary
+    formData.append('cloud_name', 'dk2wbhh4d'); 
+
+    const response = await axios.post('https://api.cloudinary.com/v1_1/dk2wbhh4d/image/upload', formData);
+    return response.data.secure_url;
+}
+
+
+
 async function logout() {
     try {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -75,7 +99,7 @@ async function fetchUserData() {
     }
 }
 
-async function updateProfile() {
+async function updateProfile(photoUrl) {
     try {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -83,7 +107,8 @@ async function updateProfile() {
             name: name.value,
             email: email.value,
             akun_facebook: akunFacebook.value,
-            akun_twitter: akunTwitter.value
+            akun_twitter: akunTwitter.value,
+            photo_profile_url: photoUrl
         }, {
             headers: {
                 'X-CSRF-TOKEN': csrfToken,
@@ -139,16 +164,6 @@ const styleEcoinText = {
     color: "var(--backgroundWhite)",
 };
 
-const showVoucherModal = ref(false);
-const vouchers = ref([
-    { id: 1, title: "Diskon 10% Belanja", desc: "Berlaku hingga 30 Juni 2025" },
-    { id: 2, title: "Gratis Ongkir", desc: "Min. belanja Rp50.000" },
-    { id: 3, title: "Potongan Rp25.000", desc: "Untuk pengguna baru" },
-    { id: 4, title: "Cashback 20%", desc: "Untuk pembelian makanan" },
-    { id: 5, title: "Diskon 50% Tiket", desc: "Event tertentu" },
-    { id: 6, title: "Voucher Kopi Gratis", desc: "Khusus member" },
-]);
-
 // Edit profile
 const isEditModalOpen = ref(false);
 const editedName = ref('');
@@ -167,17 +182,28 @@ function toggleEditModal() {
 }
 
 async function saveProfileChanges() {
+    let photoUrl = user.value.photo_profile_url;
+
+    if (selectedPhoto.value) {
+        try {
+            photoUrl = await uploadToCloudinary(selectedPhoto.value);
+        } catch (error) {
+            alert("Gagal upload foto.");
+            return;
+        }
+    }
+
     name.value = editedName.value;
     email.value = editedEmail.value;
     akunFacebook.value = editedFacebook.value;
     akunTwitter.value = editedTwitter.value;
 
-    await updateProfile(); // Kirim ke server
+    await updateProfile(photoUrl); // Kirim URL foto
     isEditModalOpen.value = false;
 }
 
-function toggleVoucherModal() {
-    showVoucherModal.value = !showVoucherModal.value;
+function voucherAnda() {
+    window.location.href = '/voucheranda';
 }
 </script>
 
@@ -189,7 +215,7 @@ function toggleVoucherModal() {
             <!-- KIRI -->
             <div class="sisi-kiri">
                 <img
-                    src="/public/images/user-icon.png"
+                    :src="user?.photo_profile_url || '/images/user-icon.png'"
                     alt="User Icon"
                     class="ikon"
                 />
@@ -233,7 +259,7 @@ function toggleVoucherModal() {
                         <div class="aksi">
                             <div class="aksi-row">
                             <button class="transaksi" @click="daftarTransaksi">Daftar Transaksi</button>
-                            <button class="voucher" @click="toggleVoucherModal">Voucher Anda</button>
+                            <button class="voucher" @click="voucherAnda">Voucher Anda</button>
                             </div>
                             <button class="edit" @click="toggleEditModal">Edit Profil</button>
                         </div>
@@ -242,24 +268,31 @@ function toggleVoucherModal() {
             </div>
         </section>
 
-        <!-- MODAL VOUCHER -->
-        <div v-if="showVoucherModal" class="modal-overlay" @click.self="toggleVoucherModal">
-            <div class="modal-content">
-                <h2>Voucher Anda</h2>
-                <div class="voucher-list">
-                    <div v-for="voucher in vouchers" :key="voucher.id" class="voucher-item">
-                        <h3>{{ voucher.title }}</h3>
-                        <p>{{ voucher.desc }}</p>
-                    </div>
-                </div>
-                <button class="close-modal" @click="toggleVoucherModal">Tutup</button>
-            </div>
-        </div>
-
         <!-- MODAL EDIT PROFIL -->
         <div v-if="isEditModalOpen" class="modal-overlay" @click.self="isEditModalOpen = false">
             <div class="modal-content">
                 <h2>Edit Profil</h2>
+                <!-- Preview Foto -->
+                <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                    <img
+                        :src="previewPhoto || user?.photo_profile_url || '/images/user-icon.png'"
+                        alt="Preview Foto"
+                        class="ikon"
+                        style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%;"
+                    />
+                </div>
+                <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                    <label style="cursor: pointer; background: var(--primaryGreen); color: white; padding: 8px 16px; border-radius: 4px;">
+                        Upload Foto
+                        <input
+                        type="file"
+                        accept="image/*"
+                        @change="handlePhotoUpload"
+                        style="display: none;"
+                        />
+                    </label>
+                </div>
+
                 <div class="form-group">
                     <label>Nama</label>
                     <input type="text" v-model="editedName" placeholder="Nama" />
@@ -328,6 +361,7 @@ function toggleVoucherModal() {
     border-radius: 50%;
     border: 4px solid var(--primaryGreen);
     padding: 10px;
+    object-fit: cover;
 }
 
 .keluar {

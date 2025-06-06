@@ -35,7 +35,7 @@
         </template>
         <template v-else>
           <img
-            :src="profileImage"
+            :src="user?.photo_profile_url || '/images/user-icon.png'"
             alt="Profile"
             class="profile-icon"
             @click="goToProfile"
@@ -55,7 +55,7 @@ export default {
         return {
             isDropdownOpen: false,
             isLoggedIn: false,
-            profileImage: '/public/images/ic_profile.png', // Default profile image
+            profileImage: '/public/images/user-icon.png', // Default profile image
             role: null,
             user: null,
         };
@@ -67,7 +67,7 @@ export default {
             this.user = JSON.parse(saved);
             this.isLoggedIn = true;
             this.role = this.user.role;
-            this.profileImage = this.user.profile_image || '/images/ic_profile.png';
+            this.profileImage = this.user.photo_profile_url || '/images/user-icon.png';
         }
 
         // Kemudian, selalu ambil data terbaru dari API
@@ -97,7 +97,7 @@ export default {
                     this.user = response.data.user;
                     this.isLoggedIn = true;
                     this.role = this.user.role;
-                    this.profileImage = this.user.profile_image || '/images/ic_profile.png';
+                    this.profileImage = this.user.photo_profile_url || '/images/user-icon.png';
 
                     // Simpan ke localStorage untuk akses lebih cepat next time
                     localStorage.setItem('user', JSON.stringify(this.user));
@@ -269,11 +269,14 @@ export default {
 }
 
 .profile-icon {
-  width: 36px;
-  height: 36px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
+  border: 2px solid var(--primaryGreen);
   margin-left: 24px;
   cursor: pointer;
+  padding: 3px;
+  object-fit: cover;
 }
 
 </style>
