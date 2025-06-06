@@ -27,6 +27,11 @@ onMounted(() => {
 <template>
     <Navbar />
     <div class="artikel" v-if="artikel.judul">
+        <nav class="breadcrumb">
+            <a href="/">Beranda</a> /
+            <a href="/jelajah">Jelajah</a> /
+            <span>{{ artikel.judul }}</span>
+        </nav>
         <div class="container">
             <h1>{{ artikel.judul }}</h1>
             <p class="info">Tim ecoin - Ecoin</p>
@@ -60,6 +65,22 @@ onMounted(() => {
     max-width: 800px;
     margin: 20px auto;
     padding: 0 15px;
+}
+
+.breadcrumb {
+    font-size: var(--fontSizeSmall);
+    margin-top: 10px;
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    color: var(--primaryGreen);
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
 }
 
 .container{
