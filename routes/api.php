@@ -27,6 +27,7 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('/confirm-money-exchange', [PenukaranKoinController::class, 'confirmMoneyExchange'])->name('confirm.money');
     Route::get('/log-transaksi', [ProfileController::class, 'getDaftarTransaksi'])->name('log.transaksi');
     Route::get('/user-vouchers', [ProfileController::class, 'getUserVouchers'])->name('user.vouchers');
+    Route::post('/artikel/{id}/submit-quiz', [ArtikelController::class, 'submitQuiz'])->name('artikel.submitQuiz');
 });
 
 // Admin API Routes - Protected with admin middleware
@@ -54,7 +55,6 @@ Route::middleware(['web', 'admin'])->group(function () {
 
     // Article management
     Route::apiResource('admin/artikel', ArtikelController::class);
-    Route::post('/admin/artikel/{id}/submit-quiz', [ArtikelController::class, 'submitQuiz']);
 });
 
 // Public API routes

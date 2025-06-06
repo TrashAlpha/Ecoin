@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar.vue';
 import { onMounted, ref } from 'vue';
 
 const artikels = ref([]);
-
+const userRole = ref(null);
 const produkList = ref([
   {
     nama: 'Dompet Kecil',
@@ -31,15 +31,8 @@ const produkList = ref([
     gambar: '/images/jelajahBelanja4.png',
     link: 'https://tk.tokopedia.com/ZShnPfoxa/'
   },
-  {
-    nama: 'Tas Belanja',
-    harga: 28000,
-    gambar: '/images/jelajahBelanja4.png',
-    link: 'https://tk.tokopedia.com/ZShnPDy2k/'
-  },
   // Tambahkan produk baru langsung di sini
 ]);
-
 const carousel = ref(null);
 
 const next = () => {
@@ -71,8 +64,25 @@ function fetchAllArtikel(){
     })
 }
 
+async function fetchUserRole() {
+    try {
+        const response = await fetch('http://localhost:8000/api/get-user', {
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        const data = await response.json();
+        userRole.value = data.user ? data.user.role : null;
+    } catch (error) {
+        userRole.value = null;
+        console.error('Gagal mengambil role pengguna:', error);
+    }
+}
+
 onMounted(()=>{
     fetchAllArtikel();
+    fetchUserRole();
 })
 </script>
 
@@ -121,32 +131,29 @@ onMounted(()=>{
             <div class="artikel-heading">
                 <h2>Artikel</h2>
                 <h1>Bacaan Ecoin</h1>
-                <div class="artikel-button">
+                <!-- <div class="artikel-button">
                     <button>Semua</button>
                     <button>Terpopuler</button>
                     <button>Terbaru</button>
-                </div>
+                </div> -->
             </div>
             <div class="artikel-grid">
                 <div class="artikel-card" v-for="artikel in artikels">
-                    <span class="koin-label">{{artikel.reward_koin}} Koin</span>
-                    <img :src="artikel.gambar_url" alt="Artikel">
-                    <div class="card-body">
-                        <h3>{{artikel.judul}}</h3>
-                        <p>{{ artikel.konten }}</p>
-                        <div class="card-links">
-                            <a :href="`/artikel/${artikel.id}`"><img src="/public/images/iconamoon_eye_light.png" class="icon"/> Baca Artikel</a>
-                            <a href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
+                    <a :href="`/artikel/${artikel.id}`">
+                        <span class="koin-label">{{artikel.reward_koin}} Koin</span>
+                        <img :src="artikel.gambar_url" alt="Artikel">
+                        <div class="card-body">
+                            <h3>{{artikel.judul}}</h3>
+                            <p>{{ artikel.konten }}</p>
+                            <div class="card-links">
+                                <a v-if="userRole === 'admin'" href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
-            </div>
-            <div class="artikel-button">
-                <button>Selengkapnya</button>
             </div>
         </section>
 
-        <!-- TODO: Benerin CARD dan Gambarnya -->
         <section class="konten">
         <div class="konten-heading">
             <div class="heading-line"></div>
@@ -174,9 +181,6 @@ onMounted(()=>{
             <button @click="next" class="arrow-btn">›</button>
         </div>
         </section>
-
-
-
         <Footer/>
     </div>
 </template>
@@ -229,16 +233,18 @@ onMounted(()=>{
     /* Konten */
     .konten {
         padding: 20px;
+        margin: 0 auto;
+        max-width: 1200px;
+        box-sizing: border-box;
     }
     .konten-heading {
         display: flex;
         align-items: center;
-        padding-left: 32px;
         gap: 12px;
         font-weight: var(--fontWeightBold);
         color: var(--primaryGreen);
         font-size: var(--fontSizeMedium);
-        margin-bottom: 8px;
+        margin-bottom: 20px;
         margin-top: 25px;
     }
     .heading-line {
@@ -372,12 +378,11 @@ onMounted(()=>{
     .artikel-heading h2 {
         font-size: 24px;
         font-weight: 600;
-        margin-bottom: 15px;
     }
     .artikel-heading h1 {
         font-size: 32px;
         font-weight: 700;
-        margin-bottom: 15px;
+        margin-bottom: 30px;
     }
     .artikel-button {
         margin-top: 50px;
@@ -414,11 +419,26 @@ onMounted(()=>{
         width: 100%;
         max-width: 260px;
         position: relative;
+        border-radius: 8px;
+        border-width: 3px;
+        border-color: var(--primaryGreen);
+    }
+    .artikel-card:hover {
+        background-color: var(--accentGreen2);
+        transition-duration: 0.3s;
+        h3, p, a{
+            color: var(--primaryGreen);
+        }
+        img{
+            filter: brightness(110%);
+            transition-duration: 0.3s;
+        }
     }
     .artikel-card img {
         width: 100%;
         height: 180px;
         object-fit: cover;
+        border-radius: 4px;
     }
     .koin-label {
         position: absolute;
