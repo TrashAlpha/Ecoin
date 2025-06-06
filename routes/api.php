@@ -35,23 +35,23 @@ Route::middleware(['web', 'admin'])->group(function () {
     Route::get('/admin/vouchers', [AdminPageController::class, 'getAllVouchers']);
     Route::get('/admin/users', [AdminPageController::class, 'getAllUsers']);
     Route::get('/admin/pending-verifications', [AdminPageController::class, 'getPendingVerifications']);
-    
+
     // Verification management
     Route::post('/admin/exchanges/{id}/approve', [AdminPageController::class, 'approveExchange']);
     Route::post('/admin/exchanges/{id}/reject', [AdminPageController::class, 'rejectExchange']);
-    
+
     // Voucher management
     Route::post('/admin/vouchers', [AdminPageController::class, 'createVoucher']);
     Route::put('/admin/vouchers/{id}', [AdminPageController::class, 'updateVoucher']);
     Route::delete('/admin/vouchers/{id}', [AdminPageController::class, 'deleteVoucher']);
-    
+
     // User management
     Route::put('/admin/users/{id}/status', [AdminPageController::class, 'updateUserStatus']);
     Route::put('/admin/users/{id}/coins', [AdminPageController::class, 'updateUserCoins']);
-    
+
     // Sampah management
     Route::apiResource('admin/sampah', SampahController::class);
-    
+
     // Article management
     Route::apiResource('admin/artikel', ArtikelController::class);
     Route::post('/admin/artikel/{id}/submit-quiz', [ArtikelController::class, 'submitQuiz']);
@@ -60,4 +60,4 @@ Route::middleware(['web', 'admin'])->group(function () {
 // Public API routes
 Route::get('/sampah', [SampahController::class, 'index']);
 Route::get('/artikel', [ArtikelController::class, 'index']);
-Route::get('/artikel/{id}', [ArtikelController::class, 'show']);
+Route::get('/artikel/{id}', [ArtikelController::class, 'getArtikelId']);
