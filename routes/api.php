@@ -17,7 +17,7 @@ Route::middleware(['web'])->group(function () {
 
 Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 
-Route::middleware(['web', 'auth'])->group(function () {
+Route::middleware(['web', 'auth', 'check.banned'])->group(function () {
     Route::get('/get-user', [AuthController::class, 'getUser'])->name('auth.getUser');
     Route::put('/update-profile', [AuthController::class, 'updateProfile'])->name('auth.updateProfile');
     Route::post('/exchange-voucher', [PenukaranKoinController::class, 'exchangeVoucher'])->name('vouchers.exchange');
@@ -30,7 +30,7 @@ Route::middleware(['web', 'auth'])->group(function () {
 });
 
 // Admin API Routes - Protected with admin middleware
-Route::middleware(['web', 'admin'])->group(function () {
+Route::middleware(['web', 'admin', 'check.banned'])->group(function () {
     // Data fetching
     Route::get('/admin/vouchers', [AdminPageController::class, 'getAllVouchers']);
     Route::get('/admin/users', [AdminPageController::class, 'getAllUsers']);
