@@ -1,108 +1,154 @@
 <template>
-  <div class="penukaran-step2">
-    <Navbar />
+    <div class="penukaran-step2">
+        <Navbar />
 
-    <section class="hero">
-      <img src="/public/images/heroPenukaran.png" alt="Penukaran Sampah" class="hero-image" />
-      <div class="kategori-tabs">
-        <div class="tab"><img src="/public/images/ic_plastic.png" alt=""> Non Organik</div>
-        <div class="tab"><img src="/public/images/ic_leaf.png" alt=""> Organik</div>
-        <div class="tab"><img src="/public/images/ic_mask.png" alt=""> Limbah Medis</div>
-      </div>
-    </section>
+        <section class="hero">
+            <img
+                src="/public/images/heroPenukaran.png"
+                alt="Penukaran Sampah"
+                class="hero-image"
+            />
+            <div class="kategori-tabs">
+                <div class="tab">
+                    <img src="/public/images/ic_plastic.png" alt="" /> Non
+                    Organik
+                </div>
+                <div class="tab">
+                    <img src="/public/images/ic_leaf.png" alt="" /> Organik
+                </div>
+                <div class="tab">
+                    <img src="/public/images/ic_mask.png" alt="" /> Limbah Medis
+                </div>
+            </div>
+        </section>
 
-    <section class="step-indikator">
-      <div class="step-heading">
-        <div class="heading-line"></div>
-        <p>Detail Sampah <br /> Yang Ditukarkan</p>
-      </div>
-      <div class="steps">
-        <div class="step active"><span>1</span> Detail Sampah</div>
-        <div class="step active"><span>2</span> Lokasi Penukaran</div>
-        <div class="step inactive"><span>3</span> Konfirmasi Penukaran</div>
-      </div>
-    </section>
+        <section class="step-indikator">
+            <div class="step-heading">
+                <div class="heading-line"></div>
+                <p>
+                    Detail Sampah <br />
+                    Yang Ditukarkan
+                </p>
+            </div>
+            <div class="steps">
+                <div class="step active"><span>1</span> Detail Sampah</div>
+                <div class="step active"><span>2</span> Lokasi Penukaran</div>
+                <div class="step inactive">
+                    <span>3</span> Konfirmasi Penukaran
+                </div>
+            </div>
+        </section>
 
-    <section class="konten">
-      <div class="map-container">
-        <iframe
-          :src="mapSrc"
-          width="100%"
-          height="500"
-          style="border:0;"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-        ></iframe>
-      </div>
-      <div class="form-lokasi">
-        <label>Lokasi Awal</label>
-        <input v-model="lokasi" type="text" placeholder="Masukkan lokasi awal..." />
-        <button class="btn action" @click="cariLokasi">Cari Lokasi</button>
+        <section class="konten">
+            <div class="map-container">
+                <iframe
+                    :src="mapSrc"
+                    width="100%"
+                    height="500"
+                    style="border: 0"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+            </div>
+            <div class="form-lokasi">
+                <label>Lokasi Awal</label>
+                <input
+                    v-model="lokasi"
+                    type="text"
+                    placeholder="Masukkan lokasi awal..."
+                />
+                <button class="btn action" @click="cariLokasi">
+                    Cari Lokasi
+                </button>
 
-        <label>Lokasi Penukaran</label>
-        <!-- TODO Kasih FORM nyari lokasi penukaran yang dekat dengan input di atas -->
-        <div class="rekomendasi">
-          <input v-model="lokasiPenukaran" type="text" placeholder="Masukan Lokasi Penukaran" />
-        </div>
+                <label>Lokasi Penukaran</label>
+                <!-- TODO Kasih FORM nyari lokasi penukaran yang dekat dengan input di atas -->
+                <div class="rekomendasi">
+                    <input
+                        v-model="lokasiPenukaran"
+                        type="text"
+                        placeholder="Masukan Lokasi Penukaran"
+                    />
+                </div>
 
-        <div class="action-buttons">
-          <button class="btn action" @click="redirectToStep1()">Kembali</button>
-          <button class="btn action" @click="redirectToStep3">Konfirmasi</button>
-        </div>
-      </div>
-    </section>
+                <div class="action-buttons">
+                    <button class="btn action" @click="redirectToStep1()">
+                        Kembali
+                    </button>
+                    <button class="btn action" @click="redirectToStep3">
+                        Konfirmasi
+                    </button>
+                </div>
+            </div>
+        </section>
 
-    <section class="langganan">
-      <h2>Berlangganan ECOIN</h2>
-      <h3>Untuk Mendapatkan Informasi Terbaru</h3>
-      <p>Masukkan emailmu dan dapatkan notifikasi informasi terbaru<br />dan terupdate tentang aplikasi</p>
-      <div class="email-box">
-        <input type="email" placeholder="Tulis Emailmu Disini ..." />
-        <button class="btn send"><img src="/public/images/ic_send.png" alt="Send" /></button>
-      </div>
-    </section>
+        <section class="langganan">
+            <h2>Berlangganan ECOIN</h2>
+            <h3>Untuk Mendapatkan Informasi Terbaru</h3>
+            <p>
+                Masukkan emailmu dan dapatkan notifikasi informasi terbaru<br />dan
+                terupdate tentang aplikasi
+            </p>
+            <div class="email-box">
+                <input type="email" placeholder="Tulis Emailmu Disini ..." />
+                <button class="btn send">
+                    <img src="/public/images/ic_send.png" alt="Send" />
+                </button>
+            </div>
+        </section>
 
-    <Footer />
-  </div>
+        <Footer />
+    </div>
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue'
-import Footer from '../components/Footer.vue'
+import Navbar from "../components/Navbar.vue";
+import Footer from "../components/Footer.vue";
 
 export default {
-  components: {
-    Navbar,
-    Footer
-  },
-  data() {
-    return {
-      lokasi: '',
-      mapSrc: 'https://www.google.com/maps?q=PDU+Kudus&output=embed'
-    }
-  },
-  methods: {
-    redirectToStep3() {
-      window.location.href = '/penukaran3';
+    components: {
+        Navbar,
+        Footer,
     },
-    redirectToStep1() {
-      window.location.href = '/penukaran1';
+    data() {
+        return {
+            lokasi: "",
+            lokasiPenukaran: "",
+            mapSrc: "https://www.google.com/maps?q=PDU+Kudus&output=embed",
+        };
     },
-    cariLokasi() {
-      if (this.lokasi.trim() !== '') {
-        const query = encodeURIComponent(this.lokasi)
-        this.mapSrc = `https://www.google.com/maps?q=${query}&output=embed`
-      }
+    created() {
+        const storedLocation = localStorage.getItem("location");
+        if (storedLocation) {
+            const parsedLocation = JSON.parse(storedLocation);
+            this.lokasi = parsedLocation.split("-")[0] || "";
+            this.lokasiPenukaran = parsedLocation.split("-")[1] || "";
+            this.cariLokasi();
+        }
     },
-    pilihRekomendasi(kota) {
-      this.lokasi = kota
-      this.cariLokasi()
-    }
-  }
-}
+    methods: {
+        redirectToStep3() {
+            const combinedLocation = `${this.lokasi}-${this.lokasiPenukaran}`;
+            localStorage.setItem("location", JSON.stringify(combinedLocation));
+            window.location.href = "/penukaran3";
+        },
+        redirectToStep1() {
+            window.location.href = "/penukaran1";
+        },
+        cariLokasi() {
+            if (this.lokasi.trim() !== "") {
+                const query = encodeURIComponent(this.lokasi);
+                this.mapSrc = `https://www.google.com/maps?q=${query}&output=embed`;
+            }
+        },
+        pilihRekomendasi(kota) {
+            this.lokasi = kota;
+            this.cariLokasi();
+        },
+    },
+};
 </script>
-
 
 <style scoped>
 .penukaran-step2 {
@@ -144,7 +190,7 @@ export default {
     width: 150px;
     display: flex;
     flex-direction: column;
-    align-items: center;     /* Pusatkan horizontal */
+    align-items: center; /* Pusatkan horizontal */
     justify-content: center;
     padding: 10px 20px;
     margin: 0 5px;
@@ -183,15 +229,15 @@ export default {
 }
 
 .heading-line {
-    width: 100px;            /* Panjang garis */
-    height: 5px;            /* Tebal garis */
+    width: 100px; /* Panjang garis */
+    height: 5px; /* Tebal garis */
     background-color: var(--primaryGreen);
     border-radius: 2px;
 }
 
 .steps {
     display: flex;
-    justify-content: space-between;  /* Center seluruh steps */
+    justify-content: space-between; /* Center seluruh steps */
     width: 100%;
     margin-top: 32px;
     padding: 0 32px;

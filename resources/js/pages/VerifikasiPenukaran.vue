@@ -1,265 +1,499 @@
 <template>
     <div class="verifikasi-penukaran">
-      <Navbar />
-  
-      <section class="header-section">
-        <h1>Verifikasi Penukaran</h1>
-        <p>Kelola penukaran yang masuk dan lakukan verifikasi sesuai dengan bukti transaksi.</p>
-      </section>
-  
-      <section class="filter-section">
-        <input type="text" placeholder="Cari berdasarkan nama pengguna..." class="search-input" />
-        <select class="filter-select">
-          <option value="">Semua Status</option>
-          <option value="pending">Menunggu</option>
-          <option value="approved">Disetujui</option>
-          <option value="rejected">Ditolak</option>
-        </select>
-      </section>
-  
-      <section class="table-section">
-        <table>
-          <thead>
-            <tr>
-              <th>Nama</th>
-              <th>Email</th>
-              <th>Tanggal Penukaran</th>
-              <th>Jenis Sampah</th>
-              <th>Berat</th>
-              <th>Detail</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Contoh data statis -->
-            <tr>
-              <td>Rizky Adam</td>
-              <td>rizky@email.com</td>
-              <td>06 Mei 2025</td>
-              <td>Organik</td>
-              <td>3 Kg</td>
-              <td>
-                <a href="#" class="show-detail" @click.prevent="showDetailOverlay({
-                  nama: 'Rizky Adam',
-                  email: 'rizky@email.com',
-                  tanggal: '06 Mei 2025',
-                  jenis: 'Organik',
-                  berat: '3 Kg'
-                })">Lihat detail</a>
-              </td>
-              <td><span class="status status-pending">Menunggu</span></td>
-              <td>
-                <button class="btn approve">✔</button>
-                <button class="btn reject">✖</button>
-              </td>
-            </tr>
-            <!-- Tambahkan lebih banyak baris sesuai data -->
-          </tbody>
-        </table>
-      </section>
+        <Navbar />
 
-      <!-- Detail Overlay -->
-      <div v-if="showDetail" class="overlay">
-        <div class="overlay-card">
-          <div class="overlay-header">
-            <button class="close-btn" @click="closeDetail">×</button>
-          </div>
-          <div class="overlay-content">
-            <div class="left-column">
-              <img src="/public/images/ic_profile.png" alt="profile" class="profile-pic"/>
-              <div class="info-group">
-                <p><strong>Nama</strong><br>{{ selectedTransaction.nama }}</p>
-                <p><strong>Email</strong><br>{{ selectedTransaction.email }}</p>
-                <p><strong>Jenis Sampah</strong><br>{{ selectedTransaction.jenis }}</p>
-                <p><strong>Berat sampah (kg)</strong><br>{{ selectedTransaction.berat }}</p>
-                <p><strong>Tanggal Penukaran</strong><br>{{ selectedTransaction.tanggal }}</p>
-                <p><strong>Waktu Penukaran</strong><br>{{ selectedTransaction.waktu }}</p>
-                <p><strong>Lokasi Penukaran</strong><br>{{ selectedTransaction.lokasi }}</p>
-              </div>
-            </div>
-            <div class="right-column">
-              <h3 class="image-title">Image</h3>
-              <div class="image-grid">
-                <div class="image-box" v-for="(img, index) in selectedTransaction.buktiGambar" :key="index">
-                  <img :src="img" alt="Bukti" />
+        <section class="header-section">
+            <h1>Verifikasi Penukaran</h1>
+            <p>
+                Kelola penukaran yang masuk dan lakukan verifikasi sesuai dengan
+                bukti transaksi.
+            </p>
+        </section>
+
+        <section class="filter-section">
+            <input
+                v-model="searchQuery"
+                type="text"
+                placeholder="Cari berdasarkan nama pengguna..."
+                class="search-input"
+            />
+            <select v-model="filterStatus" class="filter-select">
+                <option value="">Semua Status</option>
+                <option value="pending">Menunggu</option>
+                <option value="approved">Disetujui</option>
+                <option value="rejected">Ditolak</option>
+            </select>
+        </section>
+
+        <section class="table-section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Tanggal Penukaran</th>
+                        <th>Berat</th>
+                        <th>Detail</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-if="isLoading">
+                        <td colspan="8" style="text-align: center">
+                            Memuat data...
+                        </td>
+                    </tr>
+                    <tr v-else-if="filteredExchanges.length === 0">
+                        <td colspan="8" style="text-align: center">
+                            Tidak ada data penukaran yang cocok.
+                        </td>
+                    </tr>
+                    <tr
+                        v-for="exchange in filteredExchanges"
+                        :key="exchange.id"
+                    >
+                        <td>{{ exchange.nama_pengguna || "N/A" }}</td>
+                        <td>{{ exchange.email_pengguna || "N/A" }}</td>
+                        <td>{{ formatDate(exchange.created_at) }}</td>
+                        <td>{{ exchange.berat }} Kg</td>
+                        <td>
+                            <a
+                                href="#"
+                                class="show-detail"
+                                @click.prevent="showDetailOverlay(exchange)"
+                                >Lihat detail</a
+                            >
+                        </td>
+                        <td>
+                            <span :class="getStatusClass(exchange.status)">{{
+                                formatStatus(exchange.status)
+                            }}</span>
+                        </td>
+                        <td>
+                            <button
+                                class="btn approve"
+                                @click="updateStatus(exchange.id, 'approved')"
+                                :disabled="exchange.status === 'approved'"
+                            >
+                                ✔
+                            </button>
+                            <button
+                                class="btn reject"
+                                @click="updateStatus(exchange.id, 'rejected')"
+                                :disabled="exchange.status === 'rejected'"
+                            >
+                                ✖
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Detail Overlay -->
+        <div v-if="showDetail" class="overlay">
+            <div class="overlay-card">
+                <div class="overlay-header">
+                    <button class="close-btn" @click="closeDetail">×</button>
                 </div>
-              </div>
+                <div class="overlay-content">
+                    <div class="left-column">
+                        <img
+                            src="/public/images/ic_profile.png"
+                            alt="profile"
+                            class="profile-pic"
+                        />
+                        <div class="info-group">
+                            <p>
+                                <strong>Nama</strong><br />{{
+                                    selectedTransaction.nama_pengguna || "N/A"
+                                }}
+                            </p>
+                            <p>
+                                <strong>Email</strong><br />{{
+                                    selectedTransaction.email_pengguna || "N/A"
+                                }}
+                            </p>
+                            <p>
+                                <strong>Jenis Sampah</strong><br />{{
+                                    selectedTransaction.jenis_sampah
+                                }}
+                            </p>
+                            <p>
+                                <strong>Berat sampah (kg)</strong><br />{{
+                                    selectedTransaction.berat
+                                }}
+                                Kg
+                            </p>
+                            <p>
+                                <strong>Tanggal Penukaran</strong><br />{{
+                                    formatDate(selectedTransaction.created_at)
+                                }}
+                            </p>
+                            <p>
+                                <strong>Waktu Penukaran</strong><br />{{
+                                    selectedTransaction.waktu_penukaran ||
+                                    "Belum ada data"
+                                }}
+                            </p>
+                            <p>
+                                <strong>Lokasi Penukaran</strong><br />{{
+                                    selectedTransaction.lokasi_penukaran ||
+                                    "Belum ada data"
+                                }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="right-column">
+                        <h3 class="image-title">Bukti Transaksi</h3>
+                        <div
+                            v-if="
+                                selectedTransaction.bukti_gambar &&
+                                selectedTransaction.bukti_gambar.length > 0
+                            "
+                            class="image-grid"
+                        >
+                            <div
+                                class="image-box"
+                                v-for="(
+                                    img, index
+                                ) in selectedTransaction.bukti_gambar"
+                                :key="index"
+                            >
+                                <img
+                                    :src="getImageUrl(img)"
+                                    alt="Bukti Transaksi"
+                                />
+                            </div>
+                        </div>
+                        <p v-else>Tidak ada bukti gambar.</p>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
 
-      <Footer />
+        <Footer />
     </div>
-  </template>
-  
-  <script>
-  import Navbar from '../components/Navbar.vue'
-  import Footer from '../components/Footer.vue'
-  
-export default {
-  components: {
-    Navbar,
-    Footer
-  },
-  data() {
-    return {
-      showDetail: false,
-      selectedTransaction: {}
-    }
-  },
-  methods: {
-    showDetailOverlay(transaction) {
-      this.selectedTransaction = {
-        nama: transaction.nama,
-        email: transaction.email,
-        jenis: transaction.jenis,
-        berat: transaction.berat,
-        tanggal: transaction.tanggal,
-        waktu: transaction.waktu || '08:00', // contoh default
-        lokasi: transaction.lokasi || 'TPS RW 01',
-        buktiGambar: transaction.buktiGambar || [
-          '/images/bukti1.jpg',
-          '/images/bukti2.jpg',
-          '/images/bukti3.jpg',
-          '/images/bukti4.jpg'
-        ]
-      };
-      this.showDetail = true;
-    },
-    closeDetail() {
-      this.showDetail = false;
-      this.selectedTransaction = {};
-    }
-  }
-}
+</template>
 
+<script>
+import Navbar from "../components/Navbar.vue";
+import Footer from "../components/Footer.vue";
+import axios from "axios";
+
+const API_BASE_URL = "http://localhost:8000";
+
+export default {
+    components: {
+        Navbar,
+        Footer,
+    },
+    data() {
+        return {
+            showDetail: false,
+            selectedTransaction: {},
+            exchanges: [],
+            isLoading: true,
+            searchQuery: "",
+            filterStatus: "",
+        };
+    },
+    computed: {
+        filteredExchanges() {
+            let filtered = this.exchanges;
+
+            // Filter berdasarkan query pencarian nama
+            if (this.searchQuery) {
+                filtered = filtered.filter(
+                    (exchange) =>
+                        exchange.nama_pengguna &&
+                        exchange.nama_pengguna
+                            .toLowerCase()
+                            .includes(this.searchQuery.toLowerCase())
+                );
+            }
+
+            // Filter berdasarkan status
+            if (this.filterStatus) {
+                filtered = filtered.filter(
+                    (exchange) => exchange.status === this.filterStatus
+                );
+            }
+
+            return filtered;
+        },
+    },
+    methods: {
+        async fetchExchanges() {
+            this.isLoading = true;
+            try {
+                // Ganti URL '/api/penukaran' dengan endpoint API Anda yang sebenarnya jika berbeda
+                const response = await axios.get(
+                    `${API_BASE_URL}/api/penukaran`
+                ); // Sesuaikan endpoint jika berbeda
+                if (response.data.success) {
+                    this.exchanges = response.data.data;
+                } else {
+                    console.error(
+                        "Gagal mengambil data penukaran:",
+                        response.data.message
+                    );
+                    alert(
+                        "Gagal mengambil data penukaran. Lihat konsol untuk detail."
+                    );
+                }
+            } catch (error) {
+                console.error("Error fetching exchanges:", error);
+                // Anda mungkin ingin menampilkan pesan error ke pengguna di sini
+                alert(
+                    "Terjadi kesalahan saat menghubungi server. Lihat konsol untuk detail."
+                );
+            } finally {
+                this.isLoading = false;
+            }
+        },
+        showDetailOverlay(transaction) {
+            // Kita akan pass seluruh objek transaction ke selectedTransaction
+            // Default values untuk waktu, lokasi, dan buktiGambar akan diambil dari objek transaction jika ada,
+            // atau akan menjadi undefined/null jika tidak ada di backend.
+            this.selectedTransaction = { ...transaction }; // Salin objek untuk menghindari mutasi langsung
+
+            // Jika bukti_gambar adalah string JSON, parse dulu
+            if (typeof this.selectedTransaction.bukti_gambar === "string") {
+                try {
+                    this.selectedTransaction.bukti_gambar = JSON.parse(
+                        this.selectedTransaction.bukti_gambar
+                    );
+                } catch (e) {
+                    console.warn(
+                        "Gagal parse bukti_gambar:",
+                        this.selectedTransaction.bukti_gambar,
+                        e
+                    );
+                    this.selectedTransaction.bukti_gambar = []; // Set ke array kosong jika gagal parse
+                }
+            }
+            // Pastikan bukti_gambar adalah array
+            if (!Array.isArray(this.selectedTransaction.bukti_gambar)) {
+                this.selectedTransaction.bukti_gambar = [];
+            }
+
+            this.showDetail = true;
+        },
+        closeDetail() {
+            this.showDetail = false;
+            this.selectedTransaction = {};
+        },
+        formatDate(dateString) {
+            if (!dateString) return "N/A";
+            const options = { year: "numeric", month: "long", day: "numeric" };
+            return new Date(dateString).toLocaleDateString("id-ID", options);
+        },
+        getStatusClass(status) {
+            if (status === "pending") return "status status-pending";
+            if (status === "approved") return "status status-approved";
+            if (status === "rejected") return "status status-rejected";
+            return "status"; // default
+        },
+        formatStatus(status) {
+            switch (status) {
+                case "pending":
+                    return "Menunggu";
+                case "approved":
+                    return "Disetujui";
+                case "rejected":
+                    return "Ditolak";
+                default:
+                    return status;
+            }
+        },
+        getImageUrl(imagePath) {
+            // Jika imagePath sudah merupakan URL lengkap, langsung return
+            if (
+                imagePath &&
+                (imagePath.startsWith("http://") ||
+                    imagePath.startsWith("https://"))
+            ) {
+                return imagePath;
+            }
+            // Jika imagePath adalah path relatif dari public folder backend (misal, 'storage/bukti_images/image.jpg')
+            // dan frontend dan backend berjalan di domain/port yang berbeda saat development
+            // Anda perlu menambahkan base URL backend Anda.
+            // Jika gambar ada di folder /public/images di frontend, maka bisa langsung /images/bukti1.jpg
+            // Asumsi gambar disajikan oleh server Laravel dari folder storage (setelah php artisan storage:link)
+            if (imagePath && imagePath.startsWith("storage/")) {
+                return `${API_BASE_URL}/${imagePath}`; // Misal: http://localhost:8000/storage/bukti_images/namafile.jpg
+            }
+            // Fallback jika path tidak sesuai ekspektasi atau default path gambar
+            return imagePath || "/images/placeholder.png"; // Sediakan gambar placeholder jika perlu
+        },
+        async updateStatus(exchangeId, newStatus) {
+            try {
+                // Anda perlu membuat endpoint API di Laravel untuk mengupdate status
+                // Misalnya: PUT /api/penukaran/{id}/status
+                const response = await axios.put(
+                    `${API_BASE_URL}/api/penukaran/${exchangeId}/status`,
+                    {
+                        status: newStatus,
+                    }
+                );
+
+                if (response.data.success) {
+                    // Update status di frontend secara lokal untuk responsivitas instan
+                    const index = this.exchanges.findIndex(
+                        (ex) => ex.id === exchangeId
+                    );
+                    if (index !== -1) {
+                        this.exchanges[index].status = newStatus;
+                    }
+                    alert(
+                        `Status penukaran berhasil diubah menjadi ${this.formatStatus(
+                            newStatus
+                        )}`
+                    );
+                } else {
+                    alert(`Gagal mengubah status: ${response.data.message}`);
+                }
+            } catch (error) {
+                console.error(
+                    `Error updating status for exchange ${exchangeId}:`,
+                    error
+                );
+                alert("Terjadi kesalahan saat mengubah status. Lihat konsol.");
+            }
+        },
+    },
+    mounted() {
+        this.fetchExchanges(); // Panggil method untuk mengambil data saat komponen dimuat
+    },
+};
 </script>
 
-  <style scoped>
-  .verifikasi-penukaran {
+<style scoped>
+.verifikasi-penukaran {
     font-family: var(--fontFamily);
     background-color: var(--backgroundWhite);
-  }
-  
-  .header-section {
+}
+
+.header-section {
     text-align: center;
     margin-bottom: 24px;
     padding: 20px 32px;
     background-color: var(--primaryGreen);
-  }
-  .header-section h1 {
+}
+.header-section h1 {
     color: var(--backgroundWhite);
     font-size: 24px;
     font-weight: var(--fontWeightBold);
-  }
-  .header-section p {
+}
+.header-section p {
     color: var(--backgroundWhite);
     margin-top: 8px;
-  }
-  
-  .filter-section {
+}
+
+.filter-section {
     display: flex;
     justify-content: space-between;
     margin-bottom: 16px;
     flex-wrap: wrap;
     gap: 12px;
     padding: 0 32px;
-  }
-  
-  .search-input {
+}
+
+.search-input {
     padding: 10px;
     flex: 1;
     min-width: 200px;
     background-color: var(--textField);
     border: none;
-  }
-  
-  .filter-select {
+}
+
+.filter-select {
     padding: 10px;
     background-color: var(--textField);
     border: none;
-  }
-  
-  .table-section {
+}
+
+.table-section {
     overflow-x: auto;
     padding: 0 32px;
-  }
-  
-  table {
+}
+
+table {
     width: 100%;
     border-collapse: collapse;
     background-color: white;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-  
-  th, td {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+th,
+td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-  }
-  
-  th {
+}
+
+th {
     background-color: var(--primaryGreen);
     color: white;
     font-weight: 600;
-  }
+}
 
-  .show-detail {
+.show-detail {
     color: blue;
     text-decoration: underline;
     cursor: pointer;
-  }
-  
-  .bukti-img {
+}
+
+.bukti-img {
     width: 60px;
     height: auto;
     border-radius: 4px;
-  }
-  
-  .status {
+}
+
+.status {
     padding: 6px 12px;
     border-radius: 20px;
     font-weight: bold;
     font-size: 12px;
-  }
-  .status-pending {
+}
+.status-pending {
     background-color: orange;
     color: white;
-  }
-  .status-approved {
+}
+.status-approved {
     background-color: green;
     color: white;
-  }
-  .status-rejected {
+}
+.status-rejected {
     background-color: red;
     color: white;
-  }
-  
-  .btn {
+}
+
+.btn {
     border: none;
     cursor: pointer;
     padding: 6px 10px;
     margin: 0 2px;
     font-size: 16px;
     border-radius: 4px;
-  }
-  .btn.approve {
+}
+.btn.approve {
     background-color: #27ae60;
     color: white;
-  }
-  .btn.reject {
+}
+.btn.reject {
     background-color: #c0392b;
     color: white;
-  }
-  
-  .btn:hover {
-    opacity: 0.85;
-  }
+}
 
-  /* Detail Overlay Styles */
-    .overlay {
+.btn:hover {
+    opacity: 0.85;
+}
+
+/* Detail Overlay Styles */
+.overlay {
     position: fixed;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.5);
@@ -267,17 +501,17 @@ export default {
     align-items: center;
     justify-content: center;
     z-index: 999;
-  }
+}
 
-  .overlay-card {
+.overlay-card {
     background: #f4f1f5;
     width: 90%;
     max-width: 900px;
     border-radius: 12px;
     position: relative;
-  }
+}
 
-  .overlay-header {
+.overlay-header {
     background-color: var(--accentGreen1);
     padding: 8px 16px;
     display: flex;
@@ -285,65 +519,65 @@ export default {
     align-items: center;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
-  }
+}
 
-  .close-btn {
+.close-btn {
     background: none;
     border: none;
     font-size: 24px;
     color: var(--textBlack);
     cursor: pointer;
-  }
+}
 
-  .overlay-content {
+.overlay-content {
     display: flex;
     gap: 32px;
     flex-wrap: wrap;
     padding: 12px;
-  }
+}
 
-  .left-column {
+.left-column {
     flex: 1;
     min-width: 250px;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+}
 
-  .profile-pic {
+.profile-pic {
     width: 80px;
     height: 80px;
     margin-bottom: 16px;
-  }
+}
 
-  .info-group {
+.info-group {
     text-align: center;
-  }
+}
 
-  .info-group p {
+.info-group p {
     margin: 12px 0;
-  }
+}
 
-  .right-column {
+.right-column {
     flex: 2;
     min-width: 300px;
-  }
+}
 
-  .image-title {
+.image-title {
     font-weight: var(--fontWeightBold);
     color: var(--textGrey);
     font-size: var(--fontSizeLarge);
     text-align: center;
     margin-bottom: 12px;
-  }
+}
 
-  .image-grid {
+.image-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
-  }
+}
 
-  .image-box {
+.image-box {
     background-color: #eefaf9;
     border-radius: 8px;
     height: 120px;
@@ -351,18 +585,22 @@ export default {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-  }
+}
 
-  .image-box img {
+.image-box img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
+}
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  </style>
-  
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>

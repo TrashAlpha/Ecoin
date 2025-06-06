@@ -7,6 +7,7 @@ use App\Http\Controllers\PenukaranKoinController;
 use App\Http\Controllers\AdminPageController;
 use App\Http\Controllers\SampahController;
 use App\Http\Controllers\ArtikelController;
+use App\Http\Controllers\PenukaranSampahController;
 
 Route::middleware(['web'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -16,14 +17,11 @@ Route::middleware(['web'])->group(function () {
 
 Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 
-Route::middleware(['web', 'auth'])->group(function () {
+Route::middleware(['web', 'auth'])->group(function () { // Gunakan middleware 'web'
     Route::get('/get-user', [AuthController::class, 'getUser'])->name('auth.getUser');
     Route::put('/update-profile', [AuthController::class, 'updateProfile'])->name('auth.updateProfile');
     Route::post('/exchange-voucher', [PenukaranKoinController::class, 'exchangeVoucher'])->name('vouchers.exchange');
     Route::post('/confirm-exchange', [PenukaranKoinController::class, 'confirmExchange'])->name('vouchers.confirm');
-    Route::get('/transfer-methods', [PenukaranKoinController::class, 'getTransferMethods'])->name('transfer.methods');
-    Route::post('/exchange-to-money', [PenukaranKoinController::class, 'exchangeToMoney'])->name('exchange.money');
-    Route::post('/confirm-money-exchange', [PenukaranKoinController::class, 'confirmMoneyExchange'])->name('confirm.money');
 });
 
 // Admin API Routes - Protected with admin middleware
@@ -55,6 +53,9 @@ Route::middleware(['web', 'admin'])->group(function () {
 });
 
 // Public API routes
+Route::post('/calculate', [PenukaranSampahController::class, 'getCalculatedCoin']);
+Route::post('/create-sampah', [PenukaranSampahController::class, 'store']);
+Route::get('/penukaran', [PenukaranSampahController::class, 'index']);
 Route::get('/sampah', [SampahController::class, 'index']);
 Route::get('/artikel', [ArtikelController::class, 'index']);
 Route::get('/artikel/{id}', [ArtikelController::class, 'show']);
