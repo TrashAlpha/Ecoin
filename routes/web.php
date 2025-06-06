@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/penukaran_koin', [PageController::class, 'penukaran_koin'])->name('penukaran_koin');
     Route::get('/profile', [PageController::class, 'profil'])->name('profil');
     Route::get('/daftartransaksi', [PageController::class, 'daftartransaksi'])->name('daftartransaksi');
+    Route::get('/voucheranda', [PageController::class, 'voucheranda'])->name('voucheranda');
 });
 
 // Admin Routes - Protected with admin middleware

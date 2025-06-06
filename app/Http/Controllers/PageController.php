@@ -60,10 +60,12 @@ class PageController extends Controller
     {
         return view('tentang');
     }
+
     public function profil()
     {
         return view('profil');
     }
+
     public function daftartransaksi()
     {
         return view('daftartransaksi');
@@ -73,6 +75,12 @@ class PageController extends Controller
     {
         return view('verifikasipenukaran');
     }
+
+    public function voucheranda()
+    {
+        return view('voucher_anda');
+    }
+
     public function artikel()
     {
         return view('artikel');

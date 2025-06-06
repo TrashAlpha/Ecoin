@@ -36,10 +36,27 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { theme } from "@/config/theme";
+import axios from "axios";
 
-onMounted(() => {
+const transaksi = ref([]);
+
+onMounted(async () => {
+    try {
+        const response = await axios.get("/api/log-transaksi"); // sesuaikan dengan baseURL
+        transaksi.value = response.data.map(item => ({
+            tanggal: new Date(item.tanggal_transaksi).toLocaleDateString('id-ID', {
+                day: 'numeric', month: 'long', year: 'numeric'
+            }),
+            jenis: item.jenis_transaksi,
+            koin: item.jumlah_koin > 0 ? `+${item.jumlah_koin}` : `${item.jumlah_koin}`
+        }));
+    } catch (error) {
+        console.error("Gagal mengambil data transaksi:", error);
+    }
+
+    // Set CSS variables for theme colors
     const root = document.documentElement;
     root.style.setProperty("--primaryGreen", theme.colors.primaryGreen);
     root.style.setProperty("--accentGreen1", theme.colors.accentGreen1);
@@ -50,24 +67,6 @@ onMounted(() => {
     root.style.setProperty("--backgroundWhite", theme.colors.backgroundWhite);
     root.style.setProperty("--fontFamily", theme.fonts.family);
 });
-
-const transaksi = [
-    {
-        tanggal: "10 Maret 2025",
-        jenis: "Penukaran Voucher",
-        koin: "-50",
-    },
-    {
-        tanggal: "17 Maret 2025",
-        jenis: "Penukaran Sampah",
-        koin: "+35",
-    },
-    {
-        tanggal: "30 Maret 2025",
-        jenis: "Penukaran Sampah",
-        koin: "+60",
-    },
-];
 
 function goBack() {
     window.location.href = "/profile";

@@ -7,6 +7,7 @@ use App\Http\Controllers\PenukaranKoinController;
 use App\Http\Controllers\AdminPageController;
 use App\Http\Controllers\SampahController;
 use App\Http\Controllers\ArtikelController;
+use App\Http\Controllers\ProfileController;
 
 Route::middleware(['web'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -21,6 +22,11 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::put('/update-profile', [AuthController::class, 'updateProfile'])->name('auth.updateProfile');
     Route::post('/exchange-voucher', [PenukaranKoinController::class, 'exchangeVoucher'])->name('vouchers.exchange');
     Route::post('/confirm-exchange', [PenukaranKoinController::class, 'confirmExchange'])->name('vouchers.confirm');
+    Route::get('/transfer-methods', [PenukaranKoinController::class, 'getTransferMethods'])->name('transfer.methods');
+    Route::post('/exchange-to-money', [PenukaranKoinController::class, 'exchangeToMoney'])->name('exchange.money');
+    Route::post('/confirm-money-exchange', [PenukaranKoinController::class, 'confirmMoneyExchange'])->name('confirm.money');
+    Route::get('/log-transaksi', [ProfileController::class, 'getDaftarTransaksi'])->name('log.transaksi');
+    Route::get('/user-vouchers', [ProfileController::class, 'getUserVouchers'])->name('user.vouchers');
 });
 
 // Admin API Routes - Protected with admin middleware

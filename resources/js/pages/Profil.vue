@@ -179,6 +179,10 @@ async function saveProfileChanges() {
 function toggleVoucherModal() {
     showVoucherModal.value = !showVoucherModal.value;
 }
+
+function voucherAnda() {
+    window.location.href = '/voucheranda';
+}
 </script>
 
 <template>
@@ -233,7 +237,7 @@ function toggleVoucherModal() {
                         <div class="aksi">
                             <div class="aksi-row">
                             <button class="transaksi" @click="daftarTransaksi">Daftar Transaksi</button>
-                            <button class="voucher" @click="toggleVoucherModal">Voucher Anda</button>
+                            <button class="voucher" @click="voucherAnda">Voucher Anda</button>
                             </div>
                             <button class="edit" @click="toggleEditModal">Edit Profil</button>
                         </div>
