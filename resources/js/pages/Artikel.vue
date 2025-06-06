@@ -4,6 +4,7 @@ import Footer from '../components/Footer.vue';
 import { onMounted, ref } from 'vue';
 
 const artikel = ref({});
+const userAnswers = ref({});
 
 function fetchArtikel() {
     const path = window.location.pathname;
@@ -17,6 +18,38 @@ function fetchArtikel() {
         .catch((err) => {
             console.error('Gagal ambil detail artikel:', err);
         });
+}
+
+async function submitQuiz() {
+    const path = window.location.pathname;
+    const artikelId = path.split('/').pop();
+
+    const payload = {
+        answer: userAnswers.value
+    };
+
+    try {
+        const response = await fetch(`http://localhost:8000/api/artikel/${artikelId}/submit-quiz`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(payload),
+        });
+        const data = await response.json();
+        if (data.success) {
+            alert(data.message);
+            window.location.reload(true);
+        } else {
+            alert(data.message);
+            window.location.reload(true);
+        }
+    } catch (err) {
+        alert('Gagal submit quiz!');
+        console.error(err);
+        window.location.reload(true);
+    }
 }
 
 onMounted(() => {
@@ -43,12 +76,17 @@ onMounted(() => {
                 <p class="pertanyaan">{{ q.pertanyaan }}</p>
                 <div class="opsi-jawaban">
                     <div class="jawaban" v-for="(jawaban, key) in q.pilihan_jawaban" :key="key">
-                        <input :id="`jawaban-${q.id}-${key}`" type="radio" :name="`opsi-jawaban-${q.id}`" :value="key"/>
+                        <input
+                        :id="`jawaban-${q.id}-${key}`"
+                        type="radio"
+                        :name="`opsi-jawaban-${q.id}`"
+                        :value="key"
+                        v-model="userAnswers[q.id]"/>
                         <label :for="`jawaban-${q.id}-${key}`">{{ key }}. {{ jawaban }}</label>
                     </div>
                 </div>
             </form>
-            <button type="submit" class="btn">Submit</button>
+            <button type="submit" class="btn" id="submit" @click="submitQuiz">Submit</button>
         </div>
     </div>
     <Footer />
