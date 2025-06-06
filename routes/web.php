@@ -15,6 +15,7 @@ Route::get('/login', [PageController::class, 'login'])->name('login');
 Route::get('/tentang', [PageController::class, 'tentang'])->name('tentang');
 Route::get('/jelajah', [PageController::class, 'jelajah'])->name('jelajah');
 Route::get('/register', [PageController::class, 'register'])->name('register');
+Route::get('/artikel/{id}', [PageController::class, 'artikel'])->name('artikel');
 
 // Auth needed
 Route::middleware(['auth'])->group(function () {

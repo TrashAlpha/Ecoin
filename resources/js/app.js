@@ -16,6 +16,7 @@ import ManajemenUser from './pages/ManajemenUser.vue';
 import DaftarTransaksi from './pages/DaftarTransaksi.vue';
 import VerifikasiPenukaran from './pages/VerifikasiPenukaran.vue';
 import ManajemenVoucher from './pages/ManajemenVoucher.vue';
+import Artikel from './pages/Artikel.vue';
 
 const el = document.getElementById('app');
 
@@ -69,6 +70,9 @@ if (el) {
         break;
     case 'verifikasi-penukaran':
         component = VerifikasiPenukaran;
+        break;
+    case 'artikel':
+        component = Artikel;
         break;
     default:
         console.error('Unknown page component:', page);
