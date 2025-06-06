@@ -102,7 +102,9 @@ onMounted(()=>{
                 Beberapa kegiatan positif untuk menjaga lingkungan telah dilakukan seperti
                 bakti sosial dan seminar tentang pentingnya kebersihan.
                 </p>
-                <button>Lihat Lebih</button>
+                <a href="https://youtu.be/As67nnwVnIU?si=WXANbp9jUOs6KYyP" target="_blank">
+                    <button>Lihat Lebih</button>
+                </a>
             </div>
             <div class="gambar-atas">
                 <img src="/public/images/jelajahGambar1.png" alt="Gambar 1">
