@@ -159,7 +159,7 @@ export default {
 </script>
 
 <style scoped>
-    .navbar {
+.navbar {
     font-family: var(--fontFamily);
     display: flex;
     justify-content: space-between;
