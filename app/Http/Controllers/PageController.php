@@ -41,19 +41,23 @@ class PageController extends Controller
         return view('penukarans3');
     }
 
-    public function penukaran3_2(){
+    public function penukaran3_2()
+    {
         return view('penukarans3_2');
     }
 
-    public function penukaran_koin(){
+    public function penukaran_koin()
+    {
         return view('penukarankoin');
     }
 
-    public function jelajah(){
+    public function jelajah()
+    {
         return view('jelajah');
     }
 
-    public function tentang(){
+    public function tentang()
+    {
         return view('tentang');
     }
     public function profil()
@@ -65,7 +69,12 @@ class PageController extends Controller
         return view('daftartransaksi');
     }
 
-    public function verifikasi_penukaran(){
+    public function verifikasi_penukaran()
+    {
         return view('verifikasipenukaran');
+    }
+    public function artikel()
+    {
+        return view('artikel');
     }
 }
