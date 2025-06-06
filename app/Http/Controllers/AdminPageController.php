@@ -308,18 +308,6 @@ class AdminPageController extends Controller
             $oldBalance = $user->saldo_koin;
             $user->update(['saldo_koin' => $request->saldo_koin]);
 
-            // Create transaction log for manual adjustment
-            Log_Transaksi::create([
-                'user_id' => $user->id,
-                'jenis_transaksi' => 'adjustment',
-                'jumlah_koin' => $request->saldo_koin - $oldBalance,
-                'saldo_sebelum' => $oldBalance,
-                'saldo_sesudah' => $request->saldo_koin,
-                'keterangan' => 'Manual adjustment by admin',
-                'reference_type' => null,
-                'reference_id' => null
-            ]);
-
             return response()->json([
                 'success' => true,
                 'message' => 'Saldo koin user berhasil diperbarui',
