@@ -261,6 +261,8 @@ export default {
             simpanClicked: false,
             minDateToday: "", // Akan di-set di created
             minTimeToday: "",
+            cloudinaryUrl: "https://api.cloudinary.com/v1_1/dk2wbhh4d/image/upload",
+            cloudinaryPreset: "EcoinUp",
         };
     },
     created() {
@@ -360,16 +362,34 @@ export default {
             console.log("Data yang akan dibawa ke step 2:", this.items);
             window.location.href = "/penukaran2";
         },
-        onMainImageChange(event, item) {
+        async onMainImageChange(event, item) {
             const file = event.target.files[0];
-            if (file) {
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", this.cloudinaryPreset);
+
+            try {
+                const response = await fetch(this.cloudinaryUrl, {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const data = await response.json();
                 if (item.mainImage) {
-                    URL.revokeObjectURL(item.mainImage);
+                    URL.revokeObjectURL(item.mainImage); // kalau sebelumnya pakai object URL
                 }
-                item.mainImage = URL.createObjectURL(file);
+                item.mainImage = data.secure_url; // URL Cloudinary
                 item.imageFile = file;
+
+                console.log("Upload berhasil:", data.secure_url);
+            } catch (error) {
+                console.error("Gagal upload ke Cloudinary:", error);
+                alert("Upload gambar gagal. Coba lagi.");
             }
-            event.target.value = null;
+
+            event.target.value = null; // reset input
         },
         removeMainImage(item) {
             const confirmed = window.confirm(
