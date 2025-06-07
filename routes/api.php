@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -55,9 +56,12 @@ Route::middleware(['web', 'admin', 'check.banned'])->group(function () {
 
     // Article management
     Route::apiResource('admin/artikel', ArtikelController::class);
+    Route::post('/admin/artikel/{id}/quiz', [ArtikelController::class, 'createQuiz'])->name('artikel.createQuiz');
 });
 
 // Public API routes
 Route::get('/sampah', [SampahController::class, 'index']);
 Route::get('/artikel', [ArtikelController::class, 'index']);
 Route::get('/artikel/{id}', [ArtikelController::class, 'getArtikelId']);
+Route::get('/produk', [PageController::class, 'getProduk'])->name('produk.list');
+
