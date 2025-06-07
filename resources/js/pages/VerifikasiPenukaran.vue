@@ -116,11 +116,6 @@
                                 }}
                             </p>
                             <p>
-                                <strong>Jenis Sampah</strong><br />{{
-                                    selectedTransaction.jenis_sampah
-                                }}
-                            </p>
-                            <p>
                                 <strong>Berat sampah (kg)</strong><br />{{
                                     selectedTransaction.berat
                                 }}

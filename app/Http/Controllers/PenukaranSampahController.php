@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Penukaran_Sampah;
 use App\Models\Sampah;
 use App\Models\Log_Transaksi;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class PenukaranSampahController extends Controller
 {
@@ -201,18 +203,120 @@ class PenukaranSampahController extends Controller
 
     public function index() {
         try {
-            $exchanges = Penukaran_Sampah::orderBy('created_at', 'desc')->get();
+            // 1. Lakukan Eager Loading untuk mengambil data user bersamaan dengan data penukaran
+            $exchanges = Penukaran_Sampah::with('user:id,name,email') // Hanya ambil kolom id, name, dan email dari tabel user
+                                    ->orderBy('created_at', 'desc')
+                                    ->get();
 
-            return response()->json([
-                'success' => true,
-                'data' => $exchanges
-            ]);
+            // 2. Iterasi setiap data penukaran untuk menambahkan total berat dan merapikan data user
+            $exchanges->each(function($exchange) {
+            // Hitung total berat/jumlah dari array 'detail_sampah'
+            // Menggunakan '??' untuk menangani jika key 'berat' atau 'jumlah' tidak ada
+            $totalWeight = collect($exchange->detail_sampah)->sum(function($detail) {
+                return $detail['berat'] ?? $detail['jumlah'] ?? 0;
+            });
+
+            // Tambahkan field baru 'total_berat_sampah' ke dalam objek exchange
+            $exchange->berat = $totalWeight;
+            
+            // Masukkan nama dan email user ke dalam root object untuk kemudahan akses
+            if ($exchange->user) {
+                $exchange->nama_pengguna = $exchange->user->name;
+                $exchange->email_pengguna = $exchange->user->email;
+            }
+
+            // Hapus relasi user yang sudah tidak diperlukan agar JSON lebih rapi
+            unset($exchange->user);
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $exchanges
+        ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal mengambil data penukaran'
             ], 500);
+        }
+    }
+
+    public function updateStatus(Request $request, Penukaran_Sampah $penukaran)
+    {
+        // 1. Validasi request yang masuk
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|string|in:approved,rejected', // Hanya menerima 'approved' atau 'rejected'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors(),
+            ], 422); // 422 Unprocessable Entity
+        }
+
+        try {
+            // 2. Update status pada model yang ditemukan via Route-Model Binding
+            $penukaran->status = $request->status;
+            $penukaran->save();
+
+            if ($penukaran->status === 'approved') {
+                $user = User::find($penukaran->user_id);
+
+                if ($user) {
+                    $user->saldo_koin += $penukaran->total_koin; // Tambahkan koin
+                    $user->save(); // Simpan perubahan pada user
+                } else {
+                    // Opsional: Log error jika user tidak ditemukan
+                    Log::error("User with ID {$penukaran->user_id} not found for coin update after waste exchange approval.");
+                }
+            }
+
+            // 3. Kirim respons sukses dalam format JSON
+            return response()->json([
+                'success' => true,
+                'message' => 'Status penukaran berhasil diperbarui.',
+                'data' => $penukaran, // Mengirim kembali data yang sudah diupdate
+            ]);
+
+        } catch (\Exception $e) {
+            // Tangani jika ada error lain (misal: error database)
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan server: ' . $e->getMessage(),
+            ], 500); // 500 Internal Server Error
+        }
+    }
+
+    public function getApprovedPenukaranByUserId($userId)
+    {
+        try {
+            // Mengambil data penukaran sampah dari database
+            // dengan kondisi user_id dan status 'approved'
+            $penukaran = Penukaran_Sampah::where('user_id', $userId)
+                                        ->where('status', 'approved')
+                                        ->get();
+
+            // Memeriksa apakah ada data penukaran yang ditemukan
+            if ($penukaran->isEmpty()) {
+                return response()->json([
+                    'message' => 'Tidak ada data penukaran sampah yang ditemukan untuk user_id ini dengan status approved.'
+                ], 404); // Mengembalikan status 404 jika tidak ditemukan
+            }
+
+            // Mengembalikan data penukaran dalam format JSON
+            return response()->json([
+                'message' => 'Data penukaran sampah berhasil diambil.',
+                'data' => $penukaran
+            ], 200); // Mengembalikan status 200 jika berhasil
+        } catch (\Exception $e) {
+            // Menangani error jika terjadi masalah saat mengambil data
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat mengambil data penukaran sampah.',
+                'error' => $e->getMessage()
+            ], 500); // Mengembalikan status 500 untuk error server
         }
     }
 } 

@@ -60,7 +60,7 @@
                     />
                     <div v-else>Tambah Gambar</div>
                     <button
-                        v-if="mainImage"
+                        v-if="item.mainImage"
                         @click.stop.prevent="removeMainImage"
                         class="remove-button"
                     >

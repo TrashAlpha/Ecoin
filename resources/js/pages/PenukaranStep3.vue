@@ -4,28 +4,46 @@ import Footer from "../components/Footer.vue";
 import Navbar from "../components/Navbar.vue";
 import RedeemVoucherModal from "@/components/RedeemVoucherModal.vue";
 import KonfirmasiPenukaranModal from "@/components/KonfirmasiPenukaran.vue";
+import axios from "axios";
+
+const vouchers = ref([])
+const selectedVoucherId = ref(null)
+const showModal = ref(false);
+const selectedVoucher = ref(null);
+
+const fetchVouchers = async () => {
+  try {
+    const res = await axios.get("http://localhost:8000/api/vouchers")
+    console.log("Vouchers from API:", res.data)
+    vouchers.value = res.data.vouchers // ✅ Perbaikan disini
+  } catch (error) {
+    console.error("Gagal mengambil data voucher:", error)
+  }
+}
+
+const selectVoucher = (id) => {
+  selectedVoucherId.value = id
+}
+
+const isSelected = (id) => {
+  return selectedVoucherId.value === id
+}
+
+onMounted(() => {
+  fetchUserData();
+  fetchVouchers()
+})
 
 function redirectToStep2() {
     window.location.href = "/penukaran2";
 }
 
-const showModal = ref(false);
-const selectedVoucher = ref<any>(null);
 const showConfirmationModal = ref(false);
 const koinYangDidapat = ref<string | number>("");
 
 function openModal(voucher: any) {
     selectedVoucher.value = voucher;
     showModal.value = true;
-}
-
-function handleCancel() {
-    showModal.value = false;
-}
-
-function handleConfirm() {
-    showModal.value = false;
-    alert(`Voucher ${selectedVoucher.value.name} berhasil ditukar!`);
 }
 
 async function handleConfirmKonfirmasi() {
@@ -361,6 +379,94 @@ onMounted(() => {
     }
     fetchAndCalculateCoins();
 });
+
+// Tukar Voucher logic
+const isLoading = ref(true);
+const errorMessage = ref('');
+
+const exchangeVoucher = (voucher) => {
+  selectedVoucher.value = voucher;
+  showModal.value = true;
+};
+
+const confirmExchange = async (voucherId) => {
+    try {
+        const response = await axios.post(
+            '/api/confirm-exchange',
+            { voucher_id: voucherId },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (response.data.success) {
+            alert('Penukaran berhasil!');
+            // Update saldo di localStorage
+            await fetchUserData(); // fetch ulang data user
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            alert(response.data.message || 'Penukaran gagal.');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    } catch (error) {
+        console.error('Gagal konfirmasi penukaran:', error);
+        alert('Terjadi kesalahan saat konfirmasi penukaran.');
+    }
+};
+
+const user = ref({});
+const fetchUserData = async () => {
+  try {
+    const res = await axios.get('/api/user', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    user.value = res.data.data;
+    console.log('User data:', user.value);
+  } catch (error) {
+    console.error('Gagal fetch user:', error);
+  }
+};
+
+const handleCancel = () => {
+  showModal.value = false;
+  selectedVoucher.value = null;
+};
+
+const handleConfirm = async () => {
+  if (!selectedVoucher.value) return;
+
+  try {
+    const response = await axios.post(
+      '/api/confirm-exchange',
+      { voucher_id: selectedVoucher.value.id },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (response.data.success) {
+      alert('Penukaran berhasil!');
+      await fetchUserData();
+    } else {
+      alert(response.data.message || 'Penukaran gagal.');
+    }
+  } catch (error) {
+    console.error('Gagal konfirmasi penukaran:', error);
+    alert('Terjadi kesalahan saat konfirmasi penukaran.');
+  }
+
+  // Tutup modal
+  showModal.value = false;
+  selectedVoucher.value = null;
+};
 </script>
 
 <template>
@@ -429,141 +535,24 @@ onMounted(() => {
                 </form>
             </div>
             <div class="opsi-transfer">
-                <label>Opsi Voucher</label><br />
-                <div class="opsi-grid">
-                    <div
-                        class="voucher-card"
-                        @click="
-                            openModal({
-                                name: 'Pluxxe',
-                                image: '/public/images/pluxxe.png',
-                            })
-                        "
-                    >
-                        <img src="/public/images/pluxxe.png" alt="" />
-                        <div class="info">
-                            <span class="voucher-name"> Koin</span>
-                            <span class="total-judul">Detail Voucher</span>
-                            <span class="total-nominal">detail</span>
-                        </div>
-                    </div>
-                    <div
-                        class="voucher-card"
-                        @click="
-                            openModal({
-                                name: 'Shell',
-                                image: '/public/images/shell.png',
-                            })
-                        "
-                    >
-                        <img src="/public/images/shell.png" alt="" />
-                        <div class="info">
-                            <span class="voucher-name"> Koin</span>
-                            <span class="total-judul">Detail Voucher</span>
-                            <span class="total-nominal">detail</span>
-                        </div>
-                    </div>
-                    <div
-                        class="voucher-card"
-                        @click="
-                            openModal({
-                                name: 'Steam',
-                                image: '/public/images/steam.jpg',
-                            })
-                        "
-                    >
-                        <img src="/public/images/steam.jpg" alt="" />
-                        <div class="info">
-                            <span class="voucher-name"> Koin</span>
-                            <span class="total-judul">Detail Voucher</span>
-                            <span class="total-nominal">detail</span>
-                        </div>
-                    </div>
-                    <div
-                        class="voucher-card"
-                        @click="
-                            openModal({
-                                name: 'Indomaret',
-                                image: '/public/images/indomaret.png',
-                            })
-                        "
-                    >
-                        <img src="/public/images/indomaret.png" alt="" />
-                        <div class="info">
-                            <span class="voucher-name"> Koin</span>
-                            <span class="total-judul">Detail Voucher</span>
-                            <span class="total-nominal">detail</span>
-                        </div>
-                    </div>
-                    <div
-                        class="voucher-card"
-                        @click="
-                            openModal({
-                                name: 'Familymart',
-                                image: '/public/images/familymart.png',
-                            })
-                        "
-                    >
-                        <img src="/public/images/familymart.png" alt="" />
-                        <div class="info">
-                            <span class="voucher-name"> Koin</span>
-                            <span class="total-judul">Detail Voucher</span>
-                            <span class="total-nominal">detail</span>
-                        </div>
-                    </div>
-                    <div
-                        class="voucher-card"
-                        @click="
-                            openModal({
-                                name: 'Amazon',
-                                image: '/public/images/amazon.png',
-                            })
-                        "
-                    >
-                        <img src="/public/images/amazon.png" alt="" />
-                        <div class="info">
-                            <span class="voucher-name"> Koin</span>
-                            <span class="total-judul">Detail Voucher</span>
-                            <span class="total-nominal">detail</span>
-                        </div>
-                    </div>
-                    <div
-                        class="voucher-card"
-                        @click="
-                            openModal({
-                                name: 'Alfamidi',
-                                image: '/public/images/alfamidi.png',
-                            })
-                        "
-                    >
-                        <img src="/public/images/alfamidi.png" alt="" />
-                        <div class="info">
-                            <span class="voucher-name"> Koin</span>
-                            <span class="total-judul">Detail Voucher</span>
-                            <span class="total-nominal">detail</span>
-                        </div>
-                    </div>
-                    <div
-                        class="voucher-card"
-                        @click="
-                            openModal({
-                                name: 'Alfamart',
-                                image: '/public/images/alfamaert.png',
-                            })
-                        "
-                    >
-                        <img src="/public/images/alfamart.png" alt="" />
-                        <div class="info">
-                            <span class="voucher-name"> Koin</span>
-                            <span class="total-judul">Detail Voucher</span>
-                            <span class="total-nominal">detail</span>
-                        </div>
-                    </div>
-                </div>
-                <a href="/penukaran3_2" style="color: blue"
-                    >Atau tukar ke rupiah</a
+            <div class="opsi-grid">
+                <div
+                class="voucher-card"
+                v-for="voucher in vouchers"
+                :key="voucher.id"
+                @click="exchangeVoucher(voucher)"
                 >
+                <img :src="voucher.image_url || 'https://via.placeholder.com/75'" alt="voucher image" />
+
+                <div class="info">
+                    <div class="voucher-name">{{ voucher.nama_voucher }}</div>
+                    <div class="total-judul">{{ voucher.deskripsi }}</div>
+                    <div class="total-nominal">{{ voucher.nilai_koin }} poin</div>
+                </div>
+                </div>
             </div>
+            </div>
+
         </section>
 
         <section class="langganan">
@@ -582,13 +571,13 @@ onMounted(() => {
         </section>
 
         <RedeemVoucherModal
-            v-if="showModal"
-            :visible="showModal"
-            :coins="150"
-            :voucherName="selectedVoucher?.name"
-            :icon="'/images/mdi_voucher.png'"
-            @cancel="handleCancel"
-            @confirm="handleConfirm"
+        v-if="showModal"
+        :visible="showModal"
+        :coins="selectedVoucher?.nilai_koin"
+        :voucherName="selectedVoucher?.nama_voucher"
+        :icon="'/images/mdi_voucher.png'"
+        @cancel="handleCancel"
+        @confirm="handleConfirm"
         />
 
         <KonfirmasiPenukaranModal
@@ -898,4 +887,5 @@ onMounted(() => {
         max-width: 100px;
     }
 }
+
 </style>

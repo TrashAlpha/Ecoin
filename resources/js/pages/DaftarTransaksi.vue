@@ -56,6 +56,44 @@ onMounted(async () => {
         console.error("Gagal mengambil data transaksi:", error);
     }
 
+    let userId = null;
+    try {
+        const userData = localStorage.getItem("user");
+        if (userData) {
+            const user = JSON.parse(userData);
+            userId = user.id;
+        }
+    } catch (e) {
+        console.error("Failed to parse user data from localStorage", e);
+    }
+
+    if (userId) {
+        try {
+            const response = await axios.get(`/api/log-transaksi/${userId}`); // Use the retrieved userId
+            transaksi.value = response.data.data.map((item) => ({
+                tanggal: new Date(item.tanggal_penukaran).toLocaleDateString(
+                    "id-ID",
+                    {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                    }
+                ),
+                jenis: "Penukaran Sampah",
+                koin:
+                    item.total_koin > 0
+                        ? `+${item.total_koin}`
+                        : `${item.total_koin}`,
+            }));
+        } catch (error) {
+            console.error("Gagal mengambil data transaksi:", error);
+        }
+    } else {
+        console.warn(
+            "User ID not found in localStorage. Cannot fetch transactions."
+        );
+    }
+
     // Set CSS variables for theme colors
     const root = document.documentElement;
     root.style.setProperty("--primaryGreen", theme.colors.primaryGreen);
