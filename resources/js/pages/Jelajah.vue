@@ -2,8 +2,10 @@
 import Footer from '../components/Footer.vue';
 import Navbar from '../components/Navbar.vue';
 
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
+const artikels = ref([]);
+const userRole = ref(null);
 const produkList = ref([
   {
     nama: 'Dompet Kecil',
@@ -29,15 +31,8 @@ const produkList = ref([
     gambar: '/images/jelajahBelanja4.png',
     link: 'https://tk.tokopedia.com/ZShnPfoxa/'
   },
-  {
-    nama: 'Tas Belanja',
-    harga: 28000,
-    gambar: '/images/jelajahBelanja4.png',
-    link: 'https://tk.tokopedia.com/ZShnPDy2k/'
-  },
   // Tambahkan produk baru langsung di sini
 ]);
-
 const carousel = ref(null);
 
 const next = () => {
@@ -58,6 +53,37 @@ const formatHarga = (angka) => {
   return angka.toLocaleString('id-ID');
 };
 
+function fetchAllArtikel(){
+    fetch("http://localhost:8000/api/artikel")
+    .then((res) => res.json())
+    .then((data) => {
+        artikels.value = data.data;
+    })
+    .catch((err) => {
+        console.error("Gagal ambil data artikel: ", err);
+    })
+}
+
+async function fetchUserRole() {
+    try {
+        const response = await fetch('http://localhost:8000/api/get-user', {
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        const data = await response.json();
+        userRole.value = data.user ? data.user.role : null;
+    } catch (error) {
+        userRole.value = null;
+        console.error('Gagal mengambil role pengguna:', error);
+    }
+}
+
+onMounted(()=>{
+    fetchAllArtikel();
+    fetchUserRole();
+})
 </script>
 
 <template>
@@ -86,7 +112,9 @@ const formatHarga = (angka) => {
                 Beberapa kegiatan positif untuk menjaga lingkungan telah dilakukan seperti
                 bakti sosial dan seminar tentang pentingnya kebersihan.
                 </p>
-                <button>Lihat Lebih</button>
+                <a href="https://youtu.be/As67nnwVnIU?si=WXANbp9jUOs6KYyP" target="_blank">
+                    <button>Lihat Lebih</button>
+                </a>
             </div>
             <div class="gambar-atas">
                 <img src="/public/images/jelajahGambar1.png" alt="Gambar 1">
@@ -105,68 +133,29 @@ const formatHarga = (angka) => {
             <div class="artikel-heading">
                 <h2>Artikel</h2>
                 <h1>Bacaan Ecoin</h1>
-                <div class="artikel-button">
+                <!-- <div class="artikel-button">
                     <button>Semua</button>
                     <button>Terpopuler</button>
                     <button>Terbaru</button>
-                </div>
+                </div> -->
             </div>
             <div class="artikel-grid">
-                <div class="artikel-card">
-                    <span class="koin-label">10 Koin</span>
-                    <img src="/public/images/jelajahArtikel1.png" alt="Artikel">
-                    <div class="card-body">
-                        <h3>Memilah Sampah</h3>
-                        <p>Menyesuaikan sampah dengan kategorinya dan kelompoknya...</p>
-                        <div class="card-links">
-                            <a href="#"><img src="/public/images/iconamoon_eye_light.png" class="icon"/> Baca Artikel</a>
-                            <a href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
+                <div class="artikel-card" v-for="artikel in artikels">
+                    <a :href="`/artikel/${artikel.id}`">
+                        <span class="koin-label">{{artikel.reward_koin}} Koin</span>
+                        <img :src="artikel.gambar_url" alt="Artikel">
+                        <div class="card-body">
+                            <h3>{{artikel.judul}}</h3>
+                            <p>{{ artikel.konten }}</p>
+                            <div class="card-links">
+                                <a v-if="userRole === 'admin'" href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
-                <div class="artikel-card">
-                    <span class="koin-label">10 Koin</span>
-                    <img src="/public/images/jelajahArtikel2.png" alt="Artikel">
-                    <div class="card-body">
-                        <h3>Memilah Sampah</h3>
-                        <p>Menyesuaikan sampah dengan kategorinya dan kelompoknya...</p>
-                        <div class="card-links">
-                            <a href="#"><img src="/public/images/iconamoon_eye_light.png" class="icon"/> Baca Artikel</a>
-                            <a href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="artikel-card">
-                    <span class="koin-label">10 Koin</span>
-                    <img src="/public/images/jelajahArtikel3.png" alt="Artikel">
-                    <div class="card-body">
-                        <h3>Memilah Sampah</h3>
-                        <p>Menyesuaikan sampah dengan kategorinya dan kelompoknya...</p>
-                        <div class="card-links">
-                            <a href="#"><img src="/public/images/iconamoon_eye_light.png" class="icon"/> Baca Artikel</a>
-                            <a href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="artikel-card">
-                    <span class="koin-label">10 Koin</span>
-                    <img src="/public/images/jelajahArtikel1.png" alt="Artikel">
-                    <div class="card-body">
-                        <h3>Memilah Sampah</h3>
-                        <p>Menyesuaikan sampah dengan kategorinya dan kelompoknya...</p>
-                        <div class="card-links">
-                            <a href="#"><img src="/public/images/iconamoon_eye_light.png" class="icon"/> Baca Artikel</a>
-                            <a href="#"><img src="/public/images/jam_write.png" class="icon"/> Buat Kuis</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="artikel-button">
-                <button>Selengkapnya</button>
             </div>
         </section>
 
-        <!-- TODO: Benerin CARD dan Gambarnya -->
         <section class="konten">
         <div class="konten-heading">
             <div class="heading-line"></div>
@@ -194,9 +183,6 @@ const formatHarga = (angka) => {
             <button @click="next" class="arrow-btn">›</button>
         </div>
         </section>
-
-
-
         <Footer/>
     </div>
 </template>
@@ -249,16 +235,19 @@ const formatHarga = (angka) => {
     /* Konten */
     .konten {
         padding: 20px;
+        margin: 0 auto;
+        max-width: 1200px;
+        box-sizing: border-box;
     }
     .konten-heading {
         display: flex;
         align-items: center;
-        padding-left: 32px;
         gap: 12px;
         font-weight: var(--fontWeightBold);
         color: var(--primaryGreen);
         font-size: var(--fontSizeMedium);
-        margin-bottom: 8px;
+        margin-bottom: 20px;
+        margin-top: 25px;
     }
     .heading-line {
         width: 100px;
@@ -391,12 +380,11 @@ const formatHarga = (angka) => {
     .artikel-heading h2 {
         font-size: 24px;
         font-weight: 600;
-        margin-bottom: 15px;
     }
     .artikel-heading h1 {
         font-size: 32px;
         font-weight: 700;
-        margin-bottom: 15px;
+        margin-bottom: 30px;
     }
     .artikel-button {
         margin-top: 50px;
@@ -433,11 +421,26 @@ const formatHarga = (angka) => {
         width: 100%;
         max-width: 260px;
         position: relative;
+        border-radius: 8px;
+        border-width: 3px;
+        border-color: var(--primaryGreen);
+    }
+    .artikel-card:hover {
+        background-color: var(--accentGreen2);
+        transition-duration: 0.3s;
+        h3, p, a{
+            color: var(--primaryGreen);
+        }
+        img{
+            filter: brightness(110%);
+            transition-duration: 0.3s;
+        }
     }
     .artikel-card img {
         width: 100%;
         height: 180px;
         object-fit: cover;
+        border-radius: 4px;
     }
     .koin-label {
         position: absolute;
@@ -464,6 +467,11 @@ const formatHarga = (angka) => {
         margin: 8px 0 16px;
         font-size: 14px;
         color: white;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .card-links {
         display: flex;

@@ -13,8 +13,26 @@ const scrollToSection = (id) => {
 };
 
 const user = ref(JSON.parse(localStorage.getItem('user')));
-const userKoin = computed(() => user.value?.saldo_koin || 0);
 
+// Fetch user data
+const fetchUserData = async () => {
+    try {
+        const response = await axios.get('/api/get-user', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            }
+        });
+
+        if (response.data.user) {
+            user.value = response.data.user;
+            localStorage.setItem('user', JSON.stringify(user.value));
+        }
+    } catch (error) {
+        console.error('Gagal mengambil data user:', error);
+    }
+};
+
+const userKoin = computed(() => user.value?.saldo_koin || 0);
 const totalSaldo = computed(() => userKoin.value);
 
 // Tukar Voucher logic
@@ -71,11 +89,11 @@ const confirmExchange = async (voucherId) => {
         if (response.data.success) {
             alert('Penukaran berhasil!');
             // Update saldo di localStorage
-            user.value.saldo_koin = response.data.updated_coin_balance;
-            localStorage.setItem('user', JSON.stringify(user.value));
-            window.location.reload();
+            await fetchUserData(); // fetch ulang data user
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
             alert(response.data.message || 'Penukaran gagal.');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     } catch (error) {
         console.error('Gagal konfirmasi penukaran:', error);
@@ -183,10 +201,11 @@ const processMoneyExchange = async (data) => {
 
         if (response.data.success) {
             // Update saldo user
-            user.value.saldo_koin -= parseInt(coinAmount.value);
-            localStorage.setItem('user', JSON.stringify(user.value));
+            await fetchUserData(); // fetch ulang data user
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
             alert(response.data.message || 'Penukaran gagal.');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     } catch (error) {
         console.error('Gagal konfirmasi penukaran:', error);
@@ -299,10 +318,13 @@ onMounted(async () => {
                         readonly>
                     <br>
 
-                    <button type="button" @click="selectedMethod = null; coinAmount = ''">Kembali</button>
+                    <button type="button" @click="selectedMethod = null; coinAmount = ''"
+                        style="cursor: pointer; margin-right: 10px;">
+                        Batal</button>
                     <button 
                         type="submit" 
-                        :disabled="!selectedMethod || !coinAmount">
+                        :disabled="!selectedMethod || !coinAmount"
+                        style="cursor: pointer;">
                         Tukarkan
                     </button>
                 </form>
