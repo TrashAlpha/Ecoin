@@ -94,4 +94,32 @@ class ArtikelController extends Controller
             ]);
         }
     }
+
+    public function createQuiz(Request $request, $artikelId)
+    {
+        $request->validate([
+            'pertanyaan' => 'required|string',
+            'pilihan_jawaban' => 'required|array',
+            'jawaban_benar' => 'required|string',
+        ]);
+
+        try {
+            $quiz = new Quiz();
+            $quiz->artikel_id = $artikelId;
+            $quiz->pertanyaan = $request->pertanyaan;
+            $quiz->pilihan_jawaban = $request->pilihan_jawaban;
+            $quiz->jawaban_benar = $request->jawaban_benar;
+            $quiz->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Quiz berhasil ditambahkan'
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan quiz'
+            ], 500);
+        }
+    }
 }

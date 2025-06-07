@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Produk;
 
 class PageController extends Controller
 {
@@ -84,5 +85,20 @@ class PageController extends Controller
     public function artikel()
     {
         return view('artikel');
+    }
+    public function getProduk()
+    {
+        try {
+            $produk = Produk::where('status', 'active')->get();
+            return response()->json([
+                'success' => true,
+                'data' => $produk
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengambil data produk'
+            ], 500);
+        }
     }
 }
