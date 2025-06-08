@@ -9,7 +9,7 @@ import axios from 'axios';
 
 
 function redirectToStep2() {
-  window.location.href = '/penukaran2';
+  window.location.href = '/penukaran3';
 }
 
 const showModal = ref(false);
@@ -277,7 +277,10 @@ onMounted(() => {
       v-if="showConfirmationModal"
       :visible="showConfirmationModal"
       :icon="'/images/VerificationIcon.png'"
-      @confirm="handleConfirmKonfirmasi"
+      :coins="parseInt(coinAmount)"
+      :adminFee="selectedMethod?.admin_fee || 0"
+      :bankName="selectedMethod?.nama_bank || 'Bank tidak dikenal'"
+      @confirm="handleConfirm"
     />
 
     <Footer />
