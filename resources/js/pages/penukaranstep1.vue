@@ -504,11 +504,6 @@ export default {
     },
     watch: {
         activeTab(newVal) {
-            // Jika tidak ada item untuk kategori baru, buat satu
-            const hasItem = this.items.some(item => item.kategori === newVal);
-            if (!hasItem) {
-                this.tambahBarang();
-            }
         }
     },
 };
