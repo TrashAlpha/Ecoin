@@ -8,18 +8,29 @@
                 alt="Penukaran Sampah"
                 class="hero-image"
             />
-            <div class="kategori-tabs">
-                <div class="tab">
-                    <img src="/public/images/ic_plastic.png" alt="" /> Non
-                    Organik
-                </div>
-                <div class="tab">
+                <div class="kategori-tabs">
+                    <div
+                    class="tab"
+                    :class="{ active: activeTab === 'non' }"
+                    @click="activeTab = 'non'"
+                    >
+                    <img src="/public/images/ic_plastic.png" alt="" /> Non Organik
+                    </div>
+                    <div
+                    class="tab"
+                    :class="{ active: activeTab === 'organik' }"
+                    @click="activeTab = 'organik'"
+                    >
                     <img src="/public/images/ic_leaf.png" alt="" /> Organik
-                </div>
-                <div class="tab">
+                    </div>
+                    <div
+                    class="tab"
+                    :class="{ active: activeTab === 'medis' }"
+                    @click="activeTab = 'medis'"
+                    >
                     <img src="/public/images/ic_mask.png" alt="" /> Limbah Medis
+                    </div>
                 </div>
-            </div>
         </section>
 
         <section class="step-indikator">
@@ -39,24 +50,28 @@
             </div>
         </section>
 
-        <section class="konten-detail">
+        <section
+            class="konten-detail"
+            v-for="(item, index) in filteredItems"
+            :key="item.id"
+        >
             <div class="gambar-detail">
                 <!-- Gambar Utama -->
                 <label class="gambar-utama upload-box">
                     <input
                         type="file"
                         accept="image/*"
-                        @change="onMainImageChange"
+                        @change="onMainImageChange($event, item)"
                         hidden
                     />
                     <img
-                        v-if="mainImage"
-                        :src="mainImage"
+                        v-if="item.mainImage"
+                        :src="item.mainImage"
                         class="preview-image"
                     />
                     <div v-else>Tambah Gambar</div>
                     <button
-                        v-if="mainImage"
+                        v-if="item.mainImage"
                         @click.stop.prevent="removeMainImage"
                         class="remove-button"
                     >
@@ -66,59 +81,54 @@
             </div>
 
             <div class="form-detail">
-  <div class="jenis-sampah">
-    <label>Jenis Sampah</label>
-    <div class="tabs">
-      <button
-        class="tab-button"
-        :class="{ active: jenis === 'Botol' }"
-        @click="jenis = 'Botol'"
-      >
-        <img src="/public/images/botol-icon.png" class="tab-icon" />
-        <span>Botol</span>
-        <div class="triangle" v-if="jenis === 'Botol'"></div>
-      </button>
-
-      <button
-        class="tab-button"
-        :class="{ active: jenis === 'Kertas' }"
-        @click="jenis = 'Kertas'"
-      >
-        <img src="/public/images/kertas-icon.png" class="tab-icon" />
-        <span>Kertas</span>
-        <div class="triangle" v-if="jenis === 'Kertas'"></div>
-      </button>
-
-      <button
-        class="tab-button"
-        :class="{ active: jenis === 'Baju' }"
-        @click="jenis = 'Baju'"
-      >
-        <img src="/public/images/baju-icon.png" class="tab-icon" />
-        <span>Baju</span>
-        <div class="triangle" v-if="jenis === 'Baju'"></div>
-      </button>
-    </div>
-  </div>
+                <div class="jenis-sampah">
+                    <label>Jenis Sampah</label>
+                    <div class="tabs">
+                        <button
+                            v-for="sampah in jenisSampahByKategori[activeTab]"
+                            :key="sampah.label"
+                            class="tab-button"
+                            :class="{ active: item.nama_sampah === sampah.label }"
+                            @click="item.nama_sampah = sampah.label"
+                        >
+                            <img :src="sampah.icon" class="tab-icon" />
+                            <span>{{ sampah.label }}</span>
+                            <div class="triangle" v-if="item.nama_sampah === sampah.label"></div>
+                        </button>
+                    </div>
+                </div>
 
                 <div class="berat">
                     <label>Berat Sampah</label>
                     <div class="range-wrapper">
                         <span>1</span>
-                        <input type="range" min="1" max="50" v-model="berat" />
+                        <input
+                            type="range"
+                            min="1"
+                            max="50"
+                            v-model.number="item.berat"
+                        />
                         <span>50</span>
                     </div>
 
                     <div class="berat-indikator-wrapper">
                         <div
                             class="berat-display"
-                            :style="{ left: `calc(${sliderPos}% - 20px)` }"
+                            :style="{
+                                left: `calc(${getSliderPos(
+                                    item.berat
+                                )}% - 20px)`,
+                            }"
                         >
-                            {{ berat }}
+                            {{ item.berat }}
                         </div>
                         <div
                             class="berat-display-label"
-                            :style="{ left: `calc(${sliderPos}% - 16px)` }"
+                            :style="{
+                                left: `calc(${getSliderPos(
+                                    item.berat
+                                )}% - 16px)`,
+                            }"
                         >
                             Kg
                         </div>
@@ -126,50 +136,67 @@
                 </div>
 
                 <label>Tanggal Penukaran</label>
-                <input type="date" v-model="tanggal" />
+                <input
+                    type="date"
+                    v-model="item.tanggal"
+                    @change="handleDateChangeForItem(item)"
+                    :min="getMinTimeForItem(item)"
+                />
 
                 <label>Waktu Penukaran</label>
-                <div class="jam">
-                    <button
-                        :class="{ active: waktu === '08:00 - 09:00' }"
-                        @click="waktu = '08:00 - 09:00'"
-                    >
-                        08:00 - 09:00
-                    </button>
-                    <button
-                        :class="{ active: waktu === '09:00 - 10:00' }"
-                        @click="waktu = '09:00 - 10:00'"
-                    >
-                        09:00 - 10:00
-                    </button>
-                    <button
-                        :class="{ active: waktu === '16:00 - 17:00' }"
-                        @click="waktu = '16:00 - 17:00'"
-                    >
-                        16:00 - 17:00
-                    </button>
-                </div>
+                <input type="time" v-model="item.waktu" />
 
                 <div class="actions">
                     <button
-                        class="btn-icon"
-                        :class="{ active: tambahClicked }"
-                        @click="tambahBarang"
+                        v-if="items.length > 1"
+                        @click="hapusBarang(index)"
+                        class="btn-icon btn-hapus-item"
+                        style="background-color: #dc3545; margin-left: auto"
                     >
-                        + Barang
-                    </button>
-
-                    <button
-                        class="btn-icon"
-                        :class="{ active: simpanClicked }"
-                        @click="handleSimpan"
-                    >
-                        <img src="/public/images/save-icon.png" alt="save" />
-                        Simpan Penukaran
+                        Hapus Barang Ini
                     </button>
                 </div>
             </div>
         </section>
+
+        <section
+            style="
+                padding: 20px;
+                background-color: #f8f9fa;
+                text-align: center;
+                margin-top: 20px;
+                border-radius: 8px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                flex-wrap: wrap;
+                max-width: 800px;
+                margin: 20px auto;
+            "
+        >
+            <button
+                class="btn-icon"
+                :class="{ active: tambahClicked }"
+                @click="tambahBarang"
+                style="margin-right: 10px"
+            >
+                + Tambah Barang Lain
+            </button>
+            <button
+                class="btn-icon"
+                :class="{ active: simpanClicked }"
+                @click="handleSimpanSemua"
+            >
+                <img
+                    src="/public/images/save-icon.png"
+                    alt="save"
+                    style="width: 16px; height: 16px; margin-right: 5px"
+                />
+                Simpan & Lanjutkan
+            </button>
+        </section>
+
         <section class="langganan">
             <h2>Berlangganan ECOIN</h2>
             <h3>Untuk Mendapatkan Informasi Terbaru</h3>
@@ -192,6 +219,8 @@
 <script>
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
+import { ref } from 'vue';
+const activeKategori = ref('non-organik'); // default tab yang aktif
 
 export default {
     name: "PenukaranStep1",
@@ -201,46 +230,281 @@ export default {
     },
     data() {
         return {
-            berat: 1,
-            tanggal: "",
-            waktu: "",
-            mainImage: null,
-            jenis: "Botol",
+            items: [],
+            nextItemId: 1,
             tambahClicked: false,
             simpanClicked: false,
+            minDateToday: "", // Akan di-set di created
+            minTimeToday: "",
+            cloudinaryUrl: "https://api.cloudinary.com/v1_1/daigocnje/image/upload",
+            cloudinaryPreset: "ecoin2",
+            activeTab: 'non',
+            kategoriTabs: ['organik', 'anorganik', 'medis'],
+            selectedKategori: 'organik', // default
+            semuaSampah: [], // data asli dari database
+            filteredSampah: [], // data hasil filter berdasarkan kategori
+            jenisSampahByKategori: {
+                non: [
+                    { label: 'Botol Plastik', icon: '/images/botol-icon.png' },
+                    { label: 'Kertas', icon: '/images/kertas-icon.png' },
+                    { label: 'Baju', icon: '/images/baju-icon.png' },
+                ],
+                organik: [
+                    { label: 'Sisa Makanan', icon: '/images/sisa-makanan-icon.png' },
+                    { label: 'Daun Kering', icon: '/images/daun-icon.png' },
+                    { label: 'Buah Busuk', icon: '/images/buah-icon.png' },
+                ],
+                medis: [
+                    { label: 'Masker Bekas', icon: '/images/ic_mask.png' },
+                    { label: 'Sarung Tangan', icon: '/images/sarung-icon.png' },
+                    { label: 'Jarum Suntik', icon: '/images/jarum-icon.png' },
+                ]
+            }
         };
     },
+    created() {
+        const today = new Date();
+        this.minDateToday = this.formatDate(today);
+        this.minTimeToday = this.formatTime(today);
+        this.loadItemsFromLocalStorage();
+        this.fetchSampah();
+    },
     methods: {
-        redirectToStep2() {
-            window.location.href = "/penukaran2";
+        formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}`;
         },
-        onMainImageChange(e) {
-            const file = e.target.files[0];
-            if (file) {
-                this.mainImage = URL.createObjectURL(file);
+        formatTime(date) {
+            const hours = String(date.getHours()).padStart(2, "0");
+            const minutes = String(date.getMinutes()).padStart(2, "0");
+            return `${hours}:${minutes}`;
+        },
+        loadItemsFromLocalStorage() {
+            const storedItems = localStorage.getItem("itemsToExchange");
+            if (storedItems) {
+                try {
+                    const parsedItems = JSON.parse(storedItems);
+                    if (Array.isArray(parsedItems) && parsedItems.length > 0) {
+                        this.items = parsedItems.map((item) => ({
+                            ...item,
+                            mainImage: null,
+                            imageFile: null,
+                            kategori: item.kategori || 'non',
+                        }));
+
+                        const maxId = parsedItems.reduce(
+                            (max, item) => Math.max(max, item.id || 0),
+                            0
+                        );
+                        this.nextItemId = maxId + 1;
+
+                        console.log(
+                            "Items loaded from localStorage:",
+                            this.items
+                        );
+                        return;
+                    }
+                } catch (e) {
+                    console.error("Error parsing items from localStorage:", e);
+                    localStorage.removeItem("itemsToExchange");
+                }
+            }
+            this.tambahBarang();
+        },
+        createNewItem() {
+            const today = new Date();
+            return {
+                id: this.nextItemId++,
+                mainImage: null,
+                imageFile: null,
+                nama_sampah: "Botol Plastik",
+                berat: 1,
+                tanggal: this.formatDate(today),
+                waktu: this.formatTime(today),
+                kategori: this.activeTab
+            };
+        },
+        getMinTimeForItem(item) {
+            if (item.tanggal === this.minDateToday) {
+                // Jika pengguna baru saja mengubah tanggal ke hari ini,
+                // pastikan minTimeToday adalah waktu saat ini yang terbaru
+                const now = new Date();
+                const currentTime = this.formatTime(now);
+                // Jika minTimeToday (saat komponen dimuat) sudah lewat, gunakan waktu saat ini
+                return currentTime > this.minTimeToday
+                    ? currentTime
+                    : this.minTimeToday;
+            }
+            return "00:00"; // Tidak ada batasan untuk tanggal di masa depan
+        },
+        handleDateChangeForItem(item) {
+            // Jika tanggal yang dipilih lebih kecil dari hari ini (seharusnya dicegah oleh :min="minDateToday")
+            // maka paksa kembali ke hari ini.
+            if (item.tanggal < this.minDateToday) {
+                item.tanggal = this.minDateToday;
+            }
+
+            // Jika tanggal yang dipilih adalah hari ini,
+            // dan waktu yang sudah ada pada item tersebut kurang dari waktu minimum hari ini,
+            // maka reset waktu atau set ke waktu minimum hari ini.
+            const minTimeCurrent = this.getMinTimeForItem(item);
+            if (
+                item.tanggal === this.minDateToday &&
+                item.waktu < minTimeCurrent
+            ) {
+                item.waktu = minTimeCurrent;
             }
         },
-        removeMainImage() {
+        redirectToStep2() {
+            localStorage.setItem("itemsToExchange", JSON.stringify(this.items));
+            console.log("Data yang akan dibawa ke step 2:", this.items);
+            window.location.href = "/penukaran2";
+        },
+        async onMainImageChange(event, item) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", this.cloudinaryPreset);
+
+            try {
+                const response = await fetch(this.cloudinaryUrl, {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const data = await response.json();
+                if (item.mainImage) {
+                    URL.revokeObjectURL(item.mainImage); // kalau sebelumnya pakai object URL
+                }
+                item.mainImage = data.secure_url; // URL Cloudinary
+                item.imageFile = file;
+
+                console.log("Upload berhasil:", data.secure_url);
+            } catch (error) {
+                console.error("Gagal upload ke Cloudinary:", error);
+                alert("Upload gambar gagal. Coba lagi.");
+            }
+
+            event.target.value = null; // reset input
+        },
+        removeMainImage(item) {
             const confirmed = window.confirm(
                 "Apakah Anda yakin ingin menghapus gambar ini?"
             );
             if (confirmed) {
-                this.mainImage = null;
+                if (item.mainImage) {
+                    URL.revokeObjectURL(item.mainImage);
+                }
+                item.mainImage = null;
+                item.imageFile = null;
             }
         },
         tambahBarang() {
+            const newItem = this.createNewItem();
+            newItem.kategori = this.activeTab;
+            this.items.push(newItem);
             this.tambahClicked = true;
-            console.log("+ Barang diklik");
+            setTimeout(() => {
+                this.tambahClicked = false;
+            }, 200);
         },
-        handleSimpan() {
+        hapusBarang(index) {
+            if (this.items[index] && this.items[index].mainImage) {
+                URL.revokeObjectURL(this.items[index].mainImage);
+            }
+            this.items.splice(index, 1);
+            if (this.items.length === 0) {
+                this.tambahBarang();
+            }
+        },
+        handleSimpanSemua() {
             this.simpanClicked = true;
-            this.redirectToStep2();
+
+            for (const item of this.items) {
+                // Loop untuk validasi setiap item
+                if (!item.mainImage) {
+                    alert("Mohon unggah gambar untuk setiap barang.");
+                    this.simpanClicked = false;
+                    return;
+                }
+                if (!item.tanggal || !item.waktu) {
+                    alert(
+                        "Mohon isi tanggal dan waktu penukaran untuk setiap barang."
+                    );
+                    this.simpanClicked = false;
+                    return;
+                }
+                // Validasi tanggal tidak boleh sebelum hari ini
+                if (item.tanggal < this.minDateToday) {
+                    alert(
+                        `Tanggal penukaran untuk barang "${item.nama_sampah}" tidak boleh sebelum ${this.minDateToday}.`
+                    );
+                    this.simpanClicked = false;
+                    return;
+                }
+                // Validasi waktu jika tanggal adalah hari ini
+                const minTimeForThisItem = this.getMinTimeForItem(item);
+                if (
+                    item.tanggal === this.minDateToday &&
+                    item.waktu < minTimeForThisItem
+                ) {
+                    alert(
+                        `Waktu penukaran untuk barang "${item.nama_sampah}" pada hari ini tidak boleh sebelum jam ${minTimeForThisItem}.`
+                    );
+                    this.simpanClicked = false;
+                    return;
+                }
+            }
+
+            console.log("Semua item untuk disimpan:", this.items);
+            setTimeout(() => {
+                this.redirectToStep2();
+                this.simpanClicked = false;
+            }, 200);
         },
+        getSliderPos(beratValue) {
+            const min = 1;
+            const max = 50;
+            const value = Math.max(min, Math.min(max, Number(beratValue)));
+            return ((value - min) / (max - min)) * 100;
+        },
+        async fetchSampah() {
+            try {
+                // Ganti URL di bawah ini dengan endpoint API/database Anda
+                const response = await fetch('https://api.example.com/jenis-sampah');
+                const data = await response.json();
+
+                this.semuaSampah = data;
+                this.filterSampahByKategori(); // Filter awal berdasarkan kategori default
+            } catch (error) {
+                console.error('Gagal mengambil data sampah:', error);
+            }
+        },
+
+        filterSampahByKategori() {
+            this.filteredSampah = this.semuaSampah.filter(
+                item => item.tipe_sampah.toLowerCase() === this.selectedKategori.toLowerCase()
+            );
+        },
+
+        onKategoriTabClick(kategori) {
+            this.selectedKategori = kategori;
+            this.filterSampahByKategori();
+        }
     },
     computed: {
-        sliderPos() {
-            return ((this.berat - 1) / 49) * 100;
-        },
+        filteredItems() {
+            // Kembalikan hanya item dengan kategori sesuai tab aktif
+            return this.items.filter(item => item.kategori === this.activeTab);
+        }
+    },
+    watch: {
+        activeTab(newVal) {
+        }
     },
 };
 </script>
@@ -304,6 +568,11 @@ export default {
     text-align: center;
 }
 
+.tab.active {
+    background-color: var(--accentGreen1);
+    color: white;
+}
+
 .kategori-tabs.inline .tab {
     background-color: var(--textField);
     color: var(--textBlack);
@@ -317,6 +586,16 @@ export default {
 .tab:hover {
     background-color: var(--accentGreen1);
     color: white;
+}
+
+.kategori-tabs .tab.active {
+    background-color: var(--accentGreen1) !important;
+    color: white !important;
+}
+
+.kategori-tabs.inline .tab.active {
+    background-color: var(--accentGreen1) !important;
+    color: white !important;
 }
 
 /* Step Indicator */
@@ -610,7 +889,8 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 /* Input Tanggal */
-input[type="date"] {
+input[type="date"],
+input[type="time"] {
     background-color: #98b0b0;
     color: white;
     font-family: "Poppins", sans-serif;
