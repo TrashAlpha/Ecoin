@@ -538,16 +538,17 @@ const handleConfirm = async () => {
             <div class="opsi-grid">
                 <div
                 class="voucher-card"
-                v-for="voucher in vouchers"
+                v-for="voucher in vouchers.slice(0, 8)"
                 :key="voucher.id"
                 @click="exchangeVoucher(voucher)"
                 >
-                <img :src="voucher.image_url || 'https://via.placeholder.com/75'" alt="voucher image" />
+                <img :src="voucher.image_url || '/images/logo.png'" alt="voucher image" />
 
                 <div class="info">
-                    <div class="voucher-name">{{ voucher.nama_voucher }}</div>
+                    <div class="voucher-name">{{ voucher.nilai_koin }} poin</div>
                     <div class="total-judul">{{ voucher.deskripsi }}</div>
-                    <div class="total-nominal">{{ voucher.nilai_koin }} poin</div>
+                    <div class="total-nominal">{{ voucher.nama_voucher }}</div>
+
                 </div>
                 </div>
             </div>
@@ -855,6 +856,12 @@ const handleConfirm = async () => {
     font-size: 14px;
     font-weight: bold;
     border-radius: 4px;
+
+    display: inline-block;       /* Agar background menyesuaikan isi */
+    max-width: 100px;            /* Batasi panjang maksimum */
+    white-space: nowrap;         /* Hindari pemisahan baris */
+    overflow: hidden;            /* Sembunyikan teks yang kepanjangan */
+    text-overflow: ellipsis;     /* Tambahkan '...' jika teks terlalu panjang */
 }
 
 .total-judul {
