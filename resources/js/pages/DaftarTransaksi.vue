@@ -43,67 +43,71 @@ import axios from "axios";
 const transaksi = ref([]);
 
 onMounted(async () => {
+  const semuaTransaksi = []; // array penampung sementara semua transaksi
+  let userId = null;
+
+  // Ambil user ID dari localStorage
+  try {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const user = JSON.parse(userData);
+      userId = user.id;
+    }
+  } catch (e) {
+    console.error("Gagal parsing user data dari localStorage:", e);
+  }
+
+  // Ambil transaksi umum (misalnya transaksi global)
+  try {
+    const responseUmum = await axios.get("/api/log-transaksi");
+    const dataUmum = responseUmum.data.map(item => ({
+      tanggal: new Date(item.tanggal_transaksi).toLocaleDateString('id-ID', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      }),
+      jenis: item.jenis_transaksi,
+      koin: item.jumlah_koin > 0 ? `+${item.jumlah_koin}` : `${item.jumlah_koin}`
+    }));
+    semuaTransaksi.push(...dataUmum);
+  } catch (error) {
+    console.error("Gagal mengambil transaksi umum:", error);
+  }
+
+  // Ambil transaksi user (penukaran)
+  if (userId) {
     try {
-        const response = await axios.get("/api/log-transaksi"); // sesuaikan dengan baseURL
-        transaksi.value = response.data.map(item => ({
-            tanggal: new Date(item.tanggal_transaksi).toLocaleDateString('id-ID', {
-                day: 'numeric', month: 'long', year: 'numeric'
-            }),
-            jenis: item.jenis_transaksi,
-            koin: item.jumlah_koin > 0 ? `+${item.jumlah_koin}` : `${item.jumlah_koin}`
-        }));
+      const responseUser = await axios.get(`/api/log-transaksi/${userId}`);
+      const dataUser = responseUser.data.data.map((item) => ({
+        tanggal: new Date(item.tanggal_penukaran).toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }),
+        jenis: "Penukaran Sampah",
+        koin: item.total_koin > 0 ? `+${item.total_koin}` : `${item.total_koin}`,
+      }));
+      semuaTransaksi.push(...dataUser);
     } catch (error) {
-        console.error("Gagal mengambil data transaksi:", error);
+      console.error("Gagal mengambil transaksi user:", error);
     }
+  } else {
+    console.warn("User ID tidak ditemukan.");
+  }
 
-    let userId = null;
-    try {
-        const userData = localStorage.getItem("user");
-        if (userData) {
-            const user = JSON.parse(userData);
-            userId = user.id;
-        }
-    } catch (e) {
-        console.error("Failed to parse user data from localStorage", e);
-    }
+  // Masukkan hasil gabungan ke reactive state
+ transaksi.value = semuaTransaksi.sort((a, b) => {
+  return new Date(b.tanggal) - new Date(a.tanggal); // terbaru duluan
+});
 
-    if (userId) {
-        try {
-            const response = await axios.get(`/api/log-transaksi/${userId}`); // Use the retrieved userId
-            transaksi.value = response.data.data.map((item) => ({
-                tanggal: new Date(item.tanggal_penukaran).toLocaleDateString(
-                    "id-ID",
-                    {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                    }
-                ),
-                jenis: "Penukaran Sampah",
-                koin:
-                    item.total_koin > 0
-                        ? `+${item.total_koin}`
-                        : `${item.total_koin}`,
-            }));
-        } catch (error) {
-            console.error("Gagal mengambil data transaksi:", error);
-        }
-    } else {
-        console.warn(
-            "User ID not found in localStorage. Cannot fetch transactions."
-        );
-    }
-
-    // Set CSS variables for theme colors
-    const root = document.documentElement;
-    root.style.setProperty("--primaryGreen", theme.colors.primaryGreen);
-    root.style.setProperty("--accentGreen1", theme.colors.accentGreen1);
-    root.style.setProperty("--accentGreen2", theme.colors.accentGreen2); // <- ini penting!
-    root.style.setProperty("--textGrey", theme.colors.textGrey);
-    root.style.setProperty("--textBlack", theme.colors.textBlack);
-    root.style.setProperty("--textField", theme.colors.textField);
-    root.style.setProperty("--backgroundWhite", theme.colors.backgroundWhite);
-    root.style.setProperty("--fontFamily", theme.fonts.family);
+  // Atur tema
+  const root = document.documentElement;
+  root.style.setProperty("--primaryGreen", theme.colors.primaryGreen);
+  root.style.setProperty("--accentGreen1", theme.colors.accentGreen1);
+  root.style.setProperty("--accentGreen2", theme.colors.accentGreen2);
+  root.style.setProperty("--textGrey", theme.colors.textGrey);
+  root.style.setProperty("--textBlack", theme.colors.textBlack);
+  root.style.setProperty("--textField", theme.colors.textField);
+  root.style.setProperty("--backgroundWhite", theme.colors.backgroundWhite);
+  root.style.setProperty("--fontFamily", theme.fonts.family);
 });
 
 function goBack() {

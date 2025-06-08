@@ -261,8 +261,8 @@ export default {
             simpanClicked: false,
             minDateToday: "", // Akan di-set di created
             minTimeToday: "",
-            cloudinaryUrl: "https://api.cloudinary.com/v1_1/dk2wbhh4d/image/upload",
-            cloudinaryPreset: "EcoinUp",
+            cloudinaryUrl: "https://api.cloudinary.com/v1_1/daigocnje/image/upload",
+            cloudinaryPreset: "ecoin2",
         };
     },
     created() {

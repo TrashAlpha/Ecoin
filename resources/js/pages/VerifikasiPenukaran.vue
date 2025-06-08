@@ -144,16 +144,14 @@
                         <h3 class="image-title">Bukti Transaksi</h3>
                         <div
                             v-if="
-                                selectedTransaction.bukti_gambar &&
-                                selectedTransaction.bukti_gambar.length > 0
+                                selectedTransaction.bukti_transaksi &&
+                                selectedTransaction.bukti_transaksi.length > 0
                             "
                             class="image-grid"
                         >
                             <div
                                 class="image-box"
-                                v-for="(
-                                    img, index
-                                ) in selectedTransaction.bukti_gambar"
+                                v-for="(img, index) in selectedTransaction.bukti_transaksi"
                                 :key="index"
                             >
                                 <img
@@ -229,6 +227,28 @@ export default {
                 ); // Sesuaikan endpoint jika berbeda
                 if (response.data.success) {
                     this.exchanges = response.data.data;
+                    console.log("Seluruh properti transaksi pertama:", JSON.stringify(this.exchanges[0], null, 2));
+
+
+                    console.log("Data exchanges:", this.exchanges);
+
+                    // Tambahkan debug detail di sini
+                    if (this.exchanges.length > 0) {
+                        const first = this.exchanges[0];
+                        console.log("Transaksi pertama:", first);
+                        console.log("Tipe bukti_transaksi:", typeof first.bukti_transaksi);
+                        console.log("Isi bukti_transaksi:", first.bukti_transaksi);
+
+                        // Coba parse jika string
+                        if (typeof first.bukti_transaksi === "string") {
+                            try {
+                                const parsed = JSON.parse(first.bukti_transaksi);
+                                console.log("Setelah di-parse:", parsed);
+                            } catch (e) {
+                                console.warn("Gagal parse bukti_transaksi:", e);
+                            }
+                        }
+                    }
                 } else {
                     console.error(
                         "Gagal mengambil data penukaran:",
@@ -255,23 +275,23 @@ export default {
             this.selectedTransaction = { ...transaction }; // Salin objek untuk menghindari mutasi langsung
 
             // Jika bukti_gambar adalah string JSON, parse dulu
-            if (typeof this.selectedTransaction.bukti_gambar === "string") {
+            if (typeof this.selectedTransaction.bukti_transaksi === "string") {
                 try {
-                    this.selectedTransaction.bukti_gambar = JSON.parse(
-                        this.selectedTransaction.bukti_gambar
+                    this.selectedTransaction.bukti_transaksi = JSON.parse(
+                        this.selectedTransaction.bukti_transaksi
                     );
                 } catch (e) {
                     console.warn(
-                        "Gagal parse bukti_gambar:",
-                        this.selectedTransaction.bukti_gambar,
+                        "Gagal parse bukti_transaksi:",
+                        this.selectedTransaction.bukti_transaksi,
                         e
                     );
-                    this.selectedTransaction.bukti_gambar = []; // Set ke array kosong jika gagal parse
+                    this.selectedTransaction.bukti_transaksi = []; // Set ke array kosong jika gagal parse
                 }
             }
             // Pastikan bukti_gambar adalah array
-            if (!Array.isArray(this.selectedTransaction.bukti_gambar)) {
-                this.selectedTransaction.bukti_gambar = [];
+            if (!Array.isArray(this.selectedTransaction.bukti_transaksi)) {
+                this.selectedTransaction.bukti_transaksi = [];
             }
 
             this.showDetail = true;
@@ -304,24 +324,31 @@ export default {
             }
         },
         getImageUrl(imagePath) {
-            // Jika imagePath sudah merupakan URL lengkap, langsung return
+            // Jika imagePath berupa array (dari JSON), ambil elemen pertama
+            if (Array.isArray(imagePath) && imagePath.length > 0) {
+                imagePath = imagePath[0];
+            }
+
+            // Jika sudah berupa URL lengkap (http atau https)
             if (
                 imagePath &&
-                (imagePath.startsWith("http://") ||
-                    imagePath.startsWith("https://"))
+                (imagePath.startsWith("http://") || imagePath.startsWith("https://"))
             ) {
                 return imagePath;
             }
-            // Jika imagePath adalah path relatif dari public folder backend (misal, 'storage/bukti_images/image.jpg')
-            // dan frontend dan backend berjalan di domain/port yang berbeda saat development
-            // Anda perlu menambahkan base URL backend Anda.
-            // Jika gambar ada di folder /public/images di frontend, maka bisa langsung /images/bukti1.jpg
-            // Asumsi gambar disajikan oleh server Laravel dari folder storage (setelah php artisan storage:link)
-            if (imagePath && imagePath.startsWith("storage/")) {
-                return `${API_BASE_URL}/${imagePath}`; // Misal: http://localhost:8000/storage/bukti_images/namafile.jpg
+
+            // Jika berupa base64 data URL (data:image/png;base64,...)
+            if (imagePath && imagePath.startsWith("data:image")) {
+                return imagePath;
             }
-            // Fallback jika path tidak sesuai ekspektasi atau default path gambar
-            return imagePath || "/images/placeholder.png"; // Sediakan gambar placeholder jika perlu
+
+            // Jika path dimulai dengan 'storage/' dari Laravel backend
+            if (imagePath && imagePath.startsWith("storage/")) {
+                return `${API_BASE_URL}/${imagePath}`;
+            }
+
+            // Fallback ke placeholder
+            return "/images/placeholder.png";
         },
         async updateStatus(exchangeId, newStatus) {
             try {
