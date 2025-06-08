@@ -9,13 +9,13 @@ Ecoin merupakan aplikasi yang bertujuan sebagai wadah pertukaran sampah antara p
 Fitur dari Ecoin dari sisi User adalah sebagai berikut:
 
 * Beranda
-* Tukar sampah
-* Tukar voucher
-* tukar koin
-* aritkel
-* quiz
-* daftar transaksi
-* voucher anda
+* Tukar Sampah
+* Tukar Voucher
+* Tukar Koin
+* Aritkel
+* Quiz
+* Daftar Transaksi
+* Voucher anda
 
 Sedangan fitur Ecoin untuk admin adalah sebagai berikut:
 
