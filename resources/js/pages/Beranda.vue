@@ -87,9 +87,9 @@ onMounted(async () => {
     <Navbar/>
 
     <section>
-        <div class="flex w-full h-[700px] bg-emerald-900">
-            <div class="flex flex-col justify-center w-1/3 pl-10 bg-emerald-900">
-                <div class="max-w-lg p-8 ml50 text-white">
+        <div class="flex w-full h-[600px] bg-emerald-900">
+            <div class="flex flex-col justify-center w-1/2 pl-10 bg-emerald-900">
+                <div class="max-w-lg p-8 ml-40 text-white">
                     <h2 class="mb-2 text-4xl font-bold">Ayo Tukarkan Sampahmu</h2>
                     <p class="text-xl">Jadikan lingkungan lebih bersih dengan cara menukar sampah kembali</p>
                 </div>
