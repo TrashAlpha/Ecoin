@@ -117,7 +117,7 @@ onMounted(async () => {
                     title="Atur Jadwal"
                     description="Penukaran dapat disesuaikan berdasarkan tanggal dan waktu"
                 />
-                <FeatureItem :icon="'/images/paper.png'" title="Mudah Cepat" description="Banyak informasi mengenai sampah dan manfaatnya" />
+                <FeatureItem :icon="'/images/paper.png'" title="Selalu Terkini" description="Banyak informasi mengenai sampah dan manfaatnya" />
             </div>
         </div>
         <div class="flex items-center gap-10 ml-50 mr-50 px-10 pt-24">
