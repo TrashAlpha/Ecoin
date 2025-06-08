@@ -114,7 +114,7 @@ async function updateVoucherOnServer() {
 
     try {
         let imageUrl = selectedVoucher.value.image_url;
-        
+
         // Upload new photo if selected
         if (selectedPhotoUpdate.value) {
             imageUrl = await uploadToCloudinary(selectedPhotoUpdate.value);
@@ -130,7 +130,7 @@ async function updateVoucherOnServer() {
         });
 
         const data = await response.json();
-        
+
         if (data.success) {
             alert("Voucher berhasil diperbarui");
             popupUpdate.value = false;
@@ -156,7 +156,7 @@ async function submitNewVoucher() {
 
   try {
     let imageUrl = newVoucher.value.image_url;
-    
+
     // Upload photo if selected
     if (selectedPhoto.value) {
         imageUrl = await uploadToCloudinary(selectedPhoto.value);
@@ -175,7 +175,7 @@ async function submitNewVoucher() {
     });
 
     const data = await response.json();
-    
+
     if (data.success) {
       alert("Voucher berhasil ditambahkan");
       popupAdd.value = false;
@@ -253,9 +253,9 @@ onMounted(() => {
                 <tbody>
                     <tr v-for="voucher in filteredVouchers" :key="voucher.id">
                         <td>
-                            <img 
-                                :src="voucher.image_url || '/images/logo.png'" 
-                                alt="Gambar Voucher" 
+                            <img
+                                :src="voucher.image_url || '/images/logo.png'"
+                                alt="Gambar Voucher"
                                 style="max-width: 60px; max-height: 60px; object-fit: cover;"
                             >
                         </td>
@@ -285,7 +285,7 @@ onMounted(() => {
                             style="width: 150px; height: 150px; object-fit: cover; border-radius: 4px;"
                         />
                     </div>
-                    
+
                     <div style="margin-bottom: 1rem;">
                         <input
                             type="file"
@@ -294,26 +294,26 @@ onMounted(() => {
                             @change="handlePhotoUpload"
                             style="display: none;"
                         />
-                        <label for="photoUpdate" style="cursor: pointer; background: var(--primaryGreen); color: white; padding: 8px 16px; border-radius: 4px; display: flex; justify-content: center; align-items: center;">
+                        <label for="photo" style="cursor: pointer; background: var(--primaryGreen); color: white; padding: 8px 16px; border-radius: 4px; display: flex; justify-content: center; align-items: center;">
                             Pilih Gambar
                         </label>
                     </div>
 
                     <label for="judul">Judul</label>
                     <input type="text" placeholder="Judul" v-model="newVoucher.nama_voucher" required><br>
-                    
+
                     <label for="deskripsi">Deskripsi</label>
                     <input type="text" placeholder="Deskripsi" v-model="newVoucher.deskripsi" required><br>
-                    
+
                     <label for="nilai_koin">Nilai Koin</label>
                     <input type="number" placeholder="Nilai Koin" v-model="newVoucher.nilai_koin" required><br>
-                    
+
                     <label for="status">Status</label>
                     <select v-model="newVoucher.status" required>
                         <option value="aktif">Aktif</option>
                         <option value="kadaluarsa">Kadaluarsa</option>
                     </select><br>
-                    
+
                     <button type="submit" class="btn btn-update">Submit</button>
                     <button type="button" class="btn btn-back" @click="close">Kembali</button>
                 </form>
@@ -333,7 +333,7 @@ onMounted(() => {
                             style="width: 150px; height: 150px; object-fit: cover; border-radius: 4px;"
                         />
                     </div>
-                    
+
                     <div style="margin-bottom: 1rem;">
                         <input
                             type="file"
