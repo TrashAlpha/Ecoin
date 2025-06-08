@@ -420,7 +420,7 @@ const confirmExchange = async (voucherId) => {
 const user = ref({});
 const fetchUserData = async () => {
   try {
-    const res = await axios.get('/api/user', {
+    const res = await axios.get('/api/get-user', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
