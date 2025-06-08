@@ -34,10 +34,13 @@ function handlePhotoUpload(event) {
 async function uploadToCloudinary(file) {
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', 'EcoinUp'); // Upload preset cloudinary
-    formData.append('cloud_name', 'dk2wbhh4d'); 
+    formData.append('upload_preset', 'ecoin2');
 
-    const response = await axios.post('https://api.cloudinary.com/v1_1/dk2wbhh4d/image/upload', formData);
+    const response = await axios.post(
+        'https://api.cloudinary.com/v1_1/daigocnje/image/upload',
+        formData
+    );
+
     return response.data.secure_url;
 }
 
