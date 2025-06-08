@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -55,8 +56,8 @@ Route::middleware(['web', 'admin'])->group(function () {
     Route::apiResource('admin/sampah', SampahController::class);
     
     // Article management
-    // Route::apiResource('admin/artikel', ArtikelController::class);
-    // Route::post('/admin/artikel/{id}/submit-quiz', [ArtikelController::class, 'submitQuiz']);
+    Route::apiResource('admin/artikel', ArtikelController::class);
+    Route::post('/admin/artikel/{id}/quiz', [ArtikelController::class, 'createQuiz'])->name('artikel.createQuiz');
 });
 
 
@@ -69,3 +70,5 @@ Route::get('/artikel', [ArtikelController::class, 'index']);
 Route::get('/artikel/{id}', [ArtikelController::class, 'getArtikelId']);
 Route::put('/penukaran/{penukaran}/status', [PenukaranSampahController::class, 'updateStatus']);
 Route::get('/log-transaksi/{userId}', [PenukaranSampahController::class, 'getApprovedPenukaranByUserId']);
+Route::get('/produk', [PageController::class, 'getProduk'])->name('produk.list');
+
