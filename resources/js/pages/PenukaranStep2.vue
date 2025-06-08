@@ -138,7 +138,7 @@ export default {
         },
         cariLokasi() {
             if (this.lokasi.trim() !== "") {
-                const query = encodeURIComponent(this.lokasi);
+                const query = encodeURIComponent(`pusat daur ulang ${this.lokasi}`);
                 this.mapSrc = `https://www.google.com/maps?q=${query}&output=embed`;
             }
         },
