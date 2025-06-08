@@ -5,6 +5,80 @@ import VoucherCard from '../components/VoucherCard.vue';
 import Navbar from '../components/Navbar.vue';
 import Footer from '../components/Footer.vue';
 
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
+const vouchers = ref([]);
+const isLoading = ref(true);
+
+const exchangeVoucher = async (voucher: any) => {
+    try {
+        const response = await axios.post(
+            '/api/exchange-voucher',
+            { voucher_id: voucher.id },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (response.data.success) {
+            const confirmed = confirm(response.data.confirmation.message);
+            if (confirmed) {
+                await confirmExchange(voucher.id);
+            }
+        } else {
+            alert(response.data.message || 'Penukaran gagal.');
+        }
+    } catch (error: any) {
+        alert(error?.response?.data?.message || 'Terjadi kesalahan saat menukar voucher.');
+    }
+};
+
+const confirmExchange = async (voucherId: number) => {
+    try {
+        const response = await axios.post(
+            '/api/confirm-exchange',
+            { voucher_id: voucherId },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (response.data.success) {
+            alert('Penukaran berhasil!');
+        } else {
+            alert(response.data.message || 'Penukaran gagal.');
+        }
+    } catch (error: any) {
+        alert('Terjadi kesalahan saat konfirmasi penukaran.');
+    }
+};
+
+onMounted(async () => {
+    try {
+        const res = await axios.get('/api/vouchers', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (res.data && Array.isArray(res.data.vouchers)) {
+            vouchers.value = res.data.vouchers;
+        }
+    } catch (e) {
+        console.error('Gagal mengambil data voucher:', e);
+    } finally {
+        isLoading.value = false;
+    }
+});
+
 </script>
 
 <template>
@@ -112,8 +186,14 @@ import Footer from '../components/Footer.vue';
             </div>
         </div>
         <div class="grid grid-cols-1 place-items-center gap-6 p-6 sm:grid-cols-2 md:grid-cols-3">
-            <VoucherCard v-for="n in 6" :key="n" />
+            <VoucherCard
+                v-for="voucher in vouchers"
+                :key="voucher.id"
+                :voucher="voucher"
+                @redeem="exchangeVoucher(voucher)"
+            />
         </div>
+
 
         <div class="langganan">
             <h2>Berlangganan ECOIN</h2>
