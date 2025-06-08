@@ -552,8 +552,9 @@ const handleConfirm = async () => {
                 </div>
                 </div>
             </div>
-            </div>
 
+            <a href="/penukaran3_2" style="color: blue;">Atau tukar ke rupiah</a>
+        </div>
         </section>
 
         <section class="langganan">
