@@ -8,18 +8,29 @@
                 alt="Penukaran Sampah"
                 class="hero-image"
             />
-            <div class="kategori-tabs">
-                <div class="tab">
-                    <img src="/public/images/ic_plastic.png" alt="" /> Non
-                    Organik
-                </div>
-                <div class="tab">
+                <div class="kategori-tabs">
+                    <div
+                    class="tab"
+                    :class="{ active: activeTab === 'non' }"
+                    @click="activeTab = 'non'"
+                    >
+                    <img src="/public/images/ic_plastic.png" alt="" /> Non Organik
+                    </div>
+                    <div
+                    class="tab"
+                    :class="{ active: activeTab === 'organik' }"
+                    @click="activeTab = 'organik'"
+                    >
                     <img src="/public/images/ic_leaf.png" alt="" /> Organik
-                </div>
-                <div class="tab">
+                    </div>
+                    <div
+                    class="tab"
+                    :class="{ active: activeTab === 'medis' }"
+                    @click="activeTab = 'medis'"
+                    >
                     <img src="/public/images/ic_mask.png" alt="" /> Limbah Medis
+                    </div>
                 </div>
-            </div>
         </section>
 
         <section class="step-indikator">
@@ -41,7 +52,7 @@
 
         <section
             class="konten-detail"
-            v-for="(item, index) in items"
+            v-for="(item, index) in filteredItems"
             :key="item.id"
         >
             <div class="gambar-detail">
@@ -74,53 +85,15 @@
                     <label>Jenis Sampah</label>
                     <div class="tabs">
                         <button
+                            v-for="sampah in jenisSampahByKategori[activeTab]"
+                            :key="sampah.label"
                             class="tab-button"
-                            :class="{
-                                active: item.nama_sampah === 'Botol Plastik',
-                            }"
-                            @click="item.nama_sampah = 'Botol Plastik'"
+                            :class="{ active: item.nama_sampah === sampah.label }"
+                            @click="item.nama_sampah = sampah.label"
                         >
-                            <img
-                                src="/public/images/botol-icon.png"
-                                class="tab-icon"
-                            />
-                            <span>Botol</span>
-                            <div
-                                class="triangle"
-                                v-if="item.nama_sampah === 'Botol Plastik'"
-                            ></div>
-                        </button>
-
-                        <button
-                            class="tab-button"
-                            :class="{ active: item.nama_sampah === 'Kertas' }"
-                            @click="item.nama_sampah = 'Kertas'"
-                        >
-                            <img
-                                src="/public/images/kertas-icon.png"
-                                class="tab-icon"
-                            />
-                            <span>Kertas</span>
-                            <div
-                                class="triangle"
-                                v-if="item.nama_sampah === 'Kertas'"
-                            ></div>
-                        </button>
-
-                        <button
-                            class="tab-button"
-                            :class="{ active: item.nama_sampah === 'Baju' }"
-                            @click="item.nama_sampah = 'Baju'"
-                        >
-                            <img
-                                src="/public/images/baju-icon.png"
-                                class="tab-icon"
-                            />
-                            <span>Baju</span>
-                            <div
-                                class="triangle"
-                                v-if="item.nama_sampah === 'Baju'"
-                            ></div>
+                            <img :src="sampah.icon" class="tab-icon" />
+                            <span>{{ sampah.label }}</span>
+                            <div class="triangle" v-if="item.nama_sampah === sampah.label"></div>
                         </button>
                     </div>
                 </div>
@@ -246,6 +219,8 @@
 <script>
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
+import { ref } from 'vue';
+const activeKategori = ref('non-organik'); // default tab yang aktif
 
 export default {
     name: "PenukaranStep1",
@@ -263,6 +238,28 @@ export default {
             minTimeToday: "",
             cloudinaryUrl: "https://api.cloudinary.com/v1_1/daigocnje/image/upload",
             cloudinaryPreset: "ecoin2",
+            activeTab: 'non',
+            kategoriTabs: ['organik', 'anorganik', 'medis'],
+            selectedKategori: 'organik', // default
+            semuaSampah: [], // data asli dari database
+            filteredSampah: [], // data hasil filter berdasarkan kategori
+            jenisSampahByKategori: {
+                non: [
+                    { label: 'Botol Plastik', icon: '/images/botol-icon.png' },
+                    { label: 'Kertas', icon: '/images/kertas-icon.png' },
+                    { label: 'Baju', icon: '/images/baju-icon.png' },
+                ],
+                organik: [
+                    { label: 'Sisa Makanan', icon: '/images/sisa-makanan-icon.png' },
+                    { label: 'Daun Kering', icon: '/images/daun-icon.png' },
+                    { label: 'Buah Busuk', icon: '/images/buah-icon.png' },
+                ],
+                medis: [
+                    { label: 'Masker Bekas', icon: '/images/ic_mask.png' },
+                    { label: 'Sarung Tangan', icon: '/images/sarung-icon.png' },
+                    { label: 'Jarum Suntik', icon: '/images/jarum-icon.png' },
+                ]
+            }
         };
     },
     created() {
@@ -270,6 +267,7 @@ export default {
         this.minDateToday = this.formatDate(today);
         this.minTimeToday = this.formatTime(today);
         this.loadItemsFromLocalStorage();
+        this.fetchSampah();
     },
     methods: {
         formatDate(date) {
@@ -293,6 +291,7 @@ export default {
                             ...item,
                             mainImage: null,
                             imageFile: null,
+                            kategori: item.kategori || 'non',
                         }));
 
                         const maxId = parsedItems.reduce(
@@ -324,6 +323,7 @@ export default {
                 berat: 1,
                 tanggal: this.formatDate(today),
                 waktu: this.formatTime(today),
+                kategori: this.activeTab
             };
         },
         getMinTimeForItem(item) {
@@ -404,7 +404,9 @@ export default {
             }
         },
         tambahBarang() {
-            this.items.push(this.createNewItem());
+            const newItem = this.createNewItem();
+            newItem.kategori = this.activeTab;
+            this.items.push(newItem);
             this.tambahClicked = true;
             setTimeout(() => {
                 this.tambahClicked = false;
@@ -470,6 +472,44 @@ export default {
             const value = Math.max(min, Math.min(max, Number(beratValue)));
             return ((value - min) / (max - min)) * 100;
         },
+        async fetchSampah() {
+            try {
+                // Ganti URL di bawah ini dengan endpoint API/database Anda
+                const response = await fetch('https://api.example.com/jenis-sampah');
+                const data = await response.json();
+
+                this.semuaSampah = data;
+                this.filterSampahByKategori(); // Filter awal berdasarkan kategori default
+            } catch (error) {
+                console.error('Gagal mengambil data sampah:', error);
+            }
+        },
+
+        filterSampahByKategori() {
+            this.filteredSampah = this.semuaSampah.filter(
+                item => item.tipe_sampah.toLowerCase() === this.selectedKategori.toLowerCase()
+            );
+        },
+
+        onKategoriTabClick(kategori) {
+            this.selectedKategori = kategori;
+            this.filterSampahByKategori();
+        }
+    },
+    computed: {
+        filteredItems() {
+            // Kembalikan hanya item dengan kategori sesuai tab aktif
+            return this.items.filter(item => item.kategori === this.activeTab);
+        }
+    },
+    watch: {
+        activeTab(newVal) {
+            // Jika tidak ada item untuk kategori baru, buat satu
+            const hasItem = this.items.some(item => item.kategori === newVal);
+            if (!hasItem) {
+                this.tambahBarang();
+            }
+        }
     },
 };
 </script>
@@ -533,6 +573,11 @@ export default {
     text-align: center;
 }
 
+.tab.active {
+    background-color: var(--accentGreen1);
+    color: white;
+}
+
 .kategori-tabs.inline .tab {
     background-color: var(--textField);
     color: var(--textBlack);
@@ -546,6 +591,16 @@ export default {
 .tab:hover {
     background-color: var(--accentGreen1);
     color: white;
+}
+
+.kategori-tabs .tab.active {
+    background-color: var(--accentGreen1) !important;
+    color: white !important;
+}
+
+.kategori-tabs.inline .tab.active {
+    background-color: var(--accentGreen1) !important;
+    color: white !important;
 }
 
 /* Step Indicator */
