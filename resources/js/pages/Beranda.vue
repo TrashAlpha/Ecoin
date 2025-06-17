@@ -82,140 +82,131 @@ onMounted(async () => {
 </script>
 
 <template>
-    <Head title="Beranda" />
+  <Head title="Beranda" />
+  <Navbar />
 
-    <Navbar/>
+  <!-- Hero Section -->
+  <section>
+    <div class="flex flex-col md:flex-row w-full min-h-[400px] md:h-[600px] bg-emerald-900">
+      <div class="flex flex-col justify-center w-full md:w-1/2 px-6 md:pl-10 text-white">
+        <div class="max-w-xl py-8 mx-auto md:ml-40">
+          <h2 class="mb-2 text-3xl md:text-4xl font-bold">Ayo Tukarkan Sampahmu</h2>
+          <p class="text-lg md:text-xl">
+            Jadikan lingkungan lebih bersih dengan cara menukar sampah kembali
+          </p>
+        </div>
+      </div>
+      <div class="flex justify-end w-full md:w-1/2">
+        <img
+          src="/public/images/hero.png"
+          alt="Anak menukar sampah"
+          class="w-full h-full object-cover max-h-[300px] md:max-h-none"
+        />
+      </div>
+    </div>
 
-    <section>
-        <div class="flex w-full h-[600px] bg-emerald-900">
-            <div class="flex flex-col justify-center w-1/2 pl-10 bg-emerald-900">
-                <div class="max-w-lg p-8 ml-40 text-white">
-                    <h2 class="mb-2 text-4xl font-bold">Ayo Tukarkan Sampahmu</h2>
-                    <p class="text-xl">Jadikan lingkungan lebih bersih dengan cara menukar sampah kembali</p>
-                </div>
-            </div>
-            <div class="flex justify-end w-1/2 bg-emerald-900">
-                <img
-                    src="/public/images/hero.png"
-                    alt="Anak menukar sampah"
-                    class="w-full h-full object-cover"
-                />
-            </div>
-        </div>
-        <div class="mt-24 ml-50 mr-50 px-10">
-            <div class="mb-16 flex items-center gap-4">
-                <hr class="h-1 w-24 bg-[#006662]" />
-                <h1 class="text-3xl font-semibold text-[#006662]">
-                    Fitur Unggulan Yang<br />
-                    Tawarkan
-                </h1>
-            </div>
-            <div class="flex flex-wrap justify-between">
-                <FeatureItem :icon="'/images/phone.png'" title="Mudah Cepat" description="Proses penukaran yang mudah dipelajari dan dipahami" />
-                <FeatureItem
-                    :icon="'/images/calculator.png'"
-                    title="Atur Jadwal"
-                    description="Penukaran dapat disesuaikan berdasarkan tanggal dan waktu"
-                />
-                <FeatureItem :icon="'/images/paper.png'" title="Selalu Terkini" description="Banyak informasi mengenai sampah dan manfaatnya" />
-            </div>
-        </div>
-        <div class="flex items-center gap-10 ml-50 mr-50 px-10 pt-24">
-            <img src="/public/images/image.png" alt="" />
-            <div class="flex flex-col gap-4">
-                <div class="flex items-center gap-4">
-                    <h1 class="text-3xl font-semibold text-[#006662]">Tentang Kami<br />ECOIN Merupakan</h1>
-                    <hr class="h-1 w-24 bg-[#006662]" />
-                </div>
-                <p>
-                    Ecoin merupakan aplikasi yang bertujuan sebagai wadah pertukaran sampah antara pengepul dan masyrakat. Dimana sampah tersebut akan
-                    ditukarkan menjadi koin dan koin dapat ditukarkan dengan berbagai pilihan kupon seperti saldo e-wallet, potongan pembelanjaan, dan
-                    lainnya. Aplikasi ini bertujuan untuk mengurangi dampak lingkungan dari sampah yang dihasilkan. Dengan adanya aplikasi ini sampah
-                    yang khusunya plastik akan jauh lebih berkurang penggunaannya karena akan diolah Kembali
-                </p>
-                <img src="/public/images/app.png" alt="" class="size-fit" />
-            </div>
-        </div>
-        <div class="flex flex-col items-center justify-center gap-4 pt-24">
-            <h1 class="text-center text-3xl font-semibold text-[#006662]">Cara Menukarkan<br />untuk mendapatkan poin</h1>
-            <div class="flex flex-col justify-between gap-8 p-4 md:flex-row">
-                <StepCard
-                    :step="1"
-                    title="Buat Akun"
-                    description="Langkah Pertama, buat akun untuk bisa login dan bertransaksi"
-                    linkText="Registrasi Akun"
-                    linkHref="/login"
-                />
-                <StepCard
-                    :step="2"
-                    title="Tukar Sampah"
-                    description="Langkah Kedua, pilih sampah dan tukarkan sesuai langkah-langkah"
-                    linkText="Penukaran Sampah"
-                    linkHref="/penukaran1"
-                />
-                <StepCard
-                    :step="3"
-                    title="Tukar koin"
-                    description="Langkah Ketiga, dapatkan koin lalu tukar koin dengan kupon"
-                    linkText="Dapatkan Kupon"
-                    linkHref="/penukaran_koin"
-                />
-            </div>
-        </div>
-        <div class="flex flex-col items-center justify-center pt-9">
-            <iframe
-                width="560"
-                height="315"
-                src="https://www.youtube.com/embed/pnuiEGuThsI"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-            >
-            </iframe>
-            <div class="h-6 w-96 bg-teal-800"></div>
-        </div>
-        <div class="mt-16 flex items-center justify-between px-10 ml-50 mr-50">
-            <div class="flex items-center gap-4">
-                <hr class="h-1 w-24 bg-[#006662]" />
-                <h1 class="text-3xl font-semibold text-[#006662]">
-                    Tukar Koin Anda<br />
-                    Menjadi Voucher
-                </h1>
-            </div>
-            <div class="relative inline-block">
-                <img src="/public/images/button.png" alt="" />
-                <p class="absolute top-2 left-6 text-xl font-semibold text-white">Pilih Voucher</p>
-            </div>
-        </div>
-        <div class="grid grid-cols-1 place-items-center gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 ml-30 mr-30">
-            <VoucherCard
-                v-for="voucher in vouchers"
-                :key="voucher.id"
-                :voucher="voucher"
-                @redeem="exchangeVoucher(voucher)"
-            />
-        </div>
+    <!-- Fitur Unggulan -->
+    <div class="mt-16 px-4 md:px-10 max-w-screen-xl mx-auto">
+      <div class="mb-10 flex items-center gap-4">
+        <hr class="h-1 w-16 md:w-24 bg-[#006662]" />
+        <h1 class="text-2xl md:text-3xl font-semibold text-[#006662]">
+          Fitur Unggulan Yang<br />Tawarkan
+        </h1>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <FeatureItem icon="/images/phone.png" title="Mudah Cepat" description="Proses penukaran yang mudah dipelajari dan dipahami" />
+        <FeatureItem icon="/images/calculator.png" title="Atur Jadwal" description="Penukaran dapat disesuaikan berdasarkan tanggal dan waktu" />
+        <FeatureItem icon="/images/paper.png" title="Selalu Terkini" description="Banyak informasi mengenai sampah dan manfaatnya" />
+      </div>
+    </div>
 
-
-        <div class="langganan">
-            <h2>Berlangganan ECOIN</h2>
-            <h3>Untuk Mendapatkan Informasi Terbaru</h3>
-            <p>
-                Masukkan emailmu dan dapatkan notifikasi informasi terbaru<br />dan
-                terupdate tentang aplikasi
-            </p>
-            <div class="email-box">
-                <input type="email" placeholder="Tulis Emailmu Disini ..." />
-                <button class="btn send">
-                    <img src="/public/images/ic_send.png" alt="Send" />
-                </button>
-            </div>
+    <!-- Tentang Kami -->
+    <div class="flex flex-col md:flex-row items-center gap-10 px-4 md:px-10 pt-24 max-w-screen-xl mx-auto">
+      <img src="/public/images/image.png" alt="" class="w-full md:w-[40%] object-cover" />
+      <div class="flex flex-col gap-4 md:w-1/2">
+        <div class="flex items-center gap-4">
+          <h1 class="text-2xl md:text-3xl font-semibold text-[#006662]">
+            Tentang Kami<br />ECOIN Merupakan
+          </h1>
+          <hr class="h-1 w-16 md:w-24 bg-[#006662]" />
         </div>
-    </section>
+        <p class="text-sm md:text-base">
+          Ecoin merupakan aplikasi yang bertujuan sebagai wadah pertukaran sampah antara pengepul dan masyrakat. Dimana sampah tersebut akan ditukarkan menjadi koin dan koin dapat ditukarkan dengan berbagai pilihan kupon seperti saldo e-wallet, potongan pembelanjaan, dan lainnya...
+        </p>
+        <img src="/public/images/app.png" alt="" class="h-auto max-w-[160px] md:max-w-[200px] lg:max-w-[250px] self-start" />
+      </div>
+    </div>
 
-    <Footer/>
+    <!-- Langkah -->
+    <div class="flex flex-col items-center justify-center gap-4 pt-24 px-4 md:px-10">
+      <h1 class="text-center text-2xl md:text-3xl font-semibold text-[#006662]">
+        Cara Menukarkan<br />untuk mendapatkan poin
+      </h1>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 p-4">
+        <StepCard step="1" title="Buat Akun" description="Langkah Pertama, buat akun untuk bisa login dan bertransaksi" linkText="Registrasi Akun" linkHref="/login" />
+        <StepCard step="2" title="Tukar Sampah" description="Langkah Kedua, pilih sampah dan tukarkan sesuai langkah-langkah" linkText="Penukaran Sampah" linkHref="/penukaran1" />
+        <StepCard step="3" title="Tukar koin" description="Langkah Ketiga, dapatkan koin lalu tukar koin dengan kupon" linkText="Dapatkan Kupon" linkHref="/penukaran_koin" />
+      </div>
+    </div>
 
+    <!-- Video -->
+    <div class="flex flex-col items-center justify-center pt-12 px-4">
+    <div class="w-full max-w-2xl aspect-video relative">
+        <iframe
+        class="absolute top-0 left-0 w-full h-full rounded-lg"
+        src="https://www.youtube.com/embed/pnuiEGuThsI"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        ></iframe>
+    </div>
+    <div class="h-2 w-32 bg-teal-800 mt-4"></div>
+    </div>
+
+    <!-- Voucher -->
+    <div class="mt-16 px-4 md:px-10 max-w-screen-xl mx-auto">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+        <div class="flex items-center gap-4">
+          <hr class="h-1 w-16 md:w-24 bg-[#006662]" />
+          <h1 class="text-2xl md:text-3xl font-semibold text-[#006662]">
+            Tukar Koin Anda<br />Menjadi Voucher
+          </h1>
+        </div>
+        <div class="relative">
+          <img src="/public/images/button.png" alt="" class="w-36" />
+          <p class="absolute top-2 left-4 text-sm md:text-xl font-semibold text-white">Pilih Voucher</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 place-items-center">
+        <VoucherCard
+          v-for="voucher in vouchers"
+          :key="voucher.id"
+          :voucher="voucher"
+          @redeem="exchangeVoucher(voucher)"
+        />
+      </div>
+    </div>
+
+    <!-- Langganan -->
+    <div class="langganan">
+        <h2>Berlangganan ECOIN</h2>
+        <h3>Untuk Mendapatkan Informasi Terbaru</h3>
+        <p>
+            Masukkan emailmu dan dapatkan notifikasi informasi terbaru<br />
+            dan terupdate tentang aplikasi
+        </p>
+        <div class="email-box">
+            <input type="email" placeholder="Tulis Emailmu Disini ..." />
+            <button class="btn send">
+                <img src="/public/images/ic_send.png" alt="Send" />
+            </button>
+        </div>
+    </div>
+  </section>
+
+  <Footer />
 </template>
+
 
 <style scoped>
 
