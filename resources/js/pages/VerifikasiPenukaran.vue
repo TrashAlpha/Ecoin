@@ -116,8 +116,9 @@
                                 }}
                             </p>
                             <p>
-                                <strong>Jenis Sampah</strong><br />{{
-                                    selectedTransaction.nama_sampah || "N/A"
+                                <strong>Jenis Sampah</strong><br />
+                                {{
+                                    selectedTransaction.bukti_transaksi?.[0]?.nama_sampah || "N/A"
                                 }}
                             </p>
                             <p>
