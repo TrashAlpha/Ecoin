@@ -27,7 +27,7 @@ class ArtikelSeeder extends Seeder
             [
                 'judul' => 'Cara Mengurangi Penggunaan Plastik Sekali Pakai',
                 'konten' => 'Plastik sekali pakai menjadi salah satu penyumbang terbesar pencemaran lingkungan. Kita dapat mengurangi penggunaannya dengan membawa tas belanja sendiri, menggunakan botol minum yang dapat digunakan berulang, dan memilih produk dengan kemasan yang ramah lingkungan. Setiap langkah kecil yang kita lakukan akan memberikan dampak besar bagi kelestarian bumi.',
-                'gambar_url' => 'https://images.unsplash.com/photo-1583183443702-b2c2e8a5e5e5?w=800',
+                'gambar_url' => 'https://images.unsplash.com/photo-1571727153934-b9e0059b7ab2?w=800',
                 'kategori' => 'Gaya Hidup',
                 'views' => 200,
                 'reward_koin' => 10,
@@ -46,7 +46,7 @@ class ArtikelSeeder extends Seeder
 
         foreach ($artikelData as $data) {
             $artikel = Artikel::create($data);
-            
+
             // Create quiz for each article
             $this->createQuizForArtikel($artikel);
         }
@@ -55,7 +55,7 @@ class ArtikelSeeder extends Seeder
     private function createQuizForArtikel($artikel)
     {
         $quizData = [];
-        
+
         if ($artikel->judul == 'Pentingnya Memilah Sampah untuk Lingkungan') {
             $quizData = [
                 [
@@ -179,4 +179,4 @@ class ArtikelSeeder extends Seeder
             Quiz::create($quiz);
         }
     }
-} 
+}
