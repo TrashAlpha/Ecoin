@@ -56,7 +56,7 @@
             :key="item.id"
         >
             <div class="gambar-detail">
-                <!-- Gambar Utama -->
+                <!-- Multi Gambar Preview -->
                 <label class="gambar-utama upload-box">
                     <input
                         type="file"
@@ -64,18 +64,21 @@
                         @change="onMainImageChange($event, item)"
                         hidden
                     />
-                    <img
-                        v-if="item.mainImage"
-                        :src="item.mainImage"
-                        class="preview-image"
-                    />
-                    <div v-else>Tambah Gambar</div>
+                    <div v-if="item.buktiTransaksiUrls.length">
+                        <img
+                            v-for="(url, i) in item.buktiTransaksiUrls"
+                            :key="i"
+                            :src="url"
+                            class="preview-image"
+                            style="max-width: 100px; margin: 4px"
+                        />
+                    </div>
                     <button
-                        v-if="item.mainImage"
-                        @click.stop.prevent="removeMainImage"
-                        class="remove-button"
+                    v-if="item.buktiTransaksiUrls && item.buktiTransaksiUrls.length"
+                    @click.stop.prevent="removeMainImage(item)"
+                    class="remove-button"
                     >
-                        ✕
+                    ✕
                     </button>
                 </label>
             </div>
@@ -236,6 +239,7 @@ export default {
             simpanClicked: false,
             minDateToday: "", // Akan di-set di created
             minTimeToday: "",
+            uploadedImageUrl: "",
             cloudinaryUrl: "https://api.cloudinary.com/v1_1/daigocnje/image/upload",
             cloudinaryPreset: "ecoin2",
             activeTab: 'non',
@@ -317,13 +321,14 @@ export default {
             const today = new Date();
             return {
                 id: this.nextItemId++,
-                mainImage: null,
+                mainImage: null, // bisa dihapus jika tidak digunakan lagi
                 imageFile: null,
                 nama_sampah: "Botol Plastik",
                 berat: 1,
                 tanggal: this.formatDate(today),
                 waktu: this.formatTime(today),
-                kategori: this.activeTab
+                kategori: this.activeTab,
+                buktiTransaksiUrls: [], // <--- Tambahan penting di sini
             };
         },
         getMinTimeForItem(item) {
@@ -377,11 +382,13 @@ export default {
                 });
 
                 const data = await response.json();
-                if (item.mainImage) {
-                    URL.revokeObjectURL(item.mainImage); // kalau sebelumnya pakai object URL
+
+                if (!item.buktiTransaksiUrls) {
+                    item.buktiTransaksiUrls = []; // pastikan array-nya ada
                 }
-                item.mainImage = data.secure_url; // URL Cloudinary
-                item.imageFile = file;
+
+                // Tambahkan URL baru ke array
+                item.buktiTransaksiUrls.push(data.secure_url);
 
                 console.log("Upload berhasil:", data.secure_url);
             } catch (error) {
@@ -389,7 +396,7 @@ export default {
                 alert("Upload gambar gagal. Coba lagi.");
             }
 
-            event.target.value = null; // reset input
+            event.target.value = null;
         },
         removeMainImage(item) {
             const confirmed = window.confirm(
@@ -401,6 +408,7 @@ export default {
                 }
                 item.mainImage = null;
                 item.imageFile = null;
+                item.buktiTransaksiUrls = []; // ini penting!
             }
         },
         tambahBarang() {
@@ -426,8 +434,8 @@ export default {
 
             for (const item of this.items) {
                 // Loop untuk validasi setiap item
-                if (!item.mainImage) {
-                    alert("Mohon unggah gambar untuk setiap barang.");
+                if (!item.buktiTransaksiUrls || item.buktiTransaksiUrls.length === 0) {
+                    alert(`Mohon unggah minimal satu gambar untuk barang "${item.nama_sampah}".`);
                     this.simpanClicked = false;
                     return;
                 }
@@ -495,6 +503,7 @@ export default {
             this.selectedKategori = kategori;
             this.filterSampahByKategori();
         }
+        
     },
     computed: {
         filteredItems() {

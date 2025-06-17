@@ -53,7 +53,7 @@ async function handleConfirmKonfirmasi() {
         alert(
             "Detail sampah tidak ditemukan. Harap ulangi dari langkah pertama."
         );
-        showConfirmationModal.value = false;
+        this.showConfirmationModal = false;
         return;
     }
 
@@ -69,13 +69,13 @@ async function handleConfirmKonfirmasi() {
             alert(
                 "Data item sampah tidak valid atau kosong. Harap ulangi dari langkah pertama."
             );
-            showConfirmationModal.value = false;
+            this.showConfirmationModal = false;
             return;
         }
     } catch (error) {
         alert("Gagal memproses data item sampah. Format tidak valid.");
         console.error("Error parsing itemsToExchange:", error);
-        showConfirmationModal.value = false;
+        this.showConfirmationModal = false;
         return;
     }
 
@@ -132,7 +132,7 @@ async function handleConfirmKonfirmasi() {
             "Tanggal dan waktu penukaran tidak dapat ditentukan dari daftar item sampah. " +
                 "Pastikan setidaknya satu item memiliki informasi tanggal (YYYY-MM-DD) dan waktu (HH:mm) yang valid."
         );
-        showConfirmationModal.value = false;
+        this.showConfirmationModal = false;
         return;
     }
 
@@ -146,7 +146,7 @@ async function handleConfirmKonfirmasi() {
     const userDataString = localStorage.getItem("user");
     if (!userDataString) {
         alert("Data pengguna tidak ditemukan. Harap login ulang.");
-        showConfirmationModal.value = false;
+        this.showConfirmationModal = false;
         return;
     }
     let userId: number | string;
@@ -156,14 +156,14 @@ async function handleConfirmKonfirmasi() {
             alert(
                 "User ID tidak ditemukan dalam data pengguna. Harap login ulang."
             );
-            showConfirmationModal.value = false;
+            this.showConfirmationModal = false;
             return;
         }
         userId = userData.id;
     } catch (error) {
         alert("Gagal memproses data pengguna. Format tidak valid.");
         console.error("Error parsing userData:", error);
-        showConfirmationModal.value = false;
+        this.showConfirmationModal = false;
         return;
     }
 
@@ -174,7 +174,7 @@ async function handleConfirmKonfirmasi() {
         alert(
             "Detail lokasi penukaran tidak ditemukan (exchangeLocationDetails). Harap lengkapi Langkah 2."
         );
-        showConfirmationModal.value = false;
+        this.showConfirmationModal = false;
         return;
     }
     let exchangeLocationDetailsParsed: string | any;
@@ -186,35 +186,30 @@ async function handleConfirmKonfirmasi() {
             alert(
                 "Informasi 'lokasi_penukaran' wajib diisi pada detail lokasi (Langkah 2)."
             );
-            showConfirmationModal.value = false;
+            this.showConfirmationModal = false;
             return;
         }
     } catch (error) {
         alert("Gagal memproses data detail lokasi. Format tidak valid.");
         console.error("Error parsing exchangeLocationDetails:", error);
-        showConfirmationModal.value = false;
+        this.showConfirmationModal = false;
         return;
     }
 
     // 5. Siapkan bukti_transaksi (PLACEHOLDER - sama seperti sebelumnya)
-    const bukti_transaksi_payload: string[] = [
-        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
-    ];
-    console.warn(
-        "PERHATIAN: Menggunakan placeholder untuk 'bukti_transaksi'. Anda perlu mengimplementasikan fitur unggah gambar."
-    );
+    const bukti_transaksi_payload = itemsFromStorage.flatMap(item => item.buktiTransaksiUrls || []);
 
     // 6. Buat payload akhir
     const payload = {
         user_id: userId,
         detail_sampah: detail_sampah_payload,
-        tanggal_penukaran: latestTanggalPenukaran, // Dari itemsToExchange
-        waktu_penukaran: latestWaktuPenukaran, // Dari itemsToExchange
-        lokasi_penukaran: exchangeLocationDetailsParsed, // Dari exchangeLocationDetails
+        tanggal_penukaran: latestTanggalPenukaran,
+        waktu_penukaran: latestWaktuPenukaran,
+        lokasi_penukaran: exchangeLocationDetailsParsed,
         alamat_detail: exchangeLocationDetailsParsed.alamat_detail || null,
         latitude: exchangeLocationDetailsParsed.latitude || null,
         longitude: exchangeLocationDetailsParsed.longitude || null,
-        bukti_transaksi: bukti_transaksi_payload,
+        bukti_transaksi: bukti_transaksi_payload, // <- array banyak URL
     };
 
     console.log("Payload yang akan dikirim:", payload);
@@ -267,7 +262,7 @@ async function handleConfirmKonfirmasi() {
             "Terjadi kesalahan pada sisi klien saat mengirim data penukaran. Periksa konsol."
         );
     } finally {
-        showConfirmationModal.value = false;
+        this.showConfirmationModal = false;
     }
 }
 
@@ -586,7 +581,7 @@ const handleConfirm = async () => {
             v-if="showConfirmationModal"
             :visible="showConfirmationModal"
             :icon="'/images/VerificationIcon.png'"
-            @confirm="handleConfirmKonfirmasi"
+            @confirm="() => { console.log('✅ Confirm berhasil!'); handleConfirmKonfirmasi(); }"
         />
 
         <Footer />
