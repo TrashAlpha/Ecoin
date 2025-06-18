@@ -41,11 +41,6 @@ const isLoading = ref(true);
 const errorMessage = ref('');
 
 const exchangeVoucher = async (voucher) => {    
-    console.log('Voucher yang diklik:', voucher);
-    console.log('Nilai koin voucher:', voucher.nilai_koin);
-    console.log('Saldo koin user:', user.value.saldo_koin);
-    console.log('Voucher ID yang dikirim:', voucher.id);
-
     try {
         const response = await axios.post(
             '/api/exchange-voucher',
@@ -216,6 +211,8 @@ const processMoneyExchange = async (data) => {
 onMounted(async () => {
     try {
         isLoading.value = true;
+        await fetchUserData();
+        
         // Load vouchers
         const vouchersResponse = await axios.get('/api/vouchers', {
             headers: {
