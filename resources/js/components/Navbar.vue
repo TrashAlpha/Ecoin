@@ -31,11 +31,11 @@
       </ul>
 
       <!-- Mobile menu -->
-      <ul class="nav-links mobile" :class="{ open: isMobileMenuOpen }">
+      <ul v-show="windowWidth <= 768" class="nav-links mobile" :class="{ open: isMobileMenuOpen }">
         <li><a href="/beranda">Beranda</a></li>
         <li>
           <a @click.prevent="toggleDropdownMobile">Penukaran</a>
-          <ul v-if="isMobileDropdownOpen" class="dropdown-menu">
+          <ul v-show="isMobileDropdownOpen" class="dropdown-menu">
             <li><a href="/penukaran1">Sampah</a></li>
             <li><a href="/penukaran_koin">Koin</a></li>
           </ul>
@@ -92,6 +92,8 @@ export default {
     await this.fetchUserData();
     this.setThemeVariables();
     window.addEventListener('popstate', this.fetchUserData);
+    this.handleResize(); // untuk set awal
+    window.addEventListener('resize', this.handleResize);
   },
   beforeUnmount() {
     window.removeEventListener('popstate', this.fetchUserData);
