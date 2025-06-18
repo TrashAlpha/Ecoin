@@ -5,6 +5,7 @@
         <img src="/public/images/logoheader.png" alt="Ecoin Logo" class="logo" />
       </a>
     </div>
+
     <nav class="navbar-right">
       <!-- Tombol hamburger -->
       <button class="hamburger" @click="toggleMobileMenu">☰</button>
@@ -29,14 +30,36 @@
         <li :class="{ active: isActive('/jelajah') }"><a href="/jelajah">Jelajah</a></li>
         <li :class="{ active: isActive('/tentang') }"><a href="/tentang">Tentang</a></li>
 
-        <li v-if="role === 'admin'" :class="{ active: isActive('/admin/verifikasi_penukaran') }"><a href="/admin/verifikasi_penukaran">Verifikasi Penukaran</a></li>
-        <li v-if="role === 'admin'" :class="{ active: isActive('/admin/manajemen_voucher') }"><a href="/admin/manajemen_voucher">Manajemen Voucher</a></li>
-        <li v-if="role === 'admin'" :class="{ active: isActive('/admin/manajemen_user') }"><a href="/admin/manajemen_user">Manajemen User</a></li>
+        <li v-if="role === 'admin'" :class="{ active: isActive('/admin/verifikasi_penukaran') }">
+          <a href="/admin/verifikasi_penukaran">Verifikasi Penukaran</a>
+        </li>
+        <li v-if="role === 'admin'" :class="{ active: isActive('/admin/manajemen_voucher') }">
+          <a href="/admin/manajemen_voucher">Manajemen Voucher</a>
+        </li>
+        <li v-if="role === 'admin'" :class="{ active: isActive('/admin/manajemen_user') }">
+          <a href="/admin/manajemen_user">Manajemen User</a>
+        </li>
       </ul>
+
+      <!-- Login / Profile (Desktop) -->
+      <template v-if="windowWidth > 768">
+        <template v-if="!isLoggedIn">
+          <a href="/login" class="login-button">Masuk</a>
+        </template>
+        <template v-else>
+          <img
+            :src="user?.photo_profile_url || '/images/user-icon.png'"
+            alt="Profile"
+            class="profile-icon"
+            @click="goToProfile"
+          />
+        </template>
+      </template>
 
       <!-- Mobile menu -->
       <ul v-show="windowWidth <= 768" class="nav-links mobile" :class="{ open: isMobileMenuOpen }">
         <li><a href="/beranda">Beranda</a></li>
+
         <li>
           <a @click.prevent="toggleDropdownMobile">Penukaran</a>
           <ul v-show="isMobileDropdownOpen" class="dropdown-menu">
@@ -44,28 +67,22 @@
             <li><a href="/penukaran_koin">Koin</a></li>
           </ul>
         </li>
+
         <li><a href="/jelajah">Jelajah</a></li>
         <li><a href="/tentang">Tentang</a></li>
+
         <li v-if="role === 'admin'"><a href="/admin/verifikasi_penukaran">Verifikasi Penukaran</a></li>
         <li v-if="role === 'admin'"><a href="/admin/manajemen_voucher">Manajemen Voucher</a></li>
         <li v-if="role === 'admin'"><a href="/admin/manajemen_user">Manajemen User</a></li>
-      </ul>
 
-      <!-- Login / Profile -->
-      <template v-if="!isLoggedIn">
-        <a href="/login" class="login-button">Masuk</a>
-      </template>
-      <template v-else>
-        <img
-          :src="user?.photo_profile_url || '/images/user-icon.png'"
-          alt="Profile"
-          class="profile-icon"
-          @click="goToProfile"
-        />
-      </template>
+        <!-- Login / Profile (Mobile) -->
+        <li v-if="!isLoggedIn"><a href="/login">Masuk</a></li>
+        <li v-else @click="goToProfile"><a>Profil</a></li>
+      </ul>
     </nav>
   </header>
 </template>
+
 
 <script>
 import { theme } from '../config/theme';
