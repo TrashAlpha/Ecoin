@@ -2,7 +2,9 @@
 
 ## Tentang Ecoin
 
+<p align="justify">
 Ecoin merupakan aplikasi yang bertujuan sebagai wadah pertukaran sampah antara pengepul dan masyarakat. Dimana sampah tersebut akan ditukarkan menjadi koin dan koin dapat ditukarkan dengan berbagai pilihan kupon seperti saldo e-wallet, potongan pembelanjaan, dan lainnya. Aplikasi ini bertujuan untuk mengurangi dampak lingkungan dari sampah yang dihasilkan. Dengan adanya aplikasi ini sampah yang khususnya plastik akan jauh lebih berkurang penggunaannya karena akan diolah kembali.
+</p>
 
 ## Fitur
 
@@ -26,18 +28,66 @@ Sedangan fitur Ecoin untuk admin adalah sebagai berikut:
 
 ## Alat Pengembangan Sistem
 
-<a href="https://vuejs.org/">
-    <img src="https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D">
-</a>
-<a href="https://laravel.com/">
-    <img src="https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white">
-</a>
-<a href="https://www.mysql.com/">
-    <img src="https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white">
-</a>
-<a href="https://www.figma.com/">
-    <img src="https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white">
-</a>
+![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D)
+![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
+
+## Struktur Proyek
+
+```txt
+.
+├── app/
+│    ├── Http/
+│    │   ├── Controllers/
+│    │   │   ├── AdminPageController.php
+│    │   │   ├── ArtikelController.php
+│    │   │   ├── AuthController.php
+│    │   │   ├── Controller.php
+│    │   │   ├── PageController.php
+│    │   │   ├── PenukaranKoinController.php
+│    │   │   ├── PenukaranSampahController.php
+│    │   │   ├── ProfileController.php
+│    │   │   └── SampahController.php
+│    │   └── Middleware/
+│    │       ├── AdminMiddleware.php
+│    │       ├── CheckBanned.php
+│    │       └── CorsMiddleware.php
+│    ├── Models/
+│    │   ├── Artikel.php
+│    │   ├── Log_Transaksi.php
+│    │   ├── Penukaran_Koin.php
+│    │   ├── Penukaran_Sampah.php
+│    │   ├── Produk.php
+│    │   ├── Quiz.php
+│    │   ├── Sampah.php
+│    │   ├── User.php
+│    │   ├── UserQuizRewards.php
+│    │   ├── UserVoucher.php
+│    │   └── Voucher.php
+│    └── Providers/
+│    └── AppServiceProvider.php
+├── bootstrap/
+├── config/
+├── database/
+├── public/
+├── resources/
+├── routes/
+├── storage/
+├── tests/
+├── .editorconfig
+├── .env.example
+├── .gitattributes
+├── .gitignore
+├── README.md
+├── artisan
+├── composer.json
+├── composer.lock
+├── package-lock.json
+├── package.json
+├── phpunit.xml
+└── vite.config.js
+```
 
 ## Kontribusi
 
