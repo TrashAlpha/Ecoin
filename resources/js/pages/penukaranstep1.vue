@@ -1030,4 +1030,35 @@ input[type="time"] {
 .btn.send:hover {
     background-color: var(--primaryGreen);
 }
+
+@media (max-width: 480px) {
+    .opsi-transfer {
+        min-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .voucher-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .voucher-card img {
+        width: 100%;
+        max-width: 100px;
+    }
+    .kategori-tabs {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    background-color: var(--primaryGreen);
+    padding: 10px 0px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 2;
+    }
+}
 </style>

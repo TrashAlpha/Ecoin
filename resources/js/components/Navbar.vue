@@ -25,136 +25,139 @@
           <li :class="{ active: isActive('/jelajah') }"><a href="/jelajah">Jelajah</a></li>
           <li :class="{ active: isActive('/tentang') }"><a href="/tentang">Tentang</a></li>
 
-          <li v-if="role === 'admin'" :class="{ active: isActive('/admin/verifikasi_penukaran') }"><a href="/admin/verifikasi_penukaran">Verifikasi Penukaran</a></li>
-          <li v-if="role === 'admin'" :class="{ active: isActive('/admin/manajemen_voucher') }"><a href="/admin/manajemen_voucher">Manajemen Voucher</a></li>
-          <li v-if="role === 'admin'" :class="{ active: isActive('/admin/manajemen_user') }"><a href="/admin/manajemen_user">Manajemen User</a></li>
-        </ul>
-        <!-- Toggle between login button and profile icon -->
-        <template v-if="!isLoggedIn">
-          <a href="/login" class="login-button">Masuk</a>
-        </template>
-        <template v-else>
-          <img
-            :src="user?.photo_profile_url || '/images/user-icon.png'"
-            alt="Profile"
-            class="profile-icon"
-            @click="goToProfile"
-          />
-        </template>
-      </nav>
-    </header>
-  </template>
+        <li v-if="role === 'admin'" :class="{ active: isActive('/admin/verifikasi_penukaran') }"><a href="/admin/verifikasi_penukaran">Verifikasi Penukaran</a></li>
+        <li v-if="role === 'admin'" :class="{ active: isActive('/admin/manajemen_voucher') }"><a href="/admin/manajemen_voucher">Manajemen Voucher</a></li>
+        <li v-if="role === 'admin'" :class="{ active: isActive('/admin/manajemen_user') }"><a href="/admin/manajemen_user">Manajemen User</a></li>
+      </ul>
+
+      <!-- Mobile menu -->
+      <ul class="nav-links mobile" :class="{ open: isMobileMenuOpen }">
+        <li><a href="/beranda">Beranda</a></li>
+        <li>
+          <a @click.prevent="toggleDropdownMobile">Penukaran</a>
+          <ul v-if="isMobileDropdownOpen" class="dropdown-menu">
+            <li><a href="/penukaran1">Sampah</a></li>
+            <li><a href="/penukaran_koin">Koin</a></li>
+          </ul>
+        </li>
+        <li><a href="/jelajah">Jelajah</a></li>
+        <li><a href="/tentang">Tentang</a></li>
+        <li v-if="role === 'admin'"><a href="/admin/verifikasi_penukaran">Verifikasi Penukaran</a></li>
+        <li v-if="role === 'admin'"><a href="/admin/manajemen_voucher">Manajemen Voucher</a></li>
+        <li v-if="role === 'admin'"><a href="/admin/manajemen_user">Manajemen User</a></li>
+      </ul>
+
+      <!-- Login / Profile -->
+      <template v-if="!isLoggedIn">
+        <a href="/login" class="login-button">Masuk</a>
+      </template>
+      <template v-else>
+        <img
+          :src="user?.photo_profile_url || '/images/user-icon.png'"
+          alt="Profile"
+          class="profile-icon"
+          @click="goToProfile"
+        />
+      </template>
+    </nav>
+  </header>
+</template>
 
 <script>
 import { theme } from '../config/theme';
 import axios from 'axios';
 
 export default {
-    name: 'Navbar',
-    data() {
-        return {
-            isDropdownOpen: false,
-            isLoggedIn: false,
-            profileImage: '/public/images/user-icon.png', // Default profile image
-            role: null,
-            user: null,
-        };
-    },
-    async mounted() {
-        // Pertama, cek localStorage untuk UX yang lebih cepat
-        const saved = localStorage.getItem('user');
-        if (saved) {
-            this.user = JSON.parse(saved);
-            this.isLoggedIn = true;
-            this.role = this.user.role;
-            this.profileImage = this.user.photo_profile_url || '/images/user-icon.png';
-        }
-
-        // Kemudian, selalu ambil data terbaru dari API
-        await this.fetchUserData();
-
-        // Set CSS variables from theme
-        this.setThemeVariables();
-
-        // Tambahkan event listener untuk menangani navigasi
-        window.addEventListener('popstate', this.fetchUserData);
-    },
-    beforeUnmount() {
-        // Bersihkan event listener ketika komponen di-unmount
-        window.removeEventListener('popstate', this.fetchUserData);
-    },
-    methods: {
-        async fetchUserData() {
-            try {
-                const response = await axios.get('http://localhost:8000/api/get-user', {
-                  withCredentials: true,
-                  headers: {
-                    'Accept': 'application/json'
-                  }
-                });
-
-                if (response.data && response.data.user) {
-                    this.user = response.data.user;
-                    this.isLoggedIn = true;
-                    this.role = this.user.role;
-                    this.profileImage = this.user.photo_profile_url || '/images/user-icon.png';
-
-                    // Simpan ke localStorage untuk akses lebih cepat next time
-                    localStorage.setItem('user', JSON.stringify(this.user));
-                    console.log('User data fetched:', this.user);
-                } else {
-                    // Jika tidak ada user yang login
-                    this.isLoggedIn = false;
-                    this.user = null;
-                    this.role = null;
-                    localStorage.removeItem('user');
-                }
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-                // Jika error (misal: token expired), anggap user tidak login
-                if (error.response && error.response.status === 401) {
-                    this.isLoggedIn = false;
-                    this.user = null;
-                    this.role = null;
-                    localStorage.removeItem('user');
-                }
-            }
-        },
-        setThemeVariables() {
-            const root = document.documentElement;
-            root.style.setProperty('--primaryGreen', theme.colors.primaryGreen);
-            root.style.setProperty('--accentGreen1', theme.colors.accentGreen1);
-            root.style.setProperty('--textGrey', theme.colors.textGrey);
-            root.style.setProperty('--textField', theme.colors.textField);
-            root.style.setProperty('--accentGreen2', theme.colors.accentGreen2);
-            root.style.setProperty('--textBlack', theme.colors.textBlack);
-            root.style.setProperty('--backgroundWhite', theme.colors.backgroundWhite);
-            root.style.setProperty('--accentRed', theme.colors.accentRed);
-
-            root.style.setProperty('--fontFamily', theme.fonts.family);
-            root.style.setProperty('--fontSizeSmall', theme.fonts.size.small);
-            root.style.setProperty('--fontSizeNormal', theme.fonts.size.normal);
-            root.style.setProperty('--fontSizeMedium', theme.fonts.size.medium);
-            root.style.setProperty('--fontSizeLarge', theme.fonts.size.large);
-            root.style.setProperty('--fontSizeHeading', theme.fonts.size.heading);
-            root.style.setProperty('--fontWeightBold', theme.fonts.weight.bold);
-            root.style.setProperty('--fontWeightSemiBold', theme.fonts.weight.semibold);
-            root.style.setProperty('--fontWeightMedium', theme.fonts.weight.medium);
-            root.style.setProperty('--fontWeightRegular', theme.fonts.weight.regular);
-        },
-        openDropdown() {
-            this.isDropdownOpen = true;
-        },
-        closeDropdown() {
-            this.isDropdownOpen = false;
-        },
-        isActive(path) {
-            return window.location.pathname === path;
-        },
-        goToProfile() {
-            window.location.href = '/profile';
-        }
+  name: 'Navbar',
+  data() {
+    return {
+      isDropdownOpen: false,
+      isMobileDropdownOpen: false,
+      isMobileMenuOpen: false,
+      isLoggedIn: false,
+      profileImage: '/public/images/user-icon.png',
+      role: null,
+      user: null,
+    };
+  },
+  async mounted() {
+    const saved = localStorage.getItem('user');
+    if (saved) {
+      this.user = JSON.parse(saved);
+      this.isLoggedIn = true;
+      this.role = this.user.role;
+      this.profileImage = this.user.photo_profile_url || '/images/user-icon.png';
     }
+
+    await this.fetchUserData();
+    this.setThemeVariables();
+    window.addEventListener('popstate', this.fetchUserData);
+  },
+  beforeUnmount() {
+    window.removeEventListener('popstate', this.fetchUserData);
+  },
+  methods: {
+    async fetchUserData() {
+      try {
+        const response = await axios.get('http://localhost:8000/api/get-user', {
+          withCredentials: true,
+          headers: { Accept: 'application/json' }
+        });
+
+        if (response.data && response.data.user) {
+          this.user = response.data.user;
+          this.isLoggedIn = true;
+          this.role = this.user.role;
+          this.profileImage = this.user.photo_profile_url || '/images/user-icon.png';
+          localStorage.setItem('user', JSON.stringify(this.user));
+        } else {
+          this.isLoggedIn = false;
+          this.user = null;
+          this.role = null;
+          localStorage.removeItem('user');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        if (error.response && error.response.status === 401) {
+          this.isLoggedIn = false;
+          this.user = null;
+          this.role = null;
+          localStorage.removeItem('user');
+        }
+      }
+    },
+    setThemeVariables() {
+      const root = document.documentElement;
+      Object.entries(theme.colors).forEach(([key, value]) => {
+        root.style.setProperty(`--${key}`, value);
+      });
+      Object.entries(theme.fonts.size).forEach(([key, value]) => {
+        root.style.setProperty(`--fontSize${key[0].toUpperCase() + key.slice(1)}`, value);
+      });
+      Object.entries(theme.fonts.weight).forEach(([key, value]) => {
+        root.style.setProperty(`--fontWeight${key[0].toUpperCase() + key.slice(1)}`, value);
+      });
+      root.style.setProperty('--fontFamily', theme.fonts.family);
+    },
+    openDropdown() {
+      this.isDropdownOpen = true;
+    },
+    closeDropdown() {
+      this.isDropdownOpen = false;
+    },
+    toggleDropdownMobile() {
+      this.isMobileDropdownOpen = !this.isMobileDropdownOpen;
+    },
+    toggleMobileMenu() {
+      this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    },
+    isActive(path) {
+      return window.location.pathname === path;
+    },
+    goToProfile() {
+      window.location.href = '/profile';
+    },
+  }
 }
 </script>
 
