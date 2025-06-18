@@ -212,7 +212,7 @@ onMounted(async () => {
     try {
         isLoading.value = true;
         await fetchUserData();
-        
+
         // Load vouchers
         const vouchersResponse = await axios.get('/api/vouchers', {
             headers: {
@@ -425,6 +425,7 @@ onMounted(async () => {
     }
     .btn-container button:hover {
         background-color: var(--accentGreen1);
+        cursor: pointer;
     }
 
     /* Tambahkan style untuk loading dan error message */
