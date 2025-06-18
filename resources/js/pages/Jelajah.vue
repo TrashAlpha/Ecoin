@@ -302,7 +302,7 @@ onMounted(()=>{
 
 .hero-konten {
     position: relative;
-    width: 30%;            /* lebar 30% di kiri */
+    width: 100%;            /* lebar 30% di kiri */
     background-color: var(--primaryGreen);
     color: var(--backgroundWhite);
     display: flex;
@@ -427,7 +427,7 @@ onMounted(()=>{
 }
 
 .kegiatan-teks button {
-    background-color: #006662;
+    background-color: #004d4a;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -674,4 +674,235 @@ onMounted(()=>{
     font-size: larger;
     font-weight: 700;
 }
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .hero-konten {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .gambar-bawah {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .gambar-bawah img {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .artikel-heading h1 {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* HERO SECTION */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .hero-konten h1.judul {
+    font-size: 24px;
+    margin-top: 10px;
+  }
+
+  .hero-konten p {
+    font-size: 14px;
+  }
+
+  /* KONTEN */
+  .konten-heading p {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .baris-atas {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .kegiatan-teks h2 {
+    font-size: 18px;
+  }
+
+  .kegiatan-teks p {
+    font-size: 14px;
+  }
+
+  .kegiatan-teks button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .gambar-atas img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .gambar-bawah {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .gambar-bawah img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  /* ARTIKEL */
+  .artikel-heading {
+    text-align: center;
+    padding: 0 10px;
+  }
+
+  .artikel-heading h1 {
+    font-size: 22px;
+  }
+
+  .artikel-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .artikel-card {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .artikel-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .card-body h3 {
+    font-size: 16px;
+  }
+
+  .card-body p {
+    font-size: 14px;
+  }
+
+  /* PRODUK/ CAROUSEL */
+  .carousel-container {
+    position: relative;
+    overflow-x: hidden;
+    padding: 0 24px;
+  }
+
+  .carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    justify-content: flex-start;
+  }
+
+  .produk-card {
+    flex: 0 0 90%;
+    max-width: 90%;
+    margin-right: 0;
+    box-sizing: border-box;
+    scroll-snap-align: start;
+    margin-right: 16px;
+    background-color: #ddd;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .produk-card img {
+    width: 100%;
+    height: 200px; /* atau kamu bisa pakai 200px */
+    object-fit: cover;
+    display: block;
+  }
+
+  .produk-info {
+    padding: 12px;
+    text-align: center;
+  }
+
+  .produk-info .keterangan {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .produk-info .harga {
+    font-weight: bold;
+    font-size: 14px;
+    color: #004d4a;
+  }
+
+  .arrow-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    color: #004d4a;
+    border: none;
+    font-size: 24px;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+
+  .arrow-btn:first-of-type {
+    left: 0;
+  }
+
+  .arrow-btn:last-of-type {
+    right: 0;
+  }
+
+  .popup-form {
+    padding: 10px;
+  }
+
+  .popup-form input,
+  .popup-form select {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .btn-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+
 </style>

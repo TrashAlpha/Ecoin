@@ -130,90 +130,101 @@ export default {
     display: flex;
     min-height: 100vh;
     font-family: var(--fontFamily);
+    flex-wrap: wrap;
   }
-  
-  .welcome-section {
-    flex: 1;
-    background-color: var(--primaryGreen);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-  }
-  
+
+  .welcome-section,
   .register-section {
     flex: 1;
-    background-color: var(--backgroundWhite);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 2rem;
+    min-width: 300px;
   }
-  
-  .welcome-content {
-    max-width: 400px;
-    text-align: center;
+
+  .welcome-section {
+    background-color: var(--primaryGreen);
     color: white;
   }
-  
-  .welcome-title {
+
+  .register-section {
+    background-color: var(--backgroundWhite);
+  }
+
+  .welcome-content,
+  .register-content {
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Typography & Buttons */
+  .welcome-title,
+  .register-title {
     font-size: var(--fontSizeHeading);
-    font-weight: bold;
+    font-weight: var(--fontWeightBold);
     margin-bottom: 1.5rem;
   }
-  
+
   .welcome-text {
     margin-bottom: 2rem;
     font-size: 0.9rem;
     line-height: 1.6;
   }
-  
-  .welcome-btn {
+
+  .welcome-btn,
+  .register-btn {
     padding: 0.8rem 2rem;
-    border: 1px solid white;
-    color: white;
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
-    background: transparent;
   }
-  
-  .register-content {
-    max-width: 400px;
+
+  .welcome-btn {
+    border: 1px solid white;
+    background: transparent;
+    color: white;
+  }
+
+  .register-btn {
+    background-color: var(--primaryGreen);
+    color: white;
+    border: none;
     width: 100%;
   }
-  
+
+  /* Logo & Heading */
   .eco-title {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--primaryGreen);
-    font-size: var(--fontSizeHeading);
-    margin-bottom: 1.5rem;
     gap: 0.5rem;
     font-weight: var(--fontWeightBold);
+    color: var(--primaryGreen);
+    margin-bottom: 1.5rem;
+    font-size: var(--fontSizeHeading);
   }
-  
+
   .logo-icon {
     width: 32px;
     height: 32px;
   }
-  
-  .register-title {
-    color: var(--textBlack);
-    font-size: 1.2rem;
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 2rem;
+
+  .register-subtitle {
+    color: var(--textGrey);
+    font-size: 0.85rem;
+    margin: 1rem 0;
   }
-  
+
+  /* Social Buttons */
   .social-register {
     display: flex;
     justify-content: center;
     gap: 1rem;
     margin-bottom: 1rem;
   }
-  
+
   .social-btn {
     width: 40px;
     height: 40px;
@@ -225,23 +236,17 @@ export default {
     justify-content: center;
     align-items: center;
   }
-  
+
   .social-icon {
     width: 20px;
     height: 20px;
   }
-  
-  .register-subtitle {
-    text-align: center;
-    color: var(--textGrey);
-    font-size: 0.85rem;
-    margin: 1rem 0;
-  }
-  
+
+  /* Responsive Styles */
   .form-group {
     margin-bottom: 1.2rem;
   }
-  
+
   .form-input {
     width: 100%;
     padding: 0.8rem;
@@ -250,23 +255,76 @@ export default {
     font-size: 1rem;
     background-color: var(--textField);
   }
-  
-  .register-btn {
-    width: 100%;
-    padding: 0.8rem;
-    background-color: var(--primaryGreen);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
+
   .error-message {
     margin-top: 1rem;
     color: red;
     font-size: 0.9rem;
     text-align: center;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .register-container {
+      flex-direction: column;
+    }
+
+    .welcome-section,
+    .register-section {
+      width: 100%;
+      min-height: auto;
+      padding: 1.5rem;
+    }
+
+    .welcome-content,
+    .register-content {
+      max-width: 100%;
+    }
+
+    .eco-title {
+      font-size: 1.5rem;
+    }
+
+    .register-title {
+      font-size: 1.1rem;
+    }
+
+    .welcome-title {
+      font-size: 1.5rem;
+    }
+
+    .form-input,
+    .register-btn {
+      font-size: 0.95rem;
+    }
+
+    .welcome-btn {
+      width: 100%;
+      padding: 0.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .register-title {
+      font-size: 0.95rem;
+    }
+
+    .eco-title span {
+      font-size: 1.2rem;
+    }
+
+    .form-input {
+      font-size: 0.95rem;
+      padding: 0.7rem;
+    }
+
+    .register-btn {
+      padding: 0.7rem;
+    }
+
+    .error-message {
+      font-size: 0.85rem;
+    }
   }
   </style>
   
