@@ -10,7 +10,7 @@ function fetchArtikel() {
     const path = window.location.pathname;
     const id = path.split('/').pop();
 
-    fetch(`http://localhost:8000/api/artikel/${id}`)
+    fetch(`https://ecoin-hosted.vercel.app/api/artikel/${id}`)
         .then((res) => res.json())
         .then((data) => {
             artikel.value = data.data;
@@ -29,7 +29,7 @@ async function submitQuiz() {
     };
 
     try {
-        const response = await fetch(`http://localhost:8000/api/artikel/${artikelId}/submit-quiz`, {
+        const response = await fetch(`https://ecoin-hosted.vercel.app/api/artikel/${artikelId}/submit-quiz`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

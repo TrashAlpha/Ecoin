@@ -9,7 +9,7 @@
             <span>ECOIN</span>
           </div>
           <h2 class="login-title">Masuk Ke Akun Ecoin</h2>
-  
+
           <div class="social-login">
             <button class="social-btn">
               <img src="/public/images/ic_facebook.png" alt="Facebook" class="social-icon" />
@@ -21,35 +21,35 @@
               <img src="/public/images/ic_twitter.png" alt="Twitter" class="social-icon" />
             </button>
           </div>
-  
+
           <div class="separator">
             <hr class="line">
             <span class="separator-text">Atau masuk dengan menggunakan akun Anda</span>
             <hr class="line">
           </div>
-  
+
           <!-- Login Form -->
           <form class="login-form" @submit.prevent="handleLogin">
             <!-- Simulasi CSRF Token -->
             <input type="hidden" name="_token" :value="csrfToken" />
-  
+
             <div class="form-group">
               <input v-model="email" type="email" class="form-input" placeholder="Email" required>
             </div>
-  
+
             <div class="form-group">
               <input v-model="password" type="password" class="form-input" placeholder="Password" required>
             </div>
-  
+
             <a href="#" class="forgot-password">Lupa Password?</a>
-  
+
             <button type="submit" class="login-btn">Masuk</button>
-  
+
             <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
           </form>
         </div>
       </div>
-  
+
       <!-- Right Section - Welcome Message -->
       <div class="welcome-section">
         <div class="welcome-content">
@@ -62,10 +62,10 @@
       </div>
     </div>
   </template>
-  
+
   <script>
     import { theme } from '../config/theme'
-  
+
     export default {
       name: 'LoginPage',
       data() {
@@ -73,7 +73,7 @@
           email: '',
           password: '',
           errorMessage: '',
-          csrfToken: '' 
+          csrfToken: ''
         }
       },
       mounted() {
@@ -96,12 +96,12 @@
         async handleLogin() {
           try {
             // Pertama dapatkan CSRF cookie
-            await axios.get('http://localhost:8000/sanctum/csrf-cookie', {
+            await axios.get('https://ecoin-hosted.vercel.app/sanctum/csrf-cookie', {
               withCredentials: true
             });
 
             // Lakukan login
-            const response = await axios.post('http://localhost:8000/api/login', {
+            const response = await axios.post('https://ecoin-hosted.vercel.app/api/login', {
               email: this.email,
               password: this.password
             }, {
@@ -137,7 +137,7 @@
       }
     }
   </script>
-  
+
   <style scoped>
   .login-container {
     display: flex;
@@ -155,7 +155,7 @@
     border-radius: 5px;
     background-color: var(--primaryGreen);
   }
-  
+
   .login-section {
     flex: 1;
     background-color: var(--backgroundWhite);
@@ -164,7 +164,7 @@
     align-items: center;
     padding: 2rem;
   }
-  
+
   .welcome-section {
     flex: 1;
     background-color: var(--primaryGreen);
@@ -173,12 +173,12 @@
     align-items: center;
     padding: 2rem;
   }
-  
+
   .login-content {
     max-width: 400px;
     width: 100%;
   }
-  
+
   .eco-title {
     display: flex;
     align-items: center;
@@ -189,12 +189,12 @@
     gap: 0.5rem;
     font-weight: var(--fontWeightBold);
   }
-  
+
   .logo-icon {
     width: 32px;
     height: 32px;
   }
-  
+
   .login-title {
     color: var(--textBlack);
     font-size: 1.2rem;
@@ -202,14 +202,14 @@
     font-weight: bold;
     margin-bottom: 2rem;
   }
-  
+
   .social-login {
     display: flex;
     justify-content: center;
     gap: 1rem;
     margin-bottom: 2rem;
   }
-  
+
   .social-btn {
     width: 40px;
     height: 40px;
@@ -221,34 +221,34 @@
     justify-content: center;
     align-items: center;
   }
-  
+
   .social-icon {
     width: 20px;
     height: 20px;
   }
-  
+
   .separator {
     display: flex;
     align-items: center;
     margin: 2rem 0;
   }
-  
+
   .line {
     flex: 1;
     border: 1px solid var(--textGrey);
   }
-  
+
   .separator-text {
     padding: 0 1rem;
     color: var(--textGrey);
     font-size: 0.85rem;
     white-space: nowrap;
   }
-  
+
   .form-group {
     margin-bottom: 1.5rem;
   }
-  
+
   .form-input {
     width: 100%;
     padding: 0.8rem;
@@ -257,7 +257,7 @@
     font-size: 1rem;
     background-color: var(--textField);
   }
-  
+
   .forgot-password {
     display: block;
     text-align: right;
@@ -266,7 +266,7 @@
     margin: 1rem 0;
     font-size: 0.85rem;
   }
-  
+
   .login-btn {
     width: 100%;
     padding: 0.8rem;
@@ -277,25 +277,25 @@
     cursor: pointer;
     font-weight: bold;
   }
-  
+
   .welcome-content {
     max-width: 400px;
     text-align: center;
     color: white;
   }
-  
+
   .welcome-title {
     font-size: var(--fontSizeHeading);
     font-weight: bold;
     margin-bottom: 1.5rem;
   }
-  
+
   .welcome-text {
     margin-bottom: 2rem;
     font-size: 0.9rem;
     line-height: 1.6;
   }
-  
+
   .welcome-btn {
     padding: 0.8rem 2rem;
     border: 1px solid white;
@@ -305,7 +305,7 @@
     font-weight: bold;
     background: transparent;
   }
-  
+
   .error-message {
     margin-top: 1rem;
     color: red;
@@ -313,4 +313,3 @@
     text-align: center;
   }
   </style>
-  

@@ -17,7 +17,7 @@ function close(){
 }
 
 function fetchUsers(){
-    fetch("http://localhost:8000/api/admin/users")
+    fetch("https://ecoin-hosted.vercel.app/api/admin/users")
     .then((res) => res.json())
     .then((data) => {
         users.value = data.data; // <- Ambil dari properti "data"
@@ -34,7 +34,7 @@ function submitUpdateUser() {
     const id = selectedUser.value.id;
 
     // Update status
-    fetch(`http://localhost:8000/api/admin/users/${id}/status`, {
+    fetch(`https://ecoin-hosted.vercel.app/api/admin/users/${id}/status`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ function submitUpdateUser() {
     });
 
     // Update koin
-    fetch(`http://localhost:8000/api/admin/users/${id}/coins`, {
+    fetch(`https://ecoin-hosted.vercel.app/api/admin/users/${id}/coins`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ onMounted(() => {
                 <form action="">
                     <label for="saldo">Saldo</label><br>
                     <input type="number" v-model="selectedUser.saldo_koin"><br>
-                    
+
                     <select v-model="selectedUser.status">
                         <option value="active">Aktif</option>
                         <option value="banned">Banned</option>
