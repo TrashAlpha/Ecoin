@@ -30,6 +30,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'check.banned' => \App\Http\Middleware\CheckBanned::class,
         ]);
+
+        $middleware->append(\App\Http\Middleware\ForceHttps::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
