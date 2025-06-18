@@ -71,7 +71,7 @@ function close(){
 }
 
 function fetchVouchers(){
-    fetch("http://localhost:8000/api/admin/vouchers")
+    fetch("https://ecoin-hosted.vercel.app/api/admin/vouchers")
         .then((res) => res.json())
         .then((data) => {
           vouchers.value = data.data;
@@ -84,7 +84,7 @@ function fetchVouchers(){
 function deleteVoucherFromServer(id) {
     if (!confirm("Apakah kamu yakin ingin menghapus voucher ini?")) return;
 
-    fetch(`http://localhost:8000/api/admin/vouchers/${id}`, {
+    fetch(`https://ecoin-hosted.vercel.app/api/admin/vouchers/${id}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -121,7 +121,7 @@ async function updateVoucherOnServer() {
             selectedVoucher.value.image_url = imageUrl;
         }
 
-        const response = await fetch(`http://localhost:8000/api/admin/vouchers/${selectedVoucher.value.id}`, {
+        const response = await fetch(`https://ecoin-hosted.vercel.app/api/admin/vouchers/${selectedVoucher.value.id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -162,7 +162,7 @@ async function submitNewVoucher() {
         imageUrl = await uploadToCloudinary(selectedPhoto.value);
     }
 
-    const response = await fetch("http://localhost:8000/api/admin/vouchers", {
+    const response = await fetch("https://ecoin-hosted.vercel.app/api/admin/vouchers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

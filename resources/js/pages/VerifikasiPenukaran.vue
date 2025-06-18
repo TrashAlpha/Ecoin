@@ -181,7 +181,7 @@ import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = "https://ecoin-hosted.vercel.app";
 
 export default {
     components: {
