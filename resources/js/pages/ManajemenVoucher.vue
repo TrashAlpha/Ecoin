@@ -294,7 +294,7 @@ onMounted(() => {
                             @change="handlePhotoUpload"
                             style="display: none;"
                         />
-                        <label for="photoUpdate" style="cursor: pointer; background: var(--primaryGreen); color: white; padding: 8px 16px; border-radius: 4px; display: flex; justify-content: center; align-items: center;">
+                        <label for="photo" style="cursor: pointer; background: var(--primaryGreen); color: white; padding: 8px 16px; border-radius: 4px; display: flex; justify-content: center; align-items: center;">
                             Pilih Gambar
                         </label>
                     </div>
