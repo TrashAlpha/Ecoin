@@ -231,11 +231,17 @@ onMounted(() => {
 }
 
 @media (max-width: 600px) {
-  .quiz-container {
-    padding: 1em;
-  }
-  .quiz-form {
-    padding-bottom: 1em;
-  }
+    .quiz-container {
+        padding: 1em;
+    }
+    .quiz-form {
+        padding-bottom: 1em;
+    }
+}
+
+@media (min-width: 40em) {
+    .container {
+        max-width: 50em;
+    }
 }
 </style>
