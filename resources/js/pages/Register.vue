@@ -133,8 +133,6 @@ export default {
     flex-wrap: wrap;
   }
 
-  .welcome-section {
-
   .welcome-section,
   .register-section {
     flex: 1;
@@ -154,16 +152,12 @@ export default {
     background-color: var(--backgroundWhite);
   }
 
-  .welcome-content {
-
   .welcome-content,
   .register-content {
     max-width: 400px;
     width: 100%;
     text-align: center;
   }
-
-  .welcome-title {
 
   /* Typography & Buttons */
   .welcome-title,
@@ -178,8 +172,6 @@ export default {
     font-size: 0.9rem;
     line-height: 1.6;
   }
-
-  .welcome-btn {
 
   .welcome-btn,
   .register-btn {
@@ -197,6 +189,7 @@ export default {
 
   .register-content {
     max-width: 400px;
+  }
 
   .register-btn {
     background-color: var(--primaryGreen);
@@ -229,6 +222,7 @@ export default {
     text-align: center;
     font-weight: bold;
     margin-bottom: 2rem;
+  }
 
   .register-subtitle {
     color: var(--textGrey);
