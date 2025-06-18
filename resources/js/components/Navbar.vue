@@ -10,7 +10,7 @@
       <button class="hamburger" @click="toggleMobileMenu">☰</button>
 
       <!-- Desktop menu -->
-      <ul class="nav-links desktop">
+      <ul v-if="windowWidth > 768" class="nav-links desktop">
         <li :class="{ active: isActive('/beranda') }"><a href="/beranda">Beranda</a></li>
 
         <li
@@ -35,7 +35,7 @@
       </ul>
 
       <!-- Mobile menu -->
-      <ul class="nav-links mobile" :class="{ open: isMobileMenuOpen }">
+      <ul v-if="windowWidth <= 768" class="nav-links mobile" :class="{ open: isMobileMenuOpen }">
         <li><a href="/beranda">Beranda</a></li>
         <li>
           <a @click.prevent="toggleDropdownMobile">Penukaran</a>
@@ -82,6 +82,7 @@ export default {
       profileImage: '/public/images/user-icon.png',
       role: null,
       user: null,
+      windowWidth: window.innerWidth,
     };
   },
   async mounted() {
@@ -96,9 +97,11 @@ export default {
     await this.fetchUserData();
     this.setThemeVariables();
     window.addEventListener('popstate', this.fetchUserData);
+    this.handleResize(); // untuk set awal
   },
   beforeUnmount() {
     window.removeEventListener('popstate', this.fetchUserData);
+    window.removeEventListener('resize', this.handleResize);
   },
   methods: {
     async fetchUserData() {
@@ -161,6 +164,9 @@ export default {
     goToProfile() {
       window.location.href = '/profile';
     },
+    handleResize() {
+    this.windowWidth = window.innerWidth;
+  },
   }
 }
 </script>
