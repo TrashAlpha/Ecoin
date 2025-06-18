@@ -675,6 +675,37 @@ onMounted(()=>{
     font-weight: 700;
 }
 
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .hero-konten {
+    width: 100%;
+    padding: 16px;
+  }
+
+  .gambar-bawah {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .gambar-bawah img {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .artikel-heading h1 {
+    font-size: 26px;
+  }
+}
+
 @media (max-width: 480px) {
   /* HERO SECTION */
   .hero {
