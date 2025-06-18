@@ -1,4 +1,18 @@
-<p align="center"><img src="public/images/logo_ecoinwhite.png" alt="Logo Ecoin" width="300"></p>
+<h1 align="center"><img src="public/images/logo_ecoinwhite.png" alt="Logo Ecoin" width="300"></h1>
+
+## Daftar isi
+
+- [Daftar isi](#daftar-isi)
+- [Tentang Ecoin](#tentang-ecoin)
+- [Fitur](#fitur)
+- [Alat Pengembangan Sistem](#alat-pengembangan-sistem)
+  - [🖥️ Frontend](#️-frontend)
+  - [🛠️ Backend](#️-backend)
+  - [🗄️ Database](#️-database)
+  - [🧩 Lainnya](#-lainnya)
+- [Struktur Proyek](#struktur-proyek)
+- [Kontribusi](#kontribusi)
+- [Kontributor](#kontributor)
 
 ## Tentang Ecoin
 
@@ -10,21 +24,21 @@ Ecoin merupakan aplikasi yang bertujuan sebagai wadah pertukaran sampah antara p
 
 Fitur dari Ecoin dari sisi User adalah sebagai berikut:
 
-* Beranda
-* Tukar Sampah
-* Tukar Voucher
-* Tukar Koin
-* Aritkel
-* Quiz
-* Daftar Transaksi
-* Voucher anda
+- Beranda
+- Tukar Sampah
+- Tukar Voucher
+- Tukar Koin
+- Aritkel
+- Quiz
+- Daftar Transaksi
+- Voucher anda
 
 Sedangan fitur Ecoin untuk admin adalah sebagai berikut:
 
-* Manajemen User
-* Manajemen Voucher
-* Verifikasi Penukaran
-* Buat Kuis
+- Manajemen User
+- Manajemen Voucher
+- Verifikasi Penukaran
+- Buat Kuis
 
 ## Alat Pengembangan Sistem
 
@@ -42,6 +56,7 @@ Sedangan fitur Ecoin untuk admin adalah sebagai berikut:
 ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
 
 ### 🧩 Lainnya
+
 ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
 ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
 
