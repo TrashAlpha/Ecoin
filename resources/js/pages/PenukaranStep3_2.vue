@@ -4,22 +4,25 @@ import Footer from '../components/Footer.vue';
 import Navbar from '../components/Navbar.vue';
 import RedeemMoneyModal from "@/components/RedeemMoneyModal.vue";
 import KonfirmasiPenukaranModal from '@/components/KonfirmasiPenukaran.vue';
+import {onMounted, computed } from 'vue';
+import axios from 'axios';
+
 
 function redirectToStep2() {
-  window.location.href = '/penukaran2';
+  window.location.href = '/penukaran3';
 }
 
 const showModal = ref(false);
 const selectedBank = ref<any>(null);
 const showConfirmationModal = ref(false);
-const koinDitukar = ref(2000);
+
 
 function openModal(bank: any) {
   selectedBank.value = bank;
 }
 
 function handleTukarkan() {
-  if (!selectedBank.value) {
+  if (!selectedMethod.value) {
     alert("Pilih bank atau e-wallet terlebih dahulu.");
     return;
   }
@@ -30,17 +33,151 @@ function handleCancel() {
   showModal.value = false;
 }
 
-function handleConfirm(data: { rekening: string; password: string }) {
-  showModal.value = false;
-  console.log('Nomor rekening:', data.rekening);
-  console.log('Password:', data.password);
-  showConfirmationModal.value = true;
-}
+// Tukar Rupiah logic
+// Data untuk tukar rupiah
+const transferMethods = ref([]);
+const selectedMethod = ref(null);
+const coinAmount = ref('');
+const jumlahKoin = computed({
+  get: () => coinAmount.value,
+  set: (val) => (coinAmount.value = val)
+});
 
-function handleConfirmKonfirmasi() {
-  showConfirmationModal.value = false;
-  alert("Penukaran berhasil dikonfirmasi!");
-}
+const konversiRupiah = computed(() => {
+  if (!selectedMethod.value || !coinAmount.value) return 0;
+  const amount = parseInt(coinAmount.value);
+  if (isNaN(amount) || amount <= 0) return 0;
+  const rupiahAmount = (amount * 1000) - selectedMethod.value.admin_fee;
+  return rupiahAmount > 0 ? rupiahAmount : 0;
+});
+// Fungsi untuk memuat metode transfer
+const loadTransferMethods = async () => {
+    try {
+        const response = await axios.get('/api/transfer-methods', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
+            }
+        });
+        
+        if (response.data.success) {
+            transferMethods.value = response.data.methods;
+        } else {
+            console.error('Gagal memuat metode transfer');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
+// Fungsi untuk memilih metode transfer
+const selectMethod = (method) => {
+    selectedMethod.value = method;
+    calculateRupiah();
+};
+
+// Fungsi untuk menghitung konversi ke rupiah
+const calculateRupiah = () => {
+    if (!selectedMethod.value || !coinAmount.value) return;
+    
+    const amount = parseInt(coinAmount.value);
+    if (isNaN(amount) || amount <= 0) return;
+    
+    const rupiahAmount = (amount * 1000) - selectedMethod.value.admin_fee;
+    return rupiahAmount > 0 ? rupiahAmount : 0;
+};
+
+// Fungsi untuk memproses penukaran koin ke rupiah
+const exchangeToMoney = async () => {
+    if (!selectedMethod.value) {
+        alert('Pilih metode transfer terlebih dahulu');
+        return;
+    }
+    
+    const amount = parseInt(coinAmount.value);
+    if (isNaN(amount)) {
+        alert('Masukkan jumlah koin yang valid');
+        return;
+    }
+    
+    if (amount <= 0) {
+        alert('Jumlah koin harus lebih dari 0');
+        return;
+    }
+    
+    if (amount > user.value.saldo_koin) {
+        alert('Saldo koin tidak mencukupi');
+        return;
+    }
+    
+    showModal.value = true;
+};
+
+// Fungsi untuk konfirmasi penukaran
+const handleConfirm = (data) => {
+    showModal.value = false;
+    processMoneyExchange(data);
+    alert(`Penukaran berhasil! Anda mendapatkan Rp ${calculateRupiah().toLocaleString('id-ID')}`);
+    // Reset form
+    selectedMethod.value = null;
+    coinAmount.value = '';
+};
+
+const processMoneyExchange = async (data) => {
+    try {
+        const response = await axios.post(
+            '/api/confirm-money-exchange',
+            {
+                transfer_method: selectedMethod.value.id,
+                coin_amount: coinAmount.value,
+                account_number: data.rekening,
+                password: data.password
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (response.data.success) {
+            // Update saldo user
+            await fetchUserData(); // fetch ulang data user
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            alert(response.data.message || 'Penukaran gagal.');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    } catch (error) {
+        console.error('Gagal konfirmasi penukaran:', error);
+        alert(error.response?.data?.message || 'Terjadi kesalahan saat konfirmasi penukaran.');
+    }
+};
+
+const user = ref(JSON.parse(localStorage.getItem('user')));
+
+const fetchUserData = async () => {
+  try {
+    const response = await axios.get('/api/get-user', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+    });
+
+    if (response.data.user) {
+      user.value = response.data.user;
+      localStorage.setItem('user', JSON.stringify(user.value));
+    }
+  } catch (error) {
+    console.error('Gagal mengambil data user:', error);
+  }
+};
+
+onMounted(() => {
+  fetchUserData();
+  loadTransferMethods();
+});
 </script>
 
 <template>
@@ -72,13 +209,19 @@ function handleConfirmKonfirmasi() {
       <div class="form">
         <form>
           <label for="saldo-koin">Saldo Koin</label><br>
-          <input type="text" id="saldo_koin" value="2000" readonly><br>
+          <input type="text" id="saldo_koin" :value="user?.saldo_koin || 0" readonly><br>
 
           <label for="koin-yang-ditukar">Koin yang ditukarkan</label><br>
-          <input type="number" id="koin_yang_ditukar" v-model="koinDitukar"><br>
+          <input
+            type="number"
+            id="koin_yang_ditukar"
+            v-model="jumlahKoin"
+            min="0"
+            onwheel="this.blur()"
+          ><br>
 
           <label for="konversi-rupiah">Konversi ke Rupiah</label><br>
-          <input type="text" id="konversi_rupiah" :value="`Rp ${(koinDitukar * 10).toLocaleString('id-ID')}`" readonly><br>
+          <input type="text" id="konversi_rupiah" :value="`Rp ${konversiRupiah.toLocaleString('id-ID')}`" readonly><br>
 
           <button type="button" @click="redirectToStep2">Kembali</button>
           <button type="button" @click="handleTukarkan">Tukarkan</button>
@@ -88,68 +231,20 @@ function handleConfirmKonfirmasi() {
       <div class="opsi-transfer">
         <label>Opsi Transfer</label>
         <div class="opsi-grid">
-          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BNI' }" @click="openModal({ name: 'BNI', image: '/public/images/ic_bni.png' })">
-            <img src="/public/images/ic_bni.png" alt="">
+          <div
+            v-for="method in transferMethods"
+            :key="method.id"
+            class="bank-card"
+            :class="{ selected: selectedMethod?.id === method.id }"
+            @click="selectMethod(method)"
+          >
+            <img :src="`/images/ic_${method.id}.png`" alt="">
             <div class="info">
-              <span class="nama-bank">BNI</span>
-              <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
-            </div>
-          </div>
-          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BCA' }" @click="openModal({ name: 'BCA', image: '/public/images/ic_bca.png' })">
-            <img src="/public/images/ic_bca.png" alt="">
-            <div class="info">
-              <span class="nama-bank">BCA</span>
-              <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
-            </div>
-          </div>
-          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BRI' }" @click="openModal({ name: 'BRI', image: '/public/images/ic_bri.png' })">
-            <img src="/public/images/ic_BRI.png" alt="">
-            <div class="info">
-              <span class="nama-bank">BRI</span>
-              <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
-            </div>
-          </div>
-          <div class="bank-card" :class="{ selected: selectedBank?.name === 'Mandiri' }" @click="openModal({ name: 'Mandiri', image: '/public/images/ic_mandiri.png' })">
-            <img src="/public/images/ic_mandiri.png" alt="">
-            <div class="info">
-              <span class="nama-bank">Mandiri</span>
-              <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
-            </div>
-          </div>
-          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BSI' }" @click="openModal({ name: 'BSI', image: '/public/images/ic_bsi.png' })">
-            <img src="/public/images/ic_bsi.png" alt="">
-            <div class="info">
-              <span class="nama-bank">BSI</span>
-              <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
-            </div>
-          </div>
-          <div class="bank-card" :class="{ selected: selectedBank?.name === 'BTN' }" @click="openModal({ name: 'BTN', image: '/public/images/ic_btn.png' })">
-            <img src="/public/images/ic_btn.png" alt="">
-            <div class="info">
-              <span class="nama-bank">BTN</span>
-              <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
-            </div>
-          </div>
-          <div class="bank-card" :class="{ selected: selectedBank?.name === 'Gopay' }" @click="openModal({ name: 'Gopay', image: '/public/images/ic_gopay.png' })">
-            <img src="/public/images/ic_gopay.png" alt="">
-            <div class="info">
-              <span class="nama-bank">Gopay</span>
-              <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
-            </div>
-          </div>
-          <div class="bank-card" :class="{ selected: selectedBank?.name === 'Dana' }" @click="openModal({ name: 'Dana', image: '/public/images/ic_dana.png' })">
-            <img src="/public/images/ic_dana.png" alt="">
-            <div class="info">
-              <span class="nama-bank">Dana</span>
-              <span class="total-judul">Total Transfer</span>
-              <span class="total-nominal">Rp. {{ (koinDitukar * 10).toLocaleString('id-ID') }}</span>
+              <span class="nama-bank">{{ method.name }}</span>
+              <span class="total-judul">Biaya Admin</span>
+              <span class="total-nominal">
+                Rp. {{ method.admin_fee.toLocaleString("id-ID") }}
+              </span>
             </div>
           </div>
         </div>
@@ -182,7 +277,10 @@ function handleConfirmKonfirmasi() {
       v-if="showConfirmationModal"
       :visible="showConfirmationModal"
       :icon="'/images/VerificationIcon.png'"
-      @confirm="handleConfirmKonfirmasi"
+      :coins="parseInt(coinAmount)"
+      :adminFee="selectedMethod?.admin_fee || 0"
+      :bankName="selectedMethod?.nama_bank || 'Bank tidak dikenal'"
+      @confirm="handleConfirm"
     />
 
     <Footer />

@@ -46,23 +46,12 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // Seed Vouchers Table
-        for ($x = 1; $x <= 10; $x++) {
-            DB::table('vouchers')->insert([
-                'nama_voucher' => 'Voucher ' . $x,
-                'deskripsi' => $faker->sentence(),
-                'nilai_koin' => $faker->numberBetween(10, 500),
-                'status' => 'aktif',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-
         // Call other seeders
         $this->call([
             SampahSeeder::class,
             ArtikelSeeder::class,
             ProdukSeeder::class,
+            VoucherSeeder::class,
         ]);
     }
 } 

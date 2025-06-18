@@ -5,6 +5,80 @@ import VoucherCard from '../components/VoucherCard.vue';
 import Navbar from '../components/Navbar.vue';
 import Footer from '../components/Footer.vue';
 
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
+const vouchers = ref([]);
+const isLoading = ref(true);
+
+const exchangeVoucher = async (voucher: any) => {
+    try {
+        const response = await axios.post(
+            '/api/exchange-voucher',
+            { voucher_id: voucher.id },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (response.data.success) {
+            const confirmed = confirm(response.data.confirmation.message);
+            if (confirmed) {
+                await confirmExchange(voucher.id);
+            }
+        } else {
+            alert(response.data.message || 'Penukaran gagal.');
+        }
+    } catch (error: any) {
+        alert(error?.response?.data?.message || 'Terjadi kesalahan saat menukar voucher.');
+    }
+};
+
+const confirmExchange = async (voucherId: number) => {
+    try {
+        const response = await axios.post(
+            '/api/confirm-exchange',
+            { voucher_id: voucherId },
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+
+        if (response.data.success) {
+            alert('Penukaran berhasil!');
+        } else {
+            alert(response.data.message || 'Penukaran gagal.');
+        }
+    } catch (error: any) {
+        alert('Terjadi kesalahan saat konfirmasi penukaran.');
+    }
+};
+
+onMounted(async () => {
+    try {
+        const res = await axios.get('/api/vouchers', {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (res.data && Array.isArray(res.data.vouchers)) {
+            vouchers.value = res.data.vouchers;
+        }
+    } catch (e) {
+        console.error('Gagal mengambil data voucher:', e);
+    } finally {
+        isLoading.value = false;
+    }
+});
+
 </script>
 
 <template>
@@ -13,20 +87,22 @@ import Footer from '../components/Footer.vue';
     <Navbar/>
 
     <section>
-        <div class="relative w-full">
-            <div class="flex justify-center px-4 md:px-10">
+        <div class="flex w-full h-[600px] bg-emerald-900">
+            <div class="flex flex-col justify-center w-1/2 pl-10 bg-emerald-900">
+                <div class="max-w-lg p-8 ml-40 text-white">
+                    <h2 class="mb-2 text-4xl font-bold">Ayo Tukarkan Sampahmu</h2>
+                    <p class="text-xl">Jadikan lingkungan lebih bersih dengan cara menukar sampah kembali</p>
+                </div>
+            </div>
+            <div class="flex justify-end w-1/2 bg-emerald-900">
                 <img
                     src="/public/images/hero.png"
                     alt="Anak menukar sampah"
-                    class="w-[1080px] h-auto"
-                        />
-            </div>
-            <div class="absolute top-1/4 left-6 max-w-xs bg-emerald-900 p-6 text-white shadow-lg md:left-16 md:p-8">
-                <h2 class="mb-2 text-2xl font-bold">Ayo Tukarkan Sampahmu</h2>
-                <p class="text-base">Jadikan lingkungan lebih bersih dengan cara menukar sampah kembali</p>
+                    class="w-full h-full object-cover"
+                />
             </div>
         </div>
-        <div class="mt-24 px-10">
+        <div class="mt-24 ml-50 mr-50 px-10">
             <div class="mb-16 flex items-center gap-4">
                 <hr class="h-1 w-24 bg-[#006662]" />
                 <h1 class="text-3xl font-semibold text-[#006662]">
@@ -41,10 +117,10 @@ import Footer from '../components/Footer.vue';
                     title="Atur Jadwal"
                     description="Penukaran dapat disesuaikan berdasarkan tanggal dan waktu"
                 />
-                <FeatureItem :icon="'/images/paper.png'" title="Mudah Cepat" description="Banyak informasi mengenai sampah dan manfaatnya" />
+                <FeatureItem :icon="'/images/paper.png'" title="Selalu Terkini" description="Banyak informasi mengenai sampah dan manfaatnya" />
             </div>
         </div>
-        <div class="flex items-center gap-10 px-10 pt-24">
+        <div class="flex items-center gap-10 ml-50 mr-50 px-10 pt-24">
             <img src="/public/images/image.png" alt="" />
             <div class="flex flex-col gap-4">
                 <div class="flex items-center gap-4">
@@ -98,7 +174,7 @@ import Footer from '../components/Footer.vue';
             </iframe>
             <div class="h-6 w-96 bg-teal-800"></div>
         </div>
-        <div class="mt-16 flex items-center justify-between px-10">
+        <div class="mt-16 flex items-center justify-between px-10 ml-50 mr-50">
             <div class="flex items-center gap-4">
                 <hr class="h-1 w-24 bg-[#006662]" />
                 <h1 class="text-3xl font-semibold text-[#006662]">
@@ -111,9 +187,15 @@ import Footer from '../components/Footer.vue';
                 <p class="absolute top-2 left-6 text-xl font-semibold text-white">Pilih Voucher</p>
             </div>
         </div>
-        <div class="grid grid-cols-1 place-items-center gap-6 p-6 sm:grid-cols-2 md:grid-cols-3">
-            <VoucherCard v-for="n in 6" :key="n" />
+        <div class="grid grid-cols-1 place-items-center gap-6 p-6 sm:grid-cols-2 md:grid-cols-3 ml-30 mr-30">
+            <VoucherCard
+                v-for="voucher in vouchers"
+                :key="voucher.id"
+                :voucher="voucher"
+                @redeem="exchangeVoucher(voucher)"
+            />
         </div>
+
 
         <div class="langganan">
             <h2>Berlangganan ECOIN</h2>

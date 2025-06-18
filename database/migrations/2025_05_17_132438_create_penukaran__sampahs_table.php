@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('alamat_detail')->nullable();
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
-            $table->json('bukti_transaksi'); // Array of image paths
+            $table->longText('bukti_transaksi'); // Array of image paths
             $table->integer('total_koin')->default(0);
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->text('catatan_admin')->nullable();
