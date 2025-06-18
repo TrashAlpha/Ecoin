@@ -695,6 +695,20 @@ onMounted(async () => {
             flex-direction: row;
             align-items: center;
         }
+        .hero #tampilan-saldo {
+        padding: 10px;
+        background-color: var(--textField);
+        width: 450px;
+        height: 50px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border-radius: 4px;
+        }
+        .hero #total-saldo {
+            color: var(--textBlack);
+            font-size: 20px;
+            font-weight: 600;
+        }
     }
 
 </style>
