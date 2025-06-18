@@ -80,7 +80,7 @@ const filteredUsers = computed(() => {
             const matchesStatus = selectedStatus.value === '' || user.status === selectedStatus.value;
             return matchesSearch && matchesStatus;
         })
-        // Optional sorting by name (A-Z)
+        
         .sort((a, b) => a.name.localeCompare(b.name));
 });
 

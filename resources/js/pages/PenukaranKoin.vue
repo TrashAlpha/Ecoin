@@ -41,11 +41,6 @@ const isLoading = ref(true);
 const errorMessage = ref('');
 
 const exchangeVoucher = async (voucher) => {    
-    console.log('Voucher yang diklik:', voucher);
-    console.log('Nilai koin voucher:', voucher.nilai_koin);
-    console.log('Saldo koin user:', user.value.saldo_koin);
-    console.log('Voucher ID yang dikirim:', voucher.id);
-
     try {
         const response = await axios.post(
             '/api/exchange-voucher',
@@ -216,6 +211,8 @@ const processMoneyExchange = async (data) => {
 onMounted(async () => {
     try {
         isLoading.value = true;
+        await fetchUserData();
+
         // Load vouchers
         const vouchersResponse = await axios.get('/api/vouchers', {
             headers: {
@@ -428,6 +425,7 @@ onMounted(async () => {
     }
     .btn-container button:hover {
         background-color: var(--accentGreen1);
+        cursor: pointer;
     }
 
     /* Tambahkan style untuk loading dan error message */
@@ -694,6 +692,20 @@ onMounted(async () => {
         .bank-card {
             flex-direction: row;
             align-items: center;
+        }
+        .hero #tampilan-saldo {
+        padding: 10px;
+        background-color: var(--textField);
+        width: 450px;
+        height: 50px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border-radius: 4px;
+        }
+        .hero #total-saldo {
+            color: var(--textBlack);
+            font-size: 20px;
+            font-weight: 600;
         }
     }
 

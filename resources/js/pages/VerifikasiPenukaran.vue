@@ -357,9 +357,24 @@ export default {
             return "/images/placeholder.png";
         },
         async updateStatus(exchangeId, newStatus) {
+            const exchange = this.exchanges.find((ex) => ex.id === exchangeId);
+
+            // Admin hanya bisa mengubah status jika masih "pending"
+            if (!exchange || exchange.status !== "pending") {
+                alert("Status hanya dapat diubah satu kali dan tidak dapat diedit kembali.");
+                return;
+            }
+
+            const statusText = newStatus === 'approved' ? 'menyetujui' : 'menolak';
+            const confirmChange = window.confirm(
+                `Apakah Anda yakin ingin ${statusText} penukaran ini?`
+            );
+
+            if (!confirmChange) {
+                return;
+            }
+
             try {
-                // Anda perlu membuat endpoint API di Laravel untuk mengupdate status
-                // Misalnya: PUT /api/penukaran/{id}/status
                 const response = await axios.put(
                     `${API_BASE_URL}/api/penukaran/${exchangeId}/status`,
                     {
@@ -368,7 +383,6 @@ export default {
                 );
 
                 if (response.data.success) {
-                    // Update status di frontend secara lokal untuk responsivitas instan
                     const index = this.exchanges.findIndex(
                         (ex) => ex.id === exchangeId
                     );

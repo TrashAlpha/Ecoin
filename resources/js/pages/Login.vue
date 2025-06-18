@@ -312,4 +312,100 @@
     font-size: 0.9rem;
     text-align: center;
   }
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .login-container {
+      flex-direction: column;
+    }
+
+    .login-section,
+    .welcome-section {
+      flex: none;
+      width: 100%;
+      padding: 1.5rem;
+    }
+
+    .back-icon {
+      top: 10px;
+      left: 10px;
+      width: 28px;
+      height: 28px;
+    }
+
+    .login-content,
+    .welcome-content {
+      max-width: 100%;
+    }
+
+    .eco-title {
+      font-size: 1.5rem;
+    }
+
+    .login-title {
+      font-size: 1rem;
+    }
+
+    .social-login {
+      gap: 0.8rem;
+    }
+
+    .social-btn {
+      width: 36px;
+      height: 36px;
+    }
+
+    .separator {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .separator-text {
+      padding: 0;
+    }
+
+    .welcome-content {
+      padding-top: 2rem;
+    }
+
+    .welcome-title {
+      font-size: 1.5rem;
+    }
+
+    .welcome-text {
+      font-size: 0.85rem;
+    }
+
+    .welcome-btn {
+      padding: 0.6rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .login-title {
+      font-size: 0.95rem;
+    }
+
+    .eco-title span {
+      font-size: 1.2rem;
+    }
+
+    .form-input {
+      font-size: 0.95rem;
+      padding: 0.7rem;
+    }
+
+    .login-btn {
+      padding: 0.7rem;
+    }
+
+    .forgot-password {
+      font-size: 0.75rem;
+    }
+
+    .error-message {
+      font-size: 0.85rem;
+    }
+  }
+
   </style>

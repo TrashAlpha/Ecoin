@@ -873,7 +873,7 @@ const handleConfirm = async () => {
 }
 
 /* Media query untuk layar kecil */
-@media (max-width: 500px) {
+@media (max-width: 480px) {
     .opsi-transfer {
         min-width: 100%;
         margin-left: 0;
@@ -888,6 +888,27 @@ const handleConfirm = async () => {
     .voucher-card img {
         width: 100%;
         max-width: 100px;
+    }
+    .form input {
+    background-color: var(--accentGreen1);
+    padding: 12px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 310px;
+    border-radius: 4px;
+    }
+    .kategori-tabs {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    background-color: var(--primaryGreen);
+    padding: 10px 0px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 2;
     }
 }
 
