@@ -139,7 +139,7 @@ export default {
   methods: {
     async fetchUserData() {
       try {
-        const response = await axios.get('http://localhost:8000/api/get-user', {
+        const response = await axios.get('https://ecoin-hosted.vercel.app/api/get-user', {
           withCredentials: true,
           headers: { Accept: 'application/json' }
         });
@@ -350,7 +350,7 @@ export default {
   .mobile-menu-overlay-enter-from {
     transform: translateX(100%);
   }
-  
+
   .mobile-menu-overlay-leave-to {
     transform: translateX(100%);
   }

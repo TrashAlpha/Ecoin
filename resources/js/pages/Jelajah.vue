@@ -24,7 +24,7 @@ const formatHarga = (angka) => {
 };
 
 function fetchAllArtikel(){
-    fetch("http://localhost:8000/api/artikel")
+    fetch("https://ecoin-hosted.vercel.app/api/artikel")
     .then((res) => res.json())
     .then((data) => {
         artikels.value = data.data;
@@ -36,7 +36,7 @@ function fetchAllArtikel(){
 
 async function fetchUserRole() {
     try {
-        const response = await fetch('http://localhost:8000/api/get-user', {
+        const response = await fetch('https://ecoin-hosted.vercel.app/api/get-user', {
             credentials: 'include',
             headers: {
                 'Accept': 'application/json'
@@ -51,7 +51,7 @@ async function fetchUserRole() {
 }
 
 function fetchProdukList() {
-    fetch("http://localhost:8000/api/produk")
+    fetch("https://ecoin-hosted.vercel.app/api/produk")
         .then((res) => res.json())
         .then((data) => {
             produkList.value = data.data;
@@ -98,7 +98,7 @@ async function submitQuizForm() {
         jawaban_benar: quizForm.value.jawaban_benar
     };
     try {
-        const res = await fetch(`http://localhost:8000/api/admin/artikel/${selectedArtikelId.value}/quiz`, {
+        const res = await fetch(`https://ecoin-hosted.vercel.app/api/admin/artikel/${selectedArtikelId.value}/quiz`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -13,7 +13,7 @@ const selectedVoucher = ref(null);
 
 const fetchVouchers = async () => {
   try {
-    const res = await axios.get("http://localhost:8000/api/vouchers")
+    const res = await axios.get("https://ecoin-hosted.vercel.app/api/vouchers")
     console.log("Vouchers from API:", res.data)
     vouchers.value = res.data.vouchers // ✅ Perbaikan disini
   } catch (error) {
@@ -217,7 +217,7 @@ async function handleConfirmKonfirmasi() {
     // 7. Kirim data ke backend (sama seperti sebelumnya)
     try {
         const response = await fetch(
-            "http://localhost:8000/api/create-sampah",
+            "https://ecoin-hosted.vercel.app/api/create-sampah",
             {
                 // Ganti URL API jika perlu
                 method: "POST",
@@ -305,7 +305,7 @@ async function fetchAndCalculateCoins() {
             jumlah: item.berat,
         }));
 
-        const apiUrl = "http://localhost:8000/api/calculate";
+        const apiUrl = "https://ecoin-hosted.vercel.app/api/calculate";
         const response = await fetch(apiUrl, {
             method: "POST",
             headers: {

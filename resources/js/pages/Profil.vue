@@ -75,7 +75,7 @@ async function fetchUserData() {
             user.value = JSON.parse(saved);
         }
 
-        const response = await axios.get('http://localhost:8000/api/get-user', {
+        const response = await axios.get('https://ecoin-hosted.vercel.app/api/get-user', {
             withCredentials: true,
             headers: { 'Accept': 'application/json' }
         });

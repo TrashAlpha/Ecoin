@@ -10,7 +10,7 @@
           <button class="welcome-btn" @click="goToLogin">Masuk</button>
         </div>
       </div>
-  
+
       <!-- Right Section - Register Form -->
       <div class="register-section">
         <div class="register-content">
@@ -19,7 +19,7 @@
             <span>ECOIN</span>
           </div>
           <h2 class="register-title">Daftar Akun Ecoin</h2>
-  
+
           <div class="social-register">
             <button class="social-btn">
               <img src="/public/images/ic_facebook.png" alt="Facebook" class="social-icon" />
@@ -31,37 +31,37 @@
               <img src="/public/images/ic_twitter.png" alt="Twitter" class="social-icon" />
             </button>
           </div>
-  
+
           <p class="register-subtitle">Atau daftarkan akun Ecoin Anda</p>
-  
+
           <form class="register-form" @submit.prevent="handleRegister">
             <input type="hidden" name="_token" :value="csrfToken" />
-  
+
             <div class="form-group">
               <input v-model="name" type="text" class="form-input" placeholder="Nama" required>
             </div>
-  
+
             <div class="form-group">
               <input v-model="email" type="email" class="form-input" placeholder="Email" required>
             </div>
-  
+
             <div class="form-group">
               <input v-model="password" type="password" class="form-input" placeholder="Password" required>
             </div>
-  
+
             <div class="form-group">
               <input v-model="confirmPassword" type="password" class="form-input" placeholder="Confirm Password" required>
             </div>
-  
+
             <button type="submit" class="register-btn">Buat Akun</button>
-  
+
             <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
           </form>
         </div>
       </div>
     </div>
   </template>
-  
+
 <script>
 import axios from 'axios'
 import { theme } from '../config/theme'
@@ -75,7 +75,7 @@ export default {
       password: '',
       confirmPassword: '',
       errorMessage: '',
-      csrfToken: '' 
+      csrfToken: ''
     }
   },
   mounted() {
@@ -99,7 +99,7 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://localhost:8000/api/register', {
+        const response = await axios.post('https://ecoin-hosted.vercel.app/api/register', {
           name: this.name,
           email: this.email,
           password: this.password,
@@ -124,7 +124,7 @@ export default {
   }
 }
 </script>
-  
+
   <style scoped>
   .register-container {
     display: flex;
@@ -187,12 +187,17 @@ export default {
     color: white;
   }
 
+  .register-content {
+    max-width: 400px;
+  }
+
   .register-btn {
     background-color: var(--primaryGreen);
     color: white;
     border: none;
     width: 100%;
   }
+
 
   /* Logo & Heading */
   .eco-title {
@@ -211,11 +216,20 @@ export default {
     height: 32px;
   }
 
+  .register-title {
+    color: var(--textBlack);
+    font-size: 1.2rem;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+
   .register-subtitle {
     color: var(--textGrey);
     font-size: 0.85rem;
     margin: 1rem 0;
   }
+
 
   /* Social Buttons */
   .social-register {
@@ -242,6 +256,14 @@ export default {
     height: 20px;
   }
 
+  .register-subtitle {
+    text-align: center;
+    color: var(--textGrey);
+    font-size: 0.85rem;
+    margin: 1rem 0;
+  }
+
+
   /* Responsive Styles */
   .form-group {
     margin-bottom: 1.2rem;
@@ -255,6 +277,18 @@ export default {
     font-size: 1rem;
     background-color: var(--textField);
   }
+
+  .register-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: var(--primaryGreen);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
 
   .error-message {
     margin-top: 1rem;
@@ -327,4 +361,3 @@ export default {
     }
   }
   </style>
-  

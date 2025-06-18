@@ -13,6 +13,24 @@ export default defineConfig({
         vue(),
     ],
 
+    base: process.env.NODE_ENV === 'production' ? '/build/' : '/',
+    build: {
+        outDir: 'public/build',
+        emptyOutDir: true,
+        // manifest: true,
+        rollupOptions: {
+            output: {
+                chunkFileNames: 'assets/[name]-[hash].js',
+                entryFileNames: 'assets/[name]-[hash].js',
+                assetFileNames: 'assets/[name]-[hash][extname]',
+            },
+        },
+    },
+    server: {
+        https: false,
+        host: '0.0.0.0',
+    },
+
     resolve: {
         alias: {
             vue: 'vue/dist/vue.esm-bundler.js',
